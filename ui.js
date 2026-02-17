@@ -195,7 +195,7 @@ function renderCategories() {
                             <span class="guest-badge"><i class="fas fa-user"></i> Invitado</span>
                             <button id="go-login" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Sesión</button>
                         ` : state.user ? `
-                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i><span class="btn-text"> Nueva</span></button>
+                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i> Nueva</button>
                             <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50" style="top:70px;right:16px;position:fixed">
@@ -303,7 +303,7 @@ function renderDashboard() {
                             <span class="guest-badge"><i class="fas fa-user"></i> Invitado</span>
                             <button id="go-login" class="btn btn-outline">Sesión</button>
                         ` : state.user ? `
-                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i><span class="btn-text"> Nueva</span></button>
+                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i> Nueva</button>
                             <button id="calendar-btn" class="btn btn-calendar ${state.dateFilter ? 'btn-calendar-active' : ''}" title="${state.dateFilter ? 'Filtro activo' : 'Filtrar por fecha'}"><i class="fas fa-calendar-alt"></i>${state.dateFilter ? ' ●' : ''}</button>
                             <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
