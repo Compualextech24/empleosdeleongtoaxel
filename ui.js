@@ -2,12 +2,14 @@
 function renderLogin() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
-        <!-- Botón de retroceso al ecosistema -->
+
+        <!-- Botón fijo de retroceso al ecosistema -->
         <a href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
-           class="back-btn-ecosystem"
+           class="back-btn-fixed"
            title="Volver al inicio">
             <i class="fas fa-arrow-left"></i>
         </a>
+
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
             <div class="login-header-wrapper">
                 <div class="login-logo-wrap">
@@ -64,7 +66,11 @@ function renderSignup() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
-            <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-8 text-center text-white">
+            <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-8 text-center text-white" style="position:relative;">
+                <!-- Botón retroceso al login -->
+                <button type="button" id="signup-back-btn" class="back-btn-inheader" title="Volver al login">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
                 <div class="text-6xl mb-4">📝</div>
                 <h1 class="text-3xl font-black mb-2">Crear Cuenta</h1>
                 <p class="text-purple-200">Únete al portal</p>
@@ -437,7 +443,11 @@ function renderForm() {
     <div class="min-h-screen py-8">
         <div class="max-w-3xl mx-auto px-4">
             <div class="bg-white rounded-3xl shadow-2xl overflow-hidden fade-in">
-                <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-8 text-white">
+                <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-8 text-white text-center" style="position:relative;">
+                    <!-- Botón retroceso a categorías -->
+                    <button type="button" id="form-back-btn" class="back-btn-inheader" title="Volver a categorías">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
                     <h2 class="text-3xl font-black mb-2">${state.editingVacancy ? 'Editar' : 'Nueva'} Vacante</h2>
                     <p class="text-purple-200">Completa la información</p>
                 </div>
@@ -664,7 +674,6 @@ function attachEvents() {
             resetAuthForm();
             render();
         });
-        document.getElementById('forgot-password-btn')?.addEventListener('click', handleForgotPassword);
         document.getElementById('guest-btn')?.addEventListener('click', handleGuestAccess);
     }
 
@@ -694,6 +703,12 @@ function attachEvents() {
         });
         document.getElementById('go-login')?.addEventListener('click', () => {
             state.view = 'login';
+            render();
+        });
+        // Botón retroceso dentro del header púrpura de signup
+        document.getElementById('signup-back-btn')?.addEventListener('click', () => {
+            state.view = 'login';
+            resetAuthForm();
             render();
         });
     }
@@ -821,6 +836,14 @@ function attachEvents() {
         document.getElementById('work_days').oninput = (e) => state.formData.work_days = e.target.value;
         document.getElementById('schedule').oninput = (e) => state.formData.schedule = e.target.value;
         document.getElementById('cancel-btn')?.addEventListener('click', cancelForm);
+        // Botón retroceso dentro del header púrpura de Nueva Vacante
+        document.getElementById('form-back-btn')?.addEventListener('click', () => {
+            state.view = 'categories';
+            state.editingVacancy = null;
+            resetJobForm();
+            clearAIData();
+            render();
+        });
         document.getElementById('clean-btn')?.addEventListener('click', cleanForm);
         document.getElementById('ai-btn')?.addEventListener('click', toggleAIChat);
     }
