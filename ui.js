@@ -209,13 +209,14 @@ function renderVacancyCard(vacancy, isOwner) {
         <div class="p-6 card-content">
             <h3 class="font-bold mb-2 truncate">${escapeHtml(vacancy.company)}</h3>
             <p class="job-title text-purple-600 mb-3 truncate">${escapeHtml(vacancy.job_title)}</p>
+            ${vacancy.category ? `<span class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-3">${escapeHtml(vacancy.category)}</span>` : ''}
             <p class="text-sm text-gray-600 mb-4 line-clamp-3 description">${escapeHtml(vacancy.description)}</p>
             <div class="space-y-2 mb-4 text-sm text-gray-700">
                 ${vacancy.location ? `<div><i class="fas fa-map-marker-alt text-purple-600 mr-2"></i>${escapeHtml(vacancy.location)}</div>` : ''}
                 ${vacancy.contact_phone ? `<div><i class="fas fa-phone text-purple-600 mr-2"></i>${escapeHtml(vacancy.contact_phone)}</div>` : ''}
                 ${vacancy.publication_date ? `<div><i class="fas fa-calendar text-purple-600 mr-2"></i>${escapeHtml(vacancy.publication_date)}</div>` : ''}
                 ${vacancy.work_days ? `<div><i class="fas fa-clock text-purple-600 mr-2"></i>${escapeHtml(vacancy.work_days)}</div>` : ''}
-                ${vacancy.schedule ? `<div><i class="fas fa-clock text-purple-600 mr-2"></i>${escapeHtml(vacancy.schedule)}</div>` : ''}
+                ${vacancy.schedule ? `<div><i class="fas fa-hours text-purple-600 mr-2"></i>${escapeHtml(vacancy.schedule)}</div>` : ''}
             </div>
             ${isOwner ? `
                 <div class="flex gap-2">
@@ -269,6 +270,24 @@ function renderForm() {
                     <div class="input-group">
                         <label>Ubicación</label>
                         <input type="text" id="location" placeholder="León, GTO" value="${escapeHtml(state.formData.location)}">
+                    </div>
+                    <div class="input-group">
+                        <label>Categoría</label>
+                        <select id="category">
+                            <option value="">-- Selecciona una categoría --</option>
+                            <option value="Fábricas y Calzado"      ${state.formData.category === 'Fábricas y Calzado'      ? 'selected' : ''}>🏭 Fábricas y Calzado</option>
+                            <option value="Tiendas y Ventas"        ${state.formData.category === 'Tiendas y Ventas'        ? 'selected' : ''}>🛒 Tiendas y Ventas</option>
+                            <option value="Hospitales y Salud"      ${state.formData.category === 'Hospitales y Salud'      ? 'selected' : ''}>🏥 Hospitales y Salud</option>
+                            <option value="Hoteles y Restaurantes"  ${state.formData.category === 'Hoteles y Restaurantes'  ? 'selected' : ''}>🍽️ Hoteles y Restaurantes</option>
+                            <option value="Bodegas y Transporte"    ${state.formData.category === 'Bodegas y Transporte'    ? 'selected' : ''}>🚚 Bodegas y Transporte</option>
+                            <option value="Oficinas y Administración" ${state.formData.category === 'Oficinas y Administración' ? 'selected' : ''}>🏢 Oficinas y Administración</option>
+                            <option value="Obra y Construcción"     ${state.formData.category === 'Obra y Construcción'     ? 'selected' : ''}>🏗️ Obra y Construcción</option>
+                            <option value="Escuelas y Clases"       ${state.formData.category === 'Escuelas y Clases'       ? 'selected' : ''}>📚 Escuelas y Clases</option>
+                            <option value="Sistemas y Computación"  ${state.formData.category === 'Sistemas y Computación'  ? 'selected' : ''}>💻 Sistemas y Computación</option>
+                            <option value="Leyes y Consultas"       ${state.formData.category === 'Leyes y Consultas'       ? 'selected' : ''}>⚖️ Leyes y Consultas</option>
+                            <option value="Bancos y Contabilidad"   ${state.formData.category === 'Bancos y Contabilidad'   ? 'selected' : ''}>🏦 Bancos y Contabilidad</option>
+                            <option value="Mantenimiento y Limpieza" ${state.formData.category === 'Mantenimiento y Limpieza' ? 'selected' : ''}>🧹 Mantenimiento y Limpieza</option>
+                        </select>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="input-group">
@@ -482,6 +501,7 @@ function attachEvents() {
         document.getElementById('job_title').oninput = (e) => state.formData.job_title = e.target.value;
         document.getElementById('description').oninput = (e) => state.formData.description = e.target.value;
         document.getElementById('location').oninput = (e) => state.formData.location = e.target.value;
+        document.getElementById('category').onchange = (e) => state.formData.category = e.target.value;
         document.getElementById('contact_phone').oninput = (e) => state.formData.contact_phone = e.target.value;
         document.getElementById('publication_date').oninput = (e) => state.formData.publication_date = e.target.value;
         document.getElementById('work_days').oninput = (e) => state.formData.work_days = e.target.value;
