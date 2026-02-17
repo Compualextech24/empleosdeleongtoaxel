@@ -49,6 +49,14 @@ body {
     50% { transform: translateX(5px); } 
 }
 
+@keyframes shimmerLight {
+    0%   { left: -100%; opacity: 0; }
+    10%  { opacity: 1; }
+    60%  { left: 160%; opacity: 1; }
+    65%  { opacity: 0; }
+    100% { left: 160%; opacity: 0; }
+}
+
 @keyframes guestGlow { 
     0%, 100% { text-shadow: 0 0 10px rgba(34,197,94,0.6), 0 0 20px rgba(34,197,94,0.4); } 
     50% { text-shadow: 0 0 20px rgba(34,197,94,0.8), 0 0 30px rgba(34,197,94,0.6); } 
@@ -201,8 +209,23 @@ body {
     color: white;
     box-shadow: 0 4px 14px rgba(16,185,129,0.4);
     font-weight: 700;
-    padding: 10px 20px;
+    padding: 10px 14px;
     border-radius: 12px;
+}
+
+/* En móvil: ocultar el texto del botón Nueva, solo mostrar el + */
+.btn-new-vacancy .btn-text {
+    display: none;
+}
+
+/* En pantallas medianas y grandes: mostrar el texto */
+@media (min-width: 640px) {
+    .btn-new-vacancy .btn-text {
+        display: inline;
+    }
+    .btn-new-vacancy {
+        padding: 10px 20px;
+    }
 }
 
 .btn-new-vacancy:hover:not(:disabled) {
@@ -910,15 +933,63 @@ textarea {
 
 .form-buttons-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 12px;
     padding-top: 20px;
+}
+
+/* Fila principal: Cancelar, Limpiar, Publicar en una sola línea */
+.form-main-buttons {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.form-main-buttons .btn-compact {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 6px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* Botón IA ocupa fila completa */
+.form-ai-button {
+    width: 100%;
+    justify-content: center;
 }
 
 /* ==================== HEADER ==================== */
 header.top-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de luz/reflejo deslizante sobre el header */
+header.top-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(
+        105deg,
+        transparent 20%,
+        rgba(255,255,255,0.18) 50%,
+        transparent 80%
+    );
+    animation: shimmerLight 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Asegurarse que el contenido quede sobre el efecto */
+header.top-header > * {
+    position: relative;
+    z-index: 2;
 }
 
 header.top-header h1 {

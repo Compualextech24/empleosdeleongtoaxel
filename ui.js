@@ -85,24 +85,63 @@ function renderTerms() {
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-2xl w-full fade-in">
             <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-8 text-white">
-                <h2 class="text-3xl font-black mb-2">Términos y Condiciones</h2>
-                <p class="text-purple-200">Lee y acepta para continuar</p>
+                <h2 class="text-3xl font-black mb-2">Aviso Importante</h2>
+                <p class="text-purple-200">Lee con atención antes de continuar</p>
             </div>
             <div class="p-8 space-y-6 max-h-96 overflow-y-auto">
-                <div class="space-y-4 text-gray-700">
-                    <h3 class="font-bold text-xl">1. Uso del Portal</h3>
-                    <p>Portal para publicar ofertas de empleo en León, Guanajuato.</p>
-                    <h3 class="font-bold text-xl">2. Responsabilidad</h3>
-                    <p>Los usuarios son responsables de la veracidad de la información.</p>
+                <div class="space-y-5 text-gray-700 text-sm leading-relaxed">
+
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-xl">
+                        <p class="font-bold text-yellow-800 mb-1"><i class="fas fa-exclamation-triangle mr-1"></i> Aviso de Responsabilidad</p>
+                        <p class="text-yellow-700">
+                            <strong>Empleos León GTO</strong> es una plataforma comunitaria de acceso libre, creada con el propósito de apoyar a las personas de León, Guanajuato, en la búsqueda y difusión de oportunidades de empleo. <strong>No somos una agencia de empleo ni cobramos por ningún servicio.</strong>
+                        </p>
+                    </div>
+
+                    <h3 class="font-bold text-base text-gray-800">1. Carácter informativo del portal</h3>
+                    <p>
+                        Las vacantes publicadas en esta plataforma son aportadas directamente por los usuarios, empresas o particulares, de forma voluntaria y sin mediación de esta aplicación. El portal actúa únicamente como un tablón de avisos digital comunitario. <strong>No verificamos, validamos ni garantizamos la veracidad, autenticidad o vigencia de ninguna oferta publicada.</strong>
+                    </p>
+
+                    <h3 class="font-bold text-base text-gray-800">2. Recomendaciones de seguridad antes de presentarte</h3>
+                    <p>Antes de acudir a cualquier entrevista o proceso de selección, te recomendamos ampliamente:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                        <li>Verificar la existencia y reputación de la empresa por medios oficiales (Google Maps, redes sociales, IMSS, SAT).</li>
+                        <li>Confirmar la dirección de la empresa antes de presentarte.</li>
+                        <li>Desconfiar de ofertas que soliciten <strong>depósitos de dinero, pagos por "trámites", compra de uniformes o materiales</strong> antes de contratarte.</li>
+                        <li>No entregar documentos originales sin haberlos verificado previamente.</li>
+                        <li>Informar a un familiar o persona de confianza sobre la cita antes de asistir.</li>
+                        <li>Denunciar ante la Profeco o la Secretaría del Trabajo cualquier práctica irregular.</li>
+                    </ul>
+
+                    <h3 class="font-bold text-base text-gray-800">3. Responsabilidad del usuario publicador</h3>
+                    <p>
+                        Toda persona que publique una vacante en esta plataforma es <strong>legalmente responsable</strong> de la veracidad y legalidad de la información proporcionada. Queda estrictamente prohibido publicar ofertas falsas, engañosas, con fines de estafa, tráfico de personas o cualquier actividad ilícita. El incumplimiento podrá ser reportado a las autoridades competentes.
+                    </p>
+
+                    <h3 class="font-bold text-base text-gray-800">4. Exención de responsabilidad</h3>
+                    <p>
+                        <strong>Empleos León GTO</strong> y sus administradores no se hacen responsables por pérdidas económicas, daños personales, fraudes u cualquier perjuicio derivado del uso de la información publicada en esta plataforma. El uso del portal implica la aceptación total de este aviso.
+                    </p>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <p class="text-blue-800 text-xs">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Si detectas una publicación sospechosa o fraudulenta, por favor repórtala a los administradores del portal. Tu seguridad es lo más importante.
+                        </p>
+                    </div>
+
                 </div>
-                <div class="flex items-center gap-3 bg-purple-50 p-4 rounded-xl">
-                    <input type="checkbox" id="accept-terms" ${state.acceptedTerms ? 'checked' : ''} class="w-5 h-5">
-                    <label for="accept-terms" class="text-sm font-semibold cursor-pointer">Acepto los términos</label>
+                <div class="flex items-center gap-3 bg-purple-50 p-4 rounded-xl border border-purple-200">
+                    <input type="checkbox" id="accept-terms" ${state.acceptedTerms ? 'checked' : ''} class="w-5 h-5 accent-purple-600">
+                    <label for="accept-terms" class="text-sm font-semibold cursor-pointer text-gray-700">
+                        He leído y entiendo el aviso de responsabilidad. Acepto los términos de uso de esta plataforma.
+                    </label>
                 </div>
             </div>
             <div class="p-8 pt-0">
                 <button id="accept-btn" class="btn btn-primary w-full" ${!state.acceptedTerms ? 'disabled' : ''}>
-                    <i class="fas fa-check"></i> Continuar
+                    <i class="fas fa-check"></i> Continuar al Portal
                 </button>
             </div>
         </div>
@@ -145,7 +184,7 @@ function renderCategories() {
                             <span class="guest-badge"><i class="fas fa-user"></i> Invitado</span>
                             <button id="go-login" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Sesión</button>
                         ` : state.user ? `
-                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i> Nueva</button>
+                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i><span class="btn-text"> Nueva</span></button>
                             <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50" style="top:70px;right:16px;position:fixed">
@@ -239,7 +278,7 @@ function renderDashboard() {
                             <span class="guest-badge"><i class="fas fa-user"></i> Invitado</span>
                             <button id="go-login" class="btn btn-outline">Sesión</button>
                         ` : state.user ? `
-                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i> Nueva</button>
+                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i><span class="btn-text"> Nueva</span></button>
                             <button id="calendar-btn" class="btn btn-calendar ${state.dateFilter ? 'btn-calendar-active' : ''}" title="${state.dateFilter ? 'Filtro activo' : 'Filtrar por fecha'}"><i class="fas fa-calendar-alt"></i>${state.dateFilter ? ' ●' : ''}</button>
                             <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
@@ -448,17 +487,21 @@ function renderForm() {
                         <textarea id="schedule" rows="2" placeholder="09:00 - 18:00">${escapeHtml(state.formData.schedule)}</textarea>
                     </div>
                     <div class="form-buttons-container">
-                        <button type="button" id="cancel-btn" class="btn-compact btn-cancel w-full sm:flex-1">
-                            <i class="fas fa-times"></i> Cancelar
-                        </button>
-                        <button type="button" id="clean-btn" class="btn-compact btn-clean w-full sm:flex-1">
-                            <i class="fas fa-eraser"></i> Limpiar
-                        </button>
-                        <button type="button" id="ai-btn" class="btn-compact btn-autofill w-full sm:flex-1">
-                            <i class="fas fa-robot"></i> IA
-                        </button>
-                        <button type="submit" class="btn-compact btn-save w-full sm:flex-1" ${state.loading ? 'disabled' : ''}>
-                            ${state.loading ? '<i class="fas fa-spinner fa-spin"></i> Guardando...' : (state.editingVacancy ? '<i class="fas fa-edit"></i> Actualizar' : '<i class="fas fa-save"></i> Publicar')}
+                        <!-- Fila 1: Cancelar, Limpiar y Publicar en una sola línea -->
+                        <div class="form-main-buttons">
+                            <button type="button" id="cancel-btn" class="btn-compact btn-cancel">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                            <button type="button" id="clean-btn" class="btn-compact btn-clean">
+                                <i class="fas fa-eraser"></i> Limpiar
+                            </button>
+                            <button type="submit" class="btn-compact btn-save" ${state.loading ? 'disabled' : ''}>
+                                ${state.loading ? '<i class="fas fa-spinner fa-spin"></i> Guardando...' : (state.editingVacancy ? '<i class="fas fa-edit"></i> Actualizar' : '<i class="fas fa-save"></i> Publicar')}
+                            </button>
+                        </div>
+                        <!-- Fila 2: Botón IA ocupa toda la fila (función premium/admin) -->
+                        <button type="button" id="ai-btn" class="btn-compact btn-autofill form-ai-button">
+                            <i class="fas fa-robot"></i> IA — Autofill (Solo Administradores)
                         </button>
                     </div>
                 </form>

@@ -219,13 +219,44 @@ async function handleSaveVacancy(e) {
     e.preventDefault();
     if (state.loading) return;
     if (!state.formData.imageBase64) {
-        showModal('error', 'Imagen requerida', 'Debes subir una imagen');
+        showModal('error', 'Imagen requerida', 'Debes subir al menos una imagen para publicar la vacante.');
         return;
     }
     if (!state.user?.id) {
         showModal('error', 'Sesión requerida', 'Inicia sesión para publicar');
         return;
     }
+
+    // Verificar si hay otros datos además de la imagen
+    const hasOtherData = (
+        state.formData.company?.trim() ||
+        state.formData.job_title?.trim() ||
+        state.formData.description?.trim() ||
+        state.formData.requirements?.trim() ||
+        state.formData.location?.trim() ||
+        state.formData.contact_phone?.trim() ||
+        state.formData.publication_date?.trim() ||
+        state.formData.schedule?.trim() ||
+        state.formData.work_days?.trim() ||
+        state.formData.category?.trim()
+    );
+
+    if (!hasOtherData) {
+        // Solo hay imagen — pedir confirmación
+        showModal(
+            'question',
+            '¿Solo imagen de referencia?',
+            'Detectamos que únicamente has subido una imagen sin completar otros datos (empresa, puesto, descripción, etc.). ¿Deseas publicar la vacante únicamente con la imagen de referencia? Te recomendamos agregar al menos el nombre de empresa y el puesto.',
+            () => proceedSaveVacancy()
+        );
+        return;
+    }
+
+    proceedSaveVacancy();
+}
+
+async function proceedSaveVacancy() {
+    if (state.loading) return;
     showLoading();
     try {
         const vacancyData = {
