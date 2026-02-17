@@ -208,6 +208,16 @@ function renderCategories() {
             </div>
         </header>
 
+        <!-- Barra de acceso rápido: visible para todos, siempre -->
+        <div class="quick-action-bar">
+            <button id="quick-terms-btn" class="quick-btn quick-btn-red">
+                <i class="fas fa-file-alt"></i> Leer Términos
+            </button>
+            <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue">
+                <i class="fas fa-plus"></i> Añadir Vacante
+            </button>
+        </div>
+
         <main class="max-w-5xl mx-auto px-4 py-10">
             <div class="text-center mb-10 fade-in">
                 <h2 class="text-3xl font-black text-white mb-2">¿Qué tipo de empleo buscas?</h2>
@@ -237,19 +247,9 @@ function renderCategories() {
                 </button>
             </div>
 
-            <!-- FIX #6: Aviso de precaución visible para todos (invitados y usuarios) -->
-            <div id="warning-banner" class="warning-banner fade-in">
-                <div class="warning-banner-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="warning-banner-text">
-                    <strong>⚠️ AVISO IMPORTANTE ⚠️</strong><br>
-                    Esta plataforma es solo un tablón informativo. No verificamos las vacantes.<br>
-                    <strong>¡Protégete de fraudes antes de presentarte!</strong>
-                </div>
-                <button id="read-warning-btn" class="warning-banner-btn">
-                    <i class="fas fa-file-alt mr-1"></i> Leer aviso completo
-                </button>
+            <!-- Firma del creador -->
+            <div class="app-footer fade-in">
+                <span>Created by <strong>Axellabstech</strong></span>
             </div>
         </main>
     </div>`;
@@ -284,7 +284,7 @@ function renderDashboard() {
                         </button>
                         <div class="text-4xl">💼</div>
                         <div>
-                            <h1 class="text-xl font-black">${state.selectedCategory ? escapeHtml(state.selectedCategory) : 'Todas las Vacantes'}</h1>
+                            <h1 class="header-category-title">${state.selectedCategory ? escapeHtml(state.selectedCategory) : 'Todas las Vacantes'}</h1>
                             <p class="text-sm">${displayVacancies.length} vacante${displayVacancies.length !== 1 ? 's' : ''} ${state.dateFilter ? 'filtradas' : 'disponibles'}</p>
                         </div>
                     </div>
@@ -377,7 +377,7 @@ function renderVacancyCard(vacancy, isOwner) {
                 : '<div class="w-full h-full flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>'}
         </div>
         <div class="p-6 card-content">
-            <h3 class="card-company truncate">${escapeHtml(vacancy.company)}</h3>
+            <h3 class="card-company truncate card-company-purple">${escapeHtml(vacancy.company)}</h3>
             <p class="job-title text-purple-600 mb-3 truncate">${escapeHtml(vacancy.job_title)}</p>
             ${vacancy.category ? `<span class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-3">${escapeHtml(vacancy.category)}</span>` : ''}
             ${hasDesc ? `<p class="card-description">${escapeHtml(vacancy.description)}</p>` : ''}
@@ -704,6 +704,46 @@ function attachEvents() {
         render();
     });
 
+    // Quick action bar (categorías)
+    document.getElementById('quick-terms-btn')?.addEventListener('click', () => {
+        state.view = 'terms';
+        render();
+    });
+    document.getElementById('quick-vacancy-btn')?.addEventListener('click', () => {
+        if (state.isGuest || !state.user) {
+            // Usuario no logueado → modal con opción de registrarse
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-window">
+                    <div class="modal-header modal-header-info">
+                        <i class="fas fa-info-circle" style="color:#3b82f6"></i>
+                        <div class="header-text"><h3>Publicar vacante</h3></div>
+                    </div>
+                    <div class="modal-body">
+                        Solo puedes publicar vacantes si ingresaste con correo electrónico y contraseña. ¿Deseas registrarte para poder publicar una vacante?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-cancel-red modal-cancel-reg">Cancelar</button>
+                        <button class="btn btn-accept-green modal-confirm-reg">Aceptar</button>
+                    </div>
+                </div>`;
+            document.getElementById('modal-root').appendChild(modal);
+            modal.querySelector('.modal-cancel-reg').onclick = () => modal.remove();
+            modal.querySelector('.modal-confirm-reg').onclick = () => {
+                modal.remove();
+                state.view = 'signup';
+                resetAuthForm();
+                render();
+            };
+        } else {
+            state.view = 'form';
+            resetJobForm();
+            clearAIData();
+            render();
+        }
+    });
+
     // Categories screen
     document.querySelectorAll('[data-category]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -717,12 +757,6 @@ function attachEvents() {
         state.selectedCategory = null;
         state.dateFilter = null;
         state.view = 'dashboard';
-        render();
-    });
-
-    // FIX #6: Botón del banner de advertencia → abre la vista de términos/aviso
-    document.getElementById('read-warning-btn')?.addEventListener('click', () => {
-        state.view = 'terms';
         render();
     });
 

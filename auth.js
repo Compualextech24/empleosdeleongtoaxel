@@ -561,7 +561,7 @@ function cleanForm() {
 }
 
 function cancelForm() {
-    showModal('question', 'Cancelar', '¿Cancelar? Los cambios se perderán', () => {
+    showModal('question-danger', 'Cancelar', '¿Cancelar? Los cambios se perderán', () => {
         state.editingVacancy = null;
         state.view = 'dashboard';
         resetJobForm();
