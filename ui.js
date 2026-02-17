@@ -199,9 +199,9 @@ function renderCategories() {
                             <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50" style="top:70px;right:16px;position:fixed">
-                                    <div class="px-4 py-2 border-b" style="background:rgba(251,191,36,0.25);border-radius:8px 8px 0 0;">
-                                        <p class="text-xs font-bold" style="color:#92400e;">Sesión activa</p>
-                                        <p class="text-sm font-bold truncate" style="color:#1a1a1a;" title="${escapeHtml(state.user.email)}">${escapeHtml(state.user.email)}</p>
+                                    <div class="px-4 py-2 border-b user-session-badge">
+                                        <p class="session-label">Sesión activa</p>
+                                        <p class="session-email truncate" title="${escapeHtml(state.user.email)}">${escapeHtml(state.user.email)}</p>
                                     </div>
                                     <button id="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
                                         <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
@@ -219,13 +219,14 @@ function renderCategories() {
             </div>
         </header>
 
-        <!-- Barra de acceso rápido -->
+        <!-- Barra de acceso rápido — una sola manita fuera de los botones -->
         <div class="quick-action-bar">
+            <span class="quick-action-hand">👉</span>
             <button id="quick-terms-btn" class="quick-btn quick-btn-red">
-                <span class="hand-point">👉</span><i class="fas fa-file-alt"></i> Leer Términos
+                <i class="fas fa-file-alt"></i> Leer Términos
             </button>
             <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue">
-                <span class="hand-point">👉</span><i class="fas fa-plus"></i> Añadir Vacante
+                <i class="fas fa-plus"></i> Añadir Vacante
             </button>
         </div>
 
@@ -257,9 +258,9 @@ function renderCategories() {
                 }).join('')}
             </div>
 
-            <!-- Firma -->
+            <!-- Firma con marquee continuo -->
             <div class="app-footer fade-in">
-                <span>Created by <strong>Axellabstech</strong></span>
+                <span class="app-footer-inner">✨ Created by <strong>Axellabstech</strong> &nbsp;|&nbsp; Empleos León GTO &nbsp;|&nbsp; ✨ Created by <strong>Axellabstech</strong> &nbsp;|&nbsp; Empleos León GTO</span>
             </div>
         </main>
     </div>`;
@@ -307,9 +308,9 @@ function renderDashboard() {
                             <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div style="position:fixed;top:70px;right:16px;z-index:9999" class="w-56 bg-white rounded-xl shadow-2xl py-2">
-                                    <div class="px-4 py-2 border-b" style="background:rgba(251,191,36,0.25);border-radius:8px 8px 0 0;">
-                                        <p class="text-xs font-bold" style="color:#92400e;">Sesión activa</p>
-                                        <p class="text-sm font-bold truncate" style="color:#1a1a1a;" title="${escapeHtml(state.user.email)}">${escapeHtml(state.user.email)}</p>
+                                    <div class="px-4 py-2 border-b user-session-badge">
+                                        <p class="session-label">Sesión activa</p>
+                                        <p class="session-email truncate" title="${escapeHtml(state.user.email)}">${escapeHtml(state.user.email)}</p>
                                     </div>
                                     <button id="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
                                         <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
@@ -365,9 +366,9 @@ function renderDashboard() {
                     </div>
                 `}
             </section>
-            <!-- Firma -->
+            <!-- Firma con marquee continuo -->
             <div class="app-footer fade-in">
-                <span>Created by <strong>Axellabstech</strong></span>
+                <span class="app-footer-inner">✨ Created by <strong>Axellabstech</strong> &nbsp;|&nbsp; Empleos León GTO &nbsp;|&nbsp; ✨ Created by <strong>Axellabstech</strong> &nbsp;|&nbsp; Empleos León GTO</span>
             </div>
         </main>
     </div>`;

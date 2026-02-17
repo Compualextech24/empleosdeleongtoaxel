@@ -292,12 +292,24 @@ async function handleSaveVacancy(e) {
     );
 
     if (!hasOtherData) {
-        // Solo hay imagen — pedir confirmación
+        // Solo hay imagen — NO permitir publicar, exigir datos mínimos
         showModal(
-            'question',
-            '¿Solo imagen de referencia?',
-            'Detectamos que únicamente has subido una imagen sin completar otros datos (empresa, puesto, descripción, etc.). ¿Deseas publicar la vacante únicamente con la imagen de referencia? Te recomendamos agregar al menos el nombre de empresa y el puesto.',
-            () => proceedSaveVacancy()
+            'warning',
+            'Datos incompletos',
+            'No es posible publicar una vacante solo con imagen. Por favor agrega al menos el nombre de la empresa y una descripción para poder publicarla.'
+        );
+        return;
+    }
+
+    // Validar campos mínimos obligatorios: empresa + descripción
+    const hasCompany     = state.formData.company?.trim();
+    const hasDescription = state.formData.description?.trim();
+
+    if (!hasCompany || !hasDescription) {
+        showModal(
+            'warning',
+            'Campos requeridos',
+            `Por favor completa los siguientes campos antes de publicar:\n${!hasCompany ? '• Nombre de la empresa\n' : ''}${!hasDescription ? '• Descripción de la vacante' : ''}`
         );
         return;
     }
