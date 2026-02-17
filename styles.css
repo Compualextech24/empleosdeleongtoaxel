@@ -1092,6 +1092,24 @@ header.top-header p {
     gap: 10px;
 }
 
+/* ==================== LOGO EN LOGIN ==================== */
+.login-logo-wrap {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0; /* la card ya tiene roundings */
+    max-height: 200px;
+    position: relative;
+    background: rgba(0,0,0,0.15);
+}
+
+.login-logo-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
 /* ==================== BARRA ACCIÓN RÁPIDA (Leer Términos / Añadir Vacante) ==================== */
 .quick-action-bar {
     display: flex;
@@ -1119,34 +1137,42 @@ header.top-header p {
     backdrop-filter: blur(8px);
 }
 
-/* Rojo translúcido */
+/* Manita animada en los botones de acción rápida */
+.quick-btn .hand-point {
+    display: inline-block;
+    font-size: 16px;
+    animation: pointingHand 1s ease-in-out infinite;
+    margin-right: 2px;
+}
+
+/* Rojo translúcido — menos transparencia, más visible */
 .quick-btn-red {
-    background: rgba(220, 38, 38, 0.22);
+    background: rgba(200, 30, 30, 0.72);
     color: #fff;
-    border: 1.5px solid rgba(220, 38, 38, 0.5);
-    box-shadow: 0 2px 12px rgba(220,38,38,0.18);
+    border: 1.5px solid rgba(255, 100, 100, 0.55);
+    box-shadow: 0 3px 14px rgba(200,30,30,0.32);
 }
 
 .quick-btn-red:hover {
-    background: rgba(220, 38, 38, 0.38);
-    border-color: rgba(220, 38, 38, 0.75);
+    background: rgba(200, 30, 30, 0.88);
+    border-color: rgba(255, 120, 120, 0.8);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(220,38,38,0.3);
+    box-shadow: 0 7px 22px rgba(200,30,30,0.42);
 }
 
-/* Azul translúcido */
+/* Azul translúcido — menos transparencia, más visible */
 .quick-btn-blue {
-    background: rgba(37, 99, 235, 0.22);
+    background: rgba(30, 80, 220, 0.72);
     color: #fff;
-    border: 1.5px solid rgba(37, 99, 235, 0.5);
-    box-shadow: 0 2px 12px rgba(37,99,235,0.18);
+    border: 1.5px solid rgba(100, 150, 255, 0.55);
+    box-shadow: 0 3px 14px rgba(30,80,220,0.32);
 }
 
 .quick-btn-blue:hover {
-    background: rgba(37, 99, 235, 0.38);
-    border-color: rgba(37, 99, 235, 0.75);
+    background: rgba(30, 80, 220, 0.88);
+    border-color: rgba(120, 160, 255, 0.8);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37,99,235,0.3);
+    box-shadow: 0 7px 22px rgba(30,80,220,0.42);
 }
 
 /* ==================== PANTALLA CATEGORÍAS — fondo blanco ==================== */
@@ -1160,34 +1186,79 @@ header.top-header p {
 .categories-screen-bg .cat-screen-title {
     color: #6d28d9;
     text-shadow: none;
+    font-size: 1.25rem;   /* 20px — más grande que antes */
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: 0.2px;
 }
 
-/* ==================== CARDS DE CATEGORÍA — efecto premium ==================== */
+/* ==================== CARDS DE CATEGORÍA — efecto shimmer animado ==================== */
+/* Animación que lanza un destello de luz de izquierda a derecha cada 4s */
+@keyframes cardShimmer {
+    0%   { transform: translateX(-120%) skewX(-15deg); opacity: 0; }
+    8%   { opacity: 1; }
+    55%  { transform: translateX(220%) skewX(-15deg); opacity: 1; }
+    62%  { opacity: 0; }
+    100% { transform: translateX(220%) skewX(-15deg); opacity: 0; }
+}
+
 .category-card-v2 {
-    /* Añadir brillo superior + sombra más pronunciada */
-    box-shadow: 0 4px 18px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.32);
+    overflow: hidden; /* ya está, confirmamos */
 }
 
+/* Brillo superior fijo — simula superficie curva / cristal */
 .category-card-v2::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 40%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 100%);
+    height: 45%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0) 100%);
     border-radius: 14px 14px 0 0;
     pointer-events: none;
     z-index: 1;
 }
 
+/* Destello animado — rayo de luz que cruza la card */
+.category-card-v2::after {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: -80%;
+    width: 55%;
+    height: 160%;
+    background: linear-gradient(
+        105deg,
+        rgba(255,255,255,0)    0%,
+        rgba(255,255,255,0.38) 45%,
+        rgba(255,255,255,0.55) 50%,
+        rgba(255,255,255,0.38) 55%,
+        rgba(255,255,255,0)    100%
+    );
+    animation: cardShimmer 4s ease-in-out infinite;
+    animation-delay: var(--shimmer-delay, 0s);
+    pointer-events: none;
+    z-index: 3;
+    border-radius: 0;
+    /* Anula el ::after anterior que era solo un overlay de hover */
+    transform: translateX(-120%) skewX(-15deg);
+    opacity: 0;
+}
+
 .category-card-v2 > * {
     position: relative;
-    z-index: 2;
+    z-index: 4;
 }
 
 .category-card-v2:hover {
-    box-shadow: 0 12px 32px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.35);
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.38);
+}
+
+.category-card-v2:active {
+    transform: translateY(0) scale(0.98);
 }
 
 /* ==================== FIRMA / FOOTER ==================== */
@@ -1244,25 +1315,6 @@ header.top-header p {
     position: relative;
     overflow: hidden;
     width: 100%;
-}
-
-.category-card-v2::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0);
-    transition: background 0.2s ease;
-    border-radius: 14px;
-    pointer-events: none;
-    z-index: 3;
-}
-
-.category-card-v2:hover::after {
-    background: rgba(255,255,255,0.07);
-}
-
-.category-card-v2:active {
-    transform: translateY(0) scale(0.98);
 }
 
 .cat-all {

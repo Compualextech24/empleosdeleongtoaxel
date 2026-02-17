@@ -3,10 +3,18 @@ function renderLogin() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
-            <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-8 text-center text-white">
-                <div class="text-6xl mb-4">💼</div>
-                <h1 class="text-3xl font-black mb-2">Empleos León GTO</h1>
-                <p class="text-purple-200">Portal de Vacantes</p>
+            <div class="bg-gradient-to-br from-purple-600 to-purple-800 text-center text-white" style="padding:0;">
+                <div class="login-logo-wrap">
+                    <img src="https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/logosempleosleonaxel.png"
+                         alt="Empleos León GTO"
+                         class="login-logo-img"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                    <div style="display:none;padding:32px 0 8px;" class="text-6xl">💼</div>
+                </div>
+                <div style="padding: 0 32px 28px;">
+                    <h1 class="text-3xl font-black mb-2">Empleos León GTO</h1>
+                    <p class="text-purple-200 text-sm font-semibold tracking-wide">Axellabs Created</p>
+                </div>
             </div>
             <form id="login-form" class="p-8 space-y-6">
                 <div class="input-group">
@@ -214,10 +222,10 @@ function renderCategories() {
         <!-- Barra de acceso rápido -->
         <div class="quick-action-bar">
             <button id="quick-terms-btn" class="quick-btn quick-btn-red">
-                <i class="fas fa-file-alt"></i> Leer Términos
+                <span class="hand-point">👉</span><i class="fas fa-file-alt"></i> Leer Términos
             </button>
             <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue">
-                <i class="fas fa-plus"></i> Añadir Vacante
+                <span class="hand-point">👉</span><i class="fas fa-plus"></i> Añadir Vacante
             </button>
         </div>
 
@@ -227,15 +235,16 @@ function renderCategories() {
             </div>
 
             <div class="categories-grid fade-in">
-                ${CATEGORIES.map(cat => {
+                ${CATEGORIES.map((cat, idx) => {
                     const isAll = cat.name === 'Todas';
                     const count = isAll ? totalVacancies : state.vacancies.filter(v => v.category === cat.name).length;
                     const countLabel = isAll ? `${count} vacante${count !== 1 ? 's' : ''} totales` : `${count} vacante${count !== 1 ? 's' : ''}`;
+                    const shimmerDelay = (idx * 0.45).toFixed(2);
                     return `
                     <button class="category-card-v2 ${isAll ? 'cat-all' : ''}"
                         data-category="${isAll ? '' : escapeHtml(cat.name)}"
                         data-is-all="${isAll}"
-                        style="--cat-c1:${cat.color};--cat-c2:${cat.color2}">
+                        style="--cat-c1:${cat.color};--cat-c2:${cat.color2};--shimmer-delay:${shimmerDelay}s">
                         <div class="cat-v2-icon-wrap" style="background:${cat.iconBg}">
                             <i class="fas ${cat.icon}"></i>
                         </div>
