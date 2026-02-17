@@ -34,6 +34,7 @@ let state = {
         publication_date: '',
         schedule: '',
         work_days: '',
+        category: '',
         imageBase64: ''
     },
     aiChatOpen: false,
