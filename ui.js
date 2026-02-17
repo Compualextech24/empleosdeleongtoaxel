@@ -311,33 +311,39 @@ function renderVacancyCard(vacancy, isOwner) {
         ? vacancy.requirements.split('\n').map(l => l.trim()).filter(l => l.length > 0)
         : [];
 
+    // Only show description if it has real content (not NULL)
+    const hasDesc = vacancy.description && vacancy.description !== 'NULL' && vacancy.description.trim().length > 0;
+    const hasReqs = reqLines.length > 0 && !(reqLines.length === 1 && reqLines[0] === 'Sin requisitos especificados');
+
     return `
     <div class="vacancy-card">
         <div class="h-48 bg-gray-200 overflow-hidden">
-            ${vacancy.image_base64 ? `<img src="${vacancy.image_base64}" alt="${escapeHtml(vacancy.company)}" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center text-gray-400">Sin imagen</div>'}
+            ${vacancy.image_base64
+                ? `<img src="${vacancy.image_base64}" alt="${escapeHtml(vacancy.company)}" class="w-full h-full object-cover">`
+                : '<div class="w-full h-full flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>'}
         </div>
         <div class="p-6 card-content">
-            <h3 class="font-bold mb-2 truncate">${escapeHtml(vacancy.company)}</h3>
+            <h3 class="card-company truncate">${escapeHtml(vacancy.company)}</h3>
             <p class="job-title text-purple-600 mb-3 truncate">${escapeHtml(vacancy.job_title)}</p>
             ${vacancy.category ? `<span class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-3">${escapeHtml(vacancy.category)}</span>` : ''}
-            <p class="text-sm text-gray-600 mb-3 line-clamp-3 description">${escapeHtml(vacancy.description)}</p>
-            ${reqLines.length > 0 ? `
-                <div class="requirements-block mb-4">
-                    <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2"><i class="fas fa-clipboard-list mr-1"></i>Requisitos</p>
+            ${hasDesc ? `<p class="card-description">${escapeHtml(vacancy.description)}</p>` : ''}
+            ${hasReqs ? `
+                <div class="requirements-block ${hasDesc ? 'mt-3' : 'mt-0'} mb-4">
+                    <p class="req-block-title"><i class="fas fa-clipboard-list mr-1"></i>Requisitos</p>
                     <ul class="requirements-list">
                         ${reqLines.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
                     </ul>
                 </div>
             ` : ''}
-            <div class="space-y-2 mb-4 text-sm text-gray-700">
-                ${vacancy.location ? `<div><i class="fas fa-map-marker-alt text-purple-600 mr-2"></i>${escapeHtml(vacancy.location)}</div>` : ''}
-                ${vacancy.contact_phone ? `<div><i class="fas fa-phone text-purple-600 mr-2"></i>${escapeHtml(vacancy.contact_phone)}</div>` : ''}
-                ${vacancy.publication_date ? `<div><i class="fas fa-calendar text-purple-600 mr-2"></i>${escapeHtml(vacancy.publication_date)}</div>` : ''}
-                ${vacancy.work_days ? `<div><i class="fas fa-clock text-purple-600 mr-2"></i>${escapeHtml(vacancy.work_days)}</div>` : ''}
-                ${vacancy.schedule ? `<div><i class="fas fa-business-time text-purple-600 mr-2"></i>${escapeHtml(vacancy.schedule)}</div>` : ''}
+            <div class="card-info-rows ${(hasDesc || hasReqs) ? 'mt-3' : ''} mb-4">
+                ${vacancy.location      ? `<div class="card-info-row"><i class="fas fa-map-marker-alt"></i><span>${escapeHtml(vacancy.location)}</span></div>` : ''}
+                ${vacancy.contact_phone ? `<div class="card-info-row"><i class="fas fa-phone"></i><span>${escapeHtml(vacancy.contact_phone)}</span></div>` : ''}
+                ${vacancy.publication_date ? `<div class="card-info-row"><i class="fas fa-calendar"></i><span>${escapeHtml(vacancy.publication_date)}</span></div>` : ''}
+                ${vacancy.work_days     ? `<div class="card-info-row"><i class="fas fa-clock"></i><span>${escapeHtml(vacancy.work_days)}</span></div>` : ''}
+                ${vacancy.schedule      ? `<div class="card-info-row"><i class="fas fa-business-time"></i><span>${escapeHtml(vacancy.schedule)}</span></div>` : ''}
             </div>
             ${isOwner ? `
-                <div class="flex gap-2">
+                <div class="flex gap-2 mt-auto pt-2">
                     <button data-edit="${vacancy.id}" class="btn btn-edit flex-1"><i class="fas fa-edit"></i> Editar</button>
                     <button data-delete="${vacancy.id}" class="btn btn-cancel flex-1"><i class="fas fa-trash"></i> Eliminar</button>
                 </div>

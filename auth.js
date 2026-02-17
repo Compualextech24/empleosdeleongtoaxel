@@ -317,6 +317,11 @@ function handleEditVacancy(vacancyId) {
 
 // ==================== IA ====================
 async function sendAIMessage() {
+    // Double-check admin access
+    if (!isAIAdmin()) {
+        showAIAccessDeniedModal();
+        return;
+    }
     const input = document.getElementById('ai-chat-input');
     const message = input?.value.trim();
     if (!message && !state.aiImage) {
@@ -377,7 +382,73 @@ async function sendAIMessage() {
     }
 }
 
+// ==================== ADMINS AUTORIZADOS PARA IA ====================
+const AI_ADMIN_EMAILS = [
+    'compualextech24@gmail.com',
+    'flavioalejandrov24@gmail.com'
+];
+
+function isAIAdmin() {
+    if (!state.user?.email) return false;
+    return AI_ADMIN_EMAILS.includes(state.user.email.toLowerCase().trim());
+}
+
+function showAIAccessDeniedModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-window ai-access-modal">
+            <div class="modal-header modal-header-info">
+                <i class="fas fa-robot" style="color:#3b82f6;font-size:28px"></i>
+                <div class="header-text">
+                    <h3>Función de Autofill con IA</h3>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="ai-access-body">
+                    <div class="ai-access-icon-wrap">
+                        <i class="fas fa-lock-open"></i>
+                    </div>
+                    <h4 class="ai-access-title">¿Qué es el Autofill IA?</h4>
+                    <p class="ai-access-desc">
+                        Esta función te permite subir una <strong>imagen</strong> o escribir el
+                        <strong>texto de una oferta de empleo</strong>, y la inteligencia artificial
+                        extrae automáticamente todos los datos para llenar el formulario sin que
+                        tengas que capturar campo por campo.
+                    </p>
+                    <div class="ai-access-divider"></div>
+                    <div class="ai-access-notice">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>
+                            Actualmente esta función está disponible <strong>solo para administradores</strong>
+                            del portal. Si deseas acceso o quieres una aplicación similar para tu negocio,
+                            contáctanos:
+                        </p>
+                    </div>
+                    <div class="ai-access-contact">
+                        <i class="fas fa-envelope"></i>
+                        <span class="ai-contact-email">Correo de contacto próximamente</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary modal-ok" style="width:100%">
+                    <i class="fas fa-check mr-1"></i> Entendido
+                </button>
+            </div>
+        </div>
+    `;
+    document.getElementById('modal-root').appendChild(modal);
+    modal.querySelector('.modal-ok').onclick = () => modal.remove();
+    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+}
+
 function toggleAIChat() {
+    // Check admin access first
+    if (!isAIAdmin()) {
+        showAIAccessDeniedModal();
+        return;
+    }
     state.aiChatOpen = !state.aiChatOpen;
     if (state.aiChatOpen && state.aiMessages.length === 0) {
         state.aiMessages = [{
