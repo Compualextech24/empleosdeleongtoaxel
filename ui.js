@@ -220,7 +220,7 @@ function renderVacancyCard(vacancy, isOwner) {
             </div>
             ${isOwner ? `
                 <div class="flex gap-2">
-                    <button data-edit="${vacancy.id}" class="btn btn-secondary flex-1"><i class="fas fa-edit"></i> Editar</button>
+                    <button data-edit="${vacancy.id}" class="btn btn-edit flex-1"><i class="fas fa-edit"></i> Editar</button>
                     <button data-delete="${vacancy.id}" class="btn btn-cancel flex-1"><i class="fas fa-trash"></i> Eliminar</button>
                 </div>
             ` : ''}
@@ -252,8 +252,8 @@ function renderForm() {
                                     <p class="text-xs">Máx 2MB</p>
                                 </div>
                             `}
-                            <input type="file" accept="image/*" id="img" class="hidden">
                         </div>
+                        <input type="file" accept="image/*" id="img" style="display:none">
                     </div>
                     <div class="input-group">
                         <label>Empresa</label>
@@ -496,7 +496,15 @@ function attachEvents() {
     const vacancyForm = document.getElementById('vacancy-form');
     if (vacancyForm) {
         vacancyForm.onsubmit = handleSaveVacancy;
-        document.getElementById('img').onchange = handleImageUpload;
+
+        // Fix: clicking the image area triggers the hidden file input
+        const imageArea = document.querySelector('.image-upload-area');
+        const imgInput = document.getElementById('img');
+        if (imageArea && imgInput) {
+            imageArea.addEventListener('click', () => imgInput.click());
+            imgInput.addEventListener('change', handleImageUpload);
+        }
+
         document.getElementById('company').oninput = (e) => state.formData.company = e.target.value;
         document.getElementById('job_title').oninput = (e) => state.formData.job_title = e.target.value;
         document.getElementById('description').oninput = (e) => state.formData.description = e.target.value;
@@ -554,6 +562,7 @@ async function init() {
             console.log('🔐 Auth:', event);
             if (state.isLoggingOut && event === 'SIGNED_OUT') {
                 console.log('✅ Logout completado - estado ya reseteado');
+                state.isLoggingOut = false;
                 return;
             }
             if (event === 'SIGNED_OUT' && !state.user) {
