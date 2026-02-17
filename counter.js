@@ -1,21 +1,21 @@
 // ==================== CONTADOR DE VISITAS — Empleos León GTO ====================
-// Lógica:
-//   1. Guarda el total en Supabase (tabla: visit_counter, fila única id=1)
-//   2. Usa localStorage para no contar la misma visita más de una vez por sesión/día
-//   3. Base de arranque: 2000 visitas
-//   4. Muestra un widget fijo en la parte inferior de la pantalla
+// Estrategia robusta:
+//   • Usa UPDATE directo (más compatible con RLS que upsert)
+//   • Si falla Supabase, muestra valor desde localStorage como fallback
+//   • No cuenta la misma visita más de 1 vez por día por dispositivo
+//   • Base: 2000 visitas
 // ================================================================================
 
-const COUNTER_BASE   = 2000;          // Visitas de inicio
-const COUNTER_ROW_ID = 1;            // ID único de la fila en Supabase
-const COUNTER_TABLE  = 'visit_counter'; // Nombre de la tabla en Supabase
-const SESSION_KEY    = 'emp_leon_visited'; // Clave en localStorage
+const COUNTER_TABLE  = 'visit_counter';
+const COUNTER_ROW_ID = 1;
+const COUNTER_BASE   = 2000;
+const SESSION_KEY    = 'emp_leon_visited';
 
-// ---- Inyectar el widget en el DOM ----
+// ---- Inyectar el widget fijo al fondo ----
 function injectCounterBar() {
-    if (document.getElementById('visit-counter-bar')) return; // ya existe
+    if (document.getElementById('visit-counter-bar')) return;
     const bar = document.createElement('div');
-    bar.id    = 'visit-counter-bar';
+    bar.id = 'visit-counter-bar';
     bar.className = 'visit-counter-bar';
     bar.innerHTML = `
         <span class="visit-counter-icon">👥</span>
@@ -25,116 +25,99 @@ function injectCounterBar() {
         <span class="visit-counter-text">usuarios</span>
     `;
     document.body.appendChild(bar);
-
-    // Añadir padding-bottom al body para que el contenido no quede tapado
     document.body.style.paddingBottom = '46px';
 }
 
-// ---- Leer el contador desde Supabase ----
-async function fetchCounterFromDB() {
+// ---- ¿Ya se contó hoy? ----
+function alreadyCountedToday() {
+    try {
+        const raw = localStorage.getItem(SESSION_KEY);
+        if (!raw) return false;
+        const { date } = JSON.parse(raw);
+        return date === new Date().toISOString().slice(0, 10);
+    } catch { return false; }
+}
+
+function markVisitedToday() {
+    try {
+        localStorage.setItem(SESSION_KEY, JSON.stringify({
+            date: new Date().toISOString().slice(0, 10)
+        }));
+    } catch {}
+}
+
+// ---- Leer contador ----
+async function getCount() {
     try {
         const { data, error } = await supabaseClient
             .from(COUNTER_TABLE)
             .select('count')
             .eq('id', COUNTER_ROW_ID)
             .single();
-
-        if (error || !data) return COUNTER_BASE;
-        return data.count || COUNTER_BASE;
+        if (error) throw error;
+        return Number(data.count) || COUNTER_BASE;
     } catch (e) {
-        console.warn('⚠️ Counter fetch error:', e);
+        console.warn('Counter read error:', e.message);
+        try {
+            const cached = localStorage.getItem('emp_leon_count');
+            if (cached) return Number(cached);
+        } catch {}
         return COUNTER_BASE;
     }
 }
 
-// ---- Incrementar el contador en Supabase ----
-async function incrementCounterInDB(currentCount) {
+// ---- Incrementar con UPDATE directo ----
+async function incrementCount(current) {
+    const next = current + 1;
     try {
-        const newCount = currentCount + 1;
-        await supabaseClient
+        const { error } = await supabaseClient
             .from(COUNTER_TABLE)
-            .upsert({ id: COUNTER_ROW_ID, count: newCount }, { onConflict: 'id' });
-        return newCount;
+            .update({ count: next })
+            .eq('id', COUNTER_ROW_ID);
+        if (error) throw error;
+        return next;
     } catch (e) {
-        console.warn('⚠️ Counter increment error:', e);
-        return currentCount;
+        console.warn('Counter update error:', e.message);
+        try { localStorage.setItem('emp_leon_count', String(next)); } catch {}
+        return next;
     }
 }
 
-// ---- Comprobar si ya se contó esta visita hoy ----
-function alreadyCountedToday() {
-    try {
-        const stored = localStorage.getItem(SESSION_KEY);
-        if (!stored) return false;
-        const { date } = JSON.parse(stored);
-        const today = new Date().toLocaleDateString('es-MX');
-        return date === today;
-    } catch {
-        return false;
-    }
-}
-
-// ---- Marcar visita de hoy ----
-function markVisitedToday() {
-    try {
-        const today = new Date().toLocaleDateString('es-MX');
-        localStorage.setItem(SESSION_KEY, JSON.stringify({ date: today }));
-    } catch {
-        // localStorage no disponible — ignorar
-    }
-}
-
-// ---- Actualizar el número en pantalla ----
-function updateCountDisplay(count) {
-    const el = document.getElementById('visit-count-display');
-    if (el) el.textContent = count.toLocaleString('es-MX');
-}
-
-// ---- Animación de conteo (efecto tick-up) ----
-function animateCount(from, to, duration = 1200) {
+// ---- Animación tick-up ----
+function animateCount(from, to, ms) {
+    ms = ms || 1400;
     const el = document.getElementById('visit-count-display');
     if (!el) return;
-    const start = performance.now();
-    function step(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased    = 1 - Math.pow(1 - progress, 3); // ease-out-cubic
-        const current  = Math.round(from + (to - from) * eased);
-        el.textContent = current.toLocaleString('es-MX');
-        if (progress < 1) requestAnimationFrame(step);
+    const t0 = performance.now();
+    function frame(now) {
+        const p = Math.min((now - t0) / ms, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(from + (to - from) * ease).toLocaleString('es-MX');
+        if (p < 1) requestAnimationFrame(frame);
     }
-    requestAnimationFrame(step);
+    requestAnimationFrame(frame);
 }
 
-// ---- Inicialización principal ----
+// ---- Punto de entrada ----
 async function initVisitCounter() {
-    // 1. Inyectar el widget
     injectCounterBar();
-
-    // 2. Leer total actual
-    const currentCount = await fetchCounterFromDB();
-
-    // 3. Si no se ha contado hoy → incrementar
-    let displayCount = currentCount;
+    const current = await getCount();
+    try { localStorage.setItem('emp_leon_count', String(current)); } catch {}
+    let display = current;
     if (!alreadyCountedToday()) {
-        displayCount = await incrementCounterInDB(currentCount);
+        display = await incrementCount(current);
         markVisitedToday();
     }
-
-    // 4. Animar desde un poco antes hasta el valor real
-    const animFrom = Math.max(COUNTER_BASE, displayCount - 30);
-    animateCount(animFrom, displayCount);
+    animateCount(Math.max(COUNTER_BASE, display - 25), display);
 }
 
-// ---- Arrancar cuando el DOM esté listo ----
-// Esperamos a que supabaseClient esté disponible (se inicializa en config.js)
-function waitForSupabaseAndStart() {
-    if (typeof supabaseClient !== 'undefined') {
-        initVisitCounter();
+function waitAndStart() {
+    if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+        initVisitCounter().catch(function(e) { console.warn('Counter init error:', e); });
     } else {
-        setTimeout(waitForSupabaseAndStart, 150);
+        setTimeout(waitAndStart, 200);
     }
 }
 
-window.addEventListener('DOMContentLoaded', waitForSupabaseAndStart);
-
+window.addEventListener('DOMContentLoaded', waitAndStart);
 console.log('✅ counter.js cargado');

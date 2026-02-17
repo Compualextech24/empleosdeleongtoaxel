@@ -1195,7 +1195,7 @@ header.top-header p {
 .categories-screen-bg .cat-screen-title {
     color: #6d28d9;
     text-shadow: none;
-    font-size: 1.25rem;   /* 20px — más grande que antes */
+    font-size: 1.375rem;  /* 22px — +2px más */
     font-weight: 900;
     text-align: center;
     letter-spacing: 0.2px;
@@ -1745,4 +1745,9 @@ header.top-header p {
     border-radius: 50%;
     background: rgba(167, 139, 250, 0.6);
     flex-shrink: 0;
+}
+
+/* ==================== FIX: Header title size reducido 2px ==================== */
+header.top-header .header-title-block h1 {
+    font-size: 1.375rem !important;  /* 22px en lugar de 24px */
 }

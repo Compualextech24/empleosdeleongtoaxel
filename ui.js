@@ -3,7 +3,7 @@ function renderLogin() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
-            <div class="bg-gradient-to-br from-purple-600 to-purple-800 text-center text-white" style="padding:0;">
+            <div class="text-center text-white" style="padding:0; background: linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #6d28d9 100%);">
                 <div class="login-logo-wrap">
                     <img src="https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/logosempleosleonaxel.png"
                          alt="Empleos León GTO"
@@ -11,9 +11,9 @@ function renderLogin() {
                          onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                     <div style="display:none;padding:32px 0 8px;" class="text-6xl">💼</div>
                 </div>
-                <div style="padding: 0 32px 28px;">
+                <div style="padding: 0 32px 28px; background: linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #6d28d9 100%);">
                     <h1 class="text-3xl font-black mb-2">Empleos León GTO</h1>
-                    <p class="text-purple-200 text-sm font-semibold tracking-wide">Axellabs Created</p>
+                    <p style="color:rgba(233,213,255,0.9); font-size:0.875rem; font-weight:600; letter-spacing:0.05em;">Axellabs Created</p>
                 </div>
             </div>
             <form id="login-form" class="p-8 space-y-6">
@@ -190,13 +190,13 @@ function renderCategories() {
                             <p class="text-sm">${totalVacancies} vacante${totalVacancies !== 1 ? 's' : ''} disponible${totalVacancies !== 1 ? 's' : ''}</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2">
                         ${state.isGuest ? `
-                            <span class="guest-badge"><i class="fas fa-user"></i> Invitado</span>
-                            <button id="go-login" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Sesión</button>
+                            <span class="guest-badge" style="font-size:11px;padding:5px 9px;"><i class="fas fa-user"></i> Invitado</span>
+                            <button id="go-login" class="btn btn-outline" style="padding:7px 10px;font-size:12px;"><i class="fas fa-sign-in-alt"></i> Sesión</button>
                         ` : state.user ? `
-                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i> Nueva</button>
-                            <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
+                            <button id="new-vacancy" class="btn btn-new-vacancy" style="padding:7px 11px;font-size:12px;"><i class="fas fa-plus"></i> Nueva</button>
+                            <button id="user-menu" class="btn btn-secondary" style="padding:7px 10px;font-size:12px;width:36px;height:36px;"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50" style="top:70px;right:16px;position:fixed">
                                     <div class="px-4 py-2 border-b user-session-badge">
@@ -212,7 +212,7 @@ function renderCategories() {
                                 </div>
                             ` : ''}
                         ` : `
-                            <button id="go-login" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+                            <button id="go-login" class="btn btn-outline" style="padding:7px 10px;font-size:12px;"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
                         `}
                     </div>
                 </div>
@@ -298,14 +298,14 @@ function renderDashboard() {
                             <p class="text-sm">${displayVacancies.length} vacante${displayVacancies.length !== 1 ? 's' : ''} ${state.dateFilter ? 'filtradas' : 'disponibles'}</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2">
                         ${state.isGuest ? `
-                            <span class="guest-badge"><i class="fas fa-user"></i> Invitado</span>
-                            <button id="go-login" class="btn btn-outline">Sesión</button>
+                            <span class="guest-badge" style="font-size:11px;padding:5px 9px;"><i class="fas fa-user"></i> Invitado</span>
+                            <button id="go-login" class="btn btn-outline" style="padding:7px 10px;font-size:12px;">Sesión</button>
                         ` : state.user ? `
-                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i> Nueva</button>
-                            <button id="calendar-btn" class="btn btn-calendar ${state.dateFilter ? 'btn-calendar-active' : ''}" title="${state.dateFilter ? 'Filtro activo' : 'Filtrar por fecha'}"><i class="fas fa-calendar-alt"></i>${state.dateFilter ? ' ●' : ''}</button>
-                            <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
+                            <button id="new-vacancy" class="btn btn-new-vacancy" style="padding:7px 11px;font-size:12px;"><i class="fas fa-plus"></i> Nueva</button>
+                            <button id="calendar-btn" class="btn btn-calendar ${state.dateFilter ? 'btn-calendar-active' : ''}" style="padding:7px 10px;font-size:12px;" title="${state.dateFilter ? 'Filtro activo' : 'Filtrar por fecha'}"><i class="fas fa-calendar-alt"></i>${state.dateFilter ? ' ●' : ''}</button>
+                            <button id="user-menu" class="btn btn-secondary" style="padding:7px 10px;font-size:12px;width:36px;height:36px;"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div style="position:fixed;top:70px;right:16px;z-index:9999" class="w-56 bg-white rounded-xl shadow-2xl py-2">
                                     <div class="px-4 py-2 border-b user-session-badge">
@@ -321,7 +321,7 @@ function renderDashboard() {
                                 </div>
                             ` : ''}
                         ` : `
-                            <button id="go-login" class="btn btn-outline">Iniciar Sesión</button>
+                            <button id="go-login" class="btn btn-outline" style="padding:7px 10px;font-size:12px;">Iniciar Sesión</button>
                         `}
                     </div>
                 </div>
