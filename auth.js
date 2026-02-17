@@ -98,7 +98,7 @@ async function handleDeleteAccount() {
                     <input type="text" id="delete-confirm-input" style="width:100%;padding:10px;border:2px solid #e5e7eb;border-radius:6px;font-size:14px" placeholder="ELIMINAR">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancelar</button>
+                    <button class="btn btn-cancel" onclick="this.closest('.modal-overlay').remove()">Cancelar</button>
                     <button class="btn btn-primary" style="background:#ef4444" id="confirm-delete-btn">Eliminar</button>
                 </div>
             </div>
