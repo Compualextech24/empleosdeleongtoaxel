@@ -79,6 +79,98 @@ async function handleSignup(e) {
     }
 }
 
+// ==================== RESTABLECER CONTRASEÑA ====================
+function handleForgotPassword() {
+    // Modal personalizado con input de correo
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-window">
+            <div class="modal-header modal-header-info">
+                <i class="fas fa-lock" style="color:#667eea;font-size:24px"></i>
+                <div class="header-text">
+                    <h3>Restablecer contraseña</h3>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p style="color:#4b5563;font-size:14px;margin-bottom:16px;line-height:1.6;">
+                    Ingresa el correo electrónico con el que te registraste y te enviaremos un enlace para crear una nueva contraseña.
+                </p>
+                <div style="position:relative;">
+                    <input
+                        type="email"
+                        id="reset-email-input"
+                        placeholder="tu@email.com"
+                        style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;transition:border-color 0.2s;"
+                        onfocus="this.style.borderColor='#667eea'"
+                        onblur="this.style.borderColor='#e5e7eb'"
+                    >
+                    <i class="fas fa-envelope" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:14px;pointer-events:none;"></i>
+                </div>
+                <p id="reset-error-msg" style="display:none;color:#ef4444;font-size:12px;margin-top:8px;">
+                    <i class="fas fa-exclamation-circle"></i> Por favor ingresa un correo válido.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel modal-cancel-reset">Cancelar</button>
+                <button class="btn btn-primary modal-send-reset" style="background:linear-gradient(135deg,#667eea,#764ba2);">
+                    <i class="fas fa-paper-plane"></i> Enviar enlace
+                </button>
+            </div>
+        </div>
+    `;
+    document.getElementById('modal-root').appendChild(modal);
+
+    // Foco automático al input
+    setTimeout(() => {
+        const input = document.getElementById('reset-email-input');
+        if (input) input.focus();
+    }, 100);
+
+    // Cancelar
+    modal.querySelector('.modal-cancel-reset').onclick = () => modal.remove();
+    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+
+    // Enviar
+    modal.querySelector('.modal-send-reset').onclick = async () => {
+        const emailInput = document.getElementById('reset-email-input');
+        const errorMsg   = document.getElementById('reset-error-msg');
+        const email = emailInput?.value?.trim().toLowerCase();
+
+        // Validación básica
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            if (errorMsg) errorMsg.style.display = 'block';
+            if (emailInput) emailInput.style.borderColor = '#ef4444';
+            return;
+        }
+
+        modal.remove();
+        showLoading();
+        try {
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                redirectTo: ENDPOINTS.SUPABASE_REDIRECT_URL
+            });
+            if (error) throw error;
+            hideLoading();
+            showModal(
+                'success',
+                '¡Correo enviado! 📧',
+                `Se envió un enlace para restablecer tu contraseña a:\n${email}\n\nRevisa tu bandeja de entrada y también la carpeta de Spam. El enlace expira en 1 hora.`
+            );
+        } catch (error) {
+            console.error('❌ Error reset password:', error);
+            hideLoading();
+            showModal('error', 'Error', 'No se pudo enviar el correo. Verifica que la dirección sea correcta e intenta de nuevo.');
+        }
+    };
+
+    // Permitir enviar con Enter
+    modal.querySelector('#reset-email-input')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') modal.querySelector('.modal-send-reset').click();
+    });
+}
+
 async function handleLogout() {
     if (state.isLoggingOut) {
         console.log('⏸️ Ya hay un logout en proceso');

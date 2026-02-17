@@ -7,7 +7,6 @@ function renderLogin() {
            class="back-btn-ecosystem"
            title="Volver al inicio">
             <i class="fas fa-arrow-left"></i>
-            <span> </span>
         </a>
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
             <div class="login-header-wrapper">
@@ -35,13 +34,19 @@ function renderLogin() {
                         <i class="fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}"></i>
                     </span>
                 </div>
-                <button type="submit" class="btn btn-primary w-full" ${state.loading ? 'disabled' : ''}>
-                    ${state.loading ? '<i class="fas fa-spinner fa-spin"></i> Iniciando...' : '<i class="fas fa-sign-in-alt"></i> Iniciar Sesión'}
-                </button>
+                <!-- Fila: Iniciar Sesión + Registrarse -->
+                <div class="login-btn-row">
+                    <button type="submit" class="btn btn-primary login-btn-main" ${state.loading ? 'disabled' : ''}>
+                        ${state.loading ? '<i class="fas fa-spinner fa-spin"></i> Iniciando...' : '<i class="fas fa-sign-in-alt"></i> Iniciar Sesión'}
+                    </button>
+                    <button type="button" id="go-signup" class="btn login-btn-register">
+                        <i class="fas fa-user-plus"></i> Registrarse
+                    </button>
+                </div>
                 <div class="text-center space-y-3">
-                    <div class="text-sm text-gray-600">
-                        ¿No tienes cuenta?
-                        <button type="button" id="go-signup" class="text-purple-600 hover:underline font-semibold">Regístrate</button>
+                    <div class="text-sm text-gray-500">
+                        ¿Olvidaste tu contraseña?
+                        <button type="button" id="forgot-password-btn" class="login-forgot-link">Restablecer</button>
                     </div>
                     <div class="flex items-center justify-center">
                         <button type="button" id="guest-btn" class="guest-access-link">
@@ -659,6 +664,7 @@ function attachEvents() {
             resetAuthForm();
             render();
         });
+        document.getElementById('forgot-password-btn')?.addEventListener('click', handleForgotPassword);
         document.getElementById('guest-btn')?.addEventListener('click', handleGuestAccess);
     }
 
@@ -918,5 +924,4 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
     init();
-
 }
