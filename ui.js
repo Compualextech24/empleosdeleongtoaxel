@@ -150,19 +150,23 @@ function renderTerms() {
 
 // ==================== PANTALLA DE CATEGORÍAS ====================
 function renderCategories() {
+    // "Todas" va primero con color púrpura degradado blanco
+    // Fábricas y Calzado → color naranja oscuro (no usado antes)
+    // El resto respeta los colores ya asignados, ahora aplicados al fondo completo
     const CATEGORIES = [
-        { name: 'Fábricas y Calzado',       icon: 'fa-industry',         emoji: '🏭', color: '#8b5cf6', light: 'rgba(139,92,246,0.12)' },
-        { name: 'Tiendas y Ventas',          icon: 'fa-shopping-cart',    emoji: '🛒', color: '#ec4899', light: 'rgba(236,72,153,0.12)' },
-        { name: 'Hospitales y Salud',        icon: 'fa-heartbeat',        emoji: '🏥', color: '#ef4444', light: 'rgba(239,68,68,0.12)'  },
-        { name: 'Hoteles y Restaurantes',    icon: 'fa-utensils',         emoji: '🍽️', color: '#f97316', light: 'rgba(249,115,22,0.12)' },
-        { name: 'Bodegas y Transporte',      icon: 'fa-truck',            emoji: '🚚', color: '#eab308', light: 'rgba(234,179,8,0.12)'  },
-        { name: 'Oficinas y Administración', icon: 'fa-building',         emoji: '🏢', color: '#3b82f6', light: 'rgba(59,130,246,0.12)' },
-        { name: 'Obra y Construcción',       icon: 'fa-hard-hat',         emoji: '🏗️', color: '#78716c', light: 'rgba(120,113,108,0.12)'},
-        { name: 'Escuelas y Clases',         icon: 'fa-graduation-cap',   emoji: '📚', color: '#10b981', light: 'rgba(16,185,129,0.12)' },
-        { name: 'Sistemas y Computación',    icon: 'fa-laptop-code',      emoji: '💻', color: '#06b6d4', light: 'rgba(6,182,212,0.12)'  },
-        { name: 'Leyes y Consultas',         icon: 'fa-balance-scale',    emoji: '⚖️', color: '#6366f1', light: 'rgba(99,102,241,0.12)' },
-        { name: 'Bancos y Contabilidad',     icon: 'fa-coins',            emoji: '🏦', color: '#84cc16', light: 'rgba(132,204,22,0.12)' },
-        { name: 'Mantenimiento y Limpieza',  icon: 'fa-broom',            emoji: '🧹', color: '#14b8a6', light: 'rgba(20,184,166,0.12)' },
+        { name: 'Todas',                     icon: 'fa-th-list',          color: '#7c3aed', color2: '#a78bfa', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Fábricas y Calzado',        icon: 'fa-industry',         color: '#b45309', color2: '#d97706', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Tiendas y Ventas',          icon: 'fa-shopping-cart',    color: '#be185d', color2: '#ec4899', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Hospitales y Salud',        icon: 'fa-heartbeat',        color: '#b91c1c', color2: '#ef4444', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Hoteles y Restaurantes',    icon: 'fa-utensils',         color: '#c2410c', color2: '#f97316', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Bodegas y Transporte',      icon: 'fa-truck',            color: '#a16207', color2: '#eab308', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Oficinas y Administración', icon: 'fa-building',         color: '#1d4ed8', color2: '#3b82f6', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Obra y Construcción',       icon: 'fa-hard-hat',         color: '#57534e', color2: '#78716c', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Escuelas y Clases',         icon: 'fa-graduation-cap',   color: '#065f46', color2: '#10b981', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Sistemas y Computación',    icon: 'fa-laptop-code',      color: '#0e7490', color2: '#06b6d4', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Leyes y Consultas',         icon: 'fa-balance-scale',    color: '#4338ca', color2: '#6366f1', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Bancos y Contabilidad',     icon: 'fa-coins',            color: '#3f6212', color2: '#84cc16', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Mantenimiento y Limpieza',  icon: 'fa-broom',            color: '#0f766e', color2: '#14b8a6', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
     ];
 
     const totalVacancies = state.vacancies.length;
@@ -208,7 +212,7 @@ function renderCategories() {
             </div>
         </header>
 
-        <!-- Barra de acceso rápido: visible para todos, siempre -->
+        <!-- Barra de acceso rápido -->
         <div class="quick-action-bar">
             <button id="quick-terms-btn" class="quick-btn quick-btn-red">
                 <i class="fas fa-file-alt"></i> Leer Términos
@@ -218,36 +222,34 @@ function renderCategories() {
             </button>
         </div>
 
-        <main class="max-w-5xl mx-auto px-4 py-10">
-            <div class="text-center mb-10 fade-in">
-                <h2 class="text-3xl font-black text-white mb-2">¿Qué tipo de empleo buscas?</h2>
-                <p class="text-purple-200 text-lg">Selecciona una categoría para ver las vacantes disponibles</p>
+        <main class="max-w-5xl mx-auto px-4 pt-6 pb-10">
+            <div class="text-center mb-6 fade-in">
+                <h2 class="cat-screen-title">Selecciona una opción</h2>
             </div>
 
             <div class="categories-grid fade-in">
                 ${CATEGORIES.map(cat => {
-                    const count = state.vacancies.filter(v => v.category === cat.name).length;
+                    const isAll = cat.name === 'Todas';
+                    const count = isAll ? totalVacancies : state.vacancies.filter(v => v.category === cat.name).length;
+                    const countLabel = isAll ? `${count} vacante${count !== 1 ? 's' : ''} totales` : `${count} vacante${count !== 1 ? 's' : ''}`;
                     return `
-                    <button class="category-card" data-category="${escapeHtml(cat.name)}" style="--cat-color:${cat.color};--cat-light:${cat.light}">
-                        <div class="category-icon-wrap">
+                    <button class="category-card-v2 ${isAll ? 'cat-all' : ''}"
+                        data-category="${isAll ? '' : escapeHtml(cat.name)}"
+                        data-is-all="${isAll}"
+                        style="--cat-c1:${cat.color};--cat-c2:${cat.color2}">
+                        <div class="cat-v2-icon-wrap" style="background:${cat.iconBg}">
                             <i class="fas ${cat.icon}"></i>
                         </div>
-                        <div class="category-info">
-                            <span class="category-name">${escapeHtml(cat.name)}</span>
-                            <span class="category-count">${count} vacante${count !== 1 ? 's' : ''}</span>
+                        <div class="cat-v2-info">
+                            <span class="cat-v2-name">${escapeHtml(cat.name)}</span>
+                            <span class="cat-v2-count">${countLabel}</span>
                         </div>
-                        <i class="fas fa-chevron-right category-arrow"></i>
+                        <i class="fas fa-chevron-right cat-v2-arrow"></i>
                     </button>`;
                 }).join('')}
             </div>
 
-            <div class="text-center mt-10 fade-in">
-                <button id="see-all-btn" class="btn btn-see-all">
-                    <i class="fas fa-th-list mr-2"></i> Ver todas las vacantes
-                </button>
-            </div>
-
-            <!-- Firma del creador -->
+            <!-- Firma -->
             <div class="app-footer fade-in">
                 <span>Created by <strong>Axellabstech</strong></span>
             </div>
@@ -284,7 +286,7 @@ function renderDashboard() {
                         </button>
                         <div class="text-4xl">💼</div>
                         <div>
-                            <h1 class="header-category-title">${state.selectedCategory ? escapeHtml(state.selectedCategory) : 'Todas las Vacantes'}</h1>
+                            <h1 class="text-xl font-black">${state.selectedCategory ? escapeHtml(state.selectedCategory) : 'Todas las Vacantes'}</h1>
                             <p class="text-sm">${displayVacancies.length} vacante${displayVacancies.length !== 1 ? 's' : ''} ${state.dateFilter ? 'filtradas' : 'disponibles'}</p>
                         </div>
                     </div>
@@ -377,7 +379,7 @@ function renderVacancyCard(vacancy, isOwner) {
                 : '<div class="w-full h-full flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>'}
         </div>
         <div class="p-6 card-content">
-            <h3 class="card-company truncate card-company-purple">${escapeHtml(vacancy.company)}</h3>
+            <h3 class="card-company truncate">${escapeHtml(vacancy.company)}</h3>
             <p class="job-title text-purple-600 mb-3 truncate">${escapeHtml(vacancy.job_title)}</p>
             ${vacancy.category ? `<span class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-3">${escapeHtml(vacancy.category)}</span>` : ''}
             ${hasDesc ? `<p class="card-description">${escapeHtml(vacancy.description)}</p>` : ''}
@@ -704,61 +706,17 @@ function attachEvents() {
         render();
     });
 
-    // Quick action bar (categorías)
-    document.getElementById('quick-terms-btn')?.addEventListener('click', () => {
-        state.view = 'terms';
-        render();
-    });
-    document.getElementById('quick-vacancy-btn')?.addEventListener('click', () => {
-        if (state.isGuest || !state.user) {
-            // Usuario no logueado → modal con opción de registrarse
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `
-                <div class="modal-window">
-                    <div class="modal-header modal-header-info">
-                        <i class="fas fa-info-circle" style="color:#3b82f6"></i>
-                        <div class="header-text"><h3>Publicar vacante</h3></div>
-                    </div>
-                    <div class="modal-body">
-                        Solo puedes publicar vacantes si ingresaste con correo electrónico y contraseña. ¿Deseas registrarte para poder publicar una vacante?
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-cancel-red modal-cancel-reg">Cancelar</button>
-                        <button class="btn btn-accept-green modal-confirm-reg">Aceptar</button>
-                    </div>
-                </div>`;
-            document.getElementById('modal-root').appendChild(modal);
-            modal.querySelector('.modal-cancel-reg').onclick = () => modal.remove();
-            modal.querySelector('.modal-confirm-reg').onclick = () => {
-                modal.remove();
-                state.view = 'signup';
-                resetAuthForm();
-                render();
-            };
-        } else {
-            state.view = 'form';
-            resetJobForm();
-            clearAIData();
-            render();
-        }
-    });
-
     // Categories screen
-    document.querySelectorAll('[data-category]').forEach(btn => {
+    document.querySelectorAll('[data-category], [data-is-all]').forEach(btn => {
         btn.addEventListener('click', () => {
-            state.selectedCategory = btn.dataset.category;
+            const isAll = btn.dataset.isAll === 'true';
+            state.selectedCategory = isAll ? null : btn.dataset.category;
             state.dateFilter = null;
             state.view = 'dashboard';
             render();
         });
     });
-    document.getElementById('see-all-btn')?.addEventListener('click', () => {
-        state.selectedCategory = null;
-        state.dateFilter = null;
-        state.view = 'dashboard';
-        render();
-    });
+    // see-all-btn ya no existe, Todas está como primera card
 
     // Back to categories button
     document.getElementById('back-categories')?.addEventListener('click', () => {
