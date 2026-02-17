@@ -3,7 +3,7 @@ function renderLogin() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
 
-        <!-- Botón fijo de retroceso al ecosistema -->
+        <!-- Botón FIJO de retroceso al ecosistema (no se mueve con el scroll) -->
         <a href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
            class="back-btn-fixed"
            title="Volver al inicio">
@@ -66,14 +66,16 @@ function renderSignup() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
-            <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-8 text-center text-white" style="position:relative;">
-                <!-- Botón retroceso al login -->
+            <!-- Header púrpura con flecha centrada verticalmente a la izquierda -->
+            <div class="signup-header-purple">
                 <button type="button" id="signup-back-btn" class="back-btn-inheader" title="Volver al login">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <div class="text-6xl mb-4">📝</div>
-                <h1 class="text-3xl font-black mb-2">Crear Cuenta</h1>
-                <p class="text-purple-200">Únete al portal</p>
+                <div class="signup-header-content">
+                    <div class="text-6xl mb-4">📝</div>
+                    <h1 class="text-3xl font-black mb-2">Crear Cuenta</h1>
+                    <p class="text-purple-200">Únete al portal</p>
+                </div>
             </div>
             <form id="signup-form" class="p-8 space-y-6">
                 <div class="input-group">
@@ -94,9 +96,15 @@ function renderSignup() {
                         <i class="fas ${state.showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}"></i>
                     </span>
                 </div>
-                <button type="submit" class="btn btn-primary w-full" ${state.loading ? 'disabled' : ''}>
-                    ${state.loading ? '<i class="fas fa-spinner fa-spin"></i> Creando...' : '<i class="fas fa-user-plus"></i> Crear Cuenta'}
-                </button>
+                <!-- Fila: Crear + Cancelar -->
+                <div class="login-btn-row">
+                    <button type="submit" class="btn btn-primary login-btn-main" ${state.loading ? 'disabled' : ''}>
+                        ${state.loading ? '<i class="fas fa-spinner fa-spin"></i> Creando...' : '<i class="fas fa-user-plus"></i> Crear'}
+                    </button>
+                    <button type="button" id="signup-cancel-btn" class="btn login-btn-cancel">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
                 <div class="text-center text-sm">
                     ¿Ya tienes cuenta?
                     <button type="button" id="go-login" class="text-purple-600 hover:underline font-semibold">Inicia Sesión</button>
@@ -443,13 +451,15 @@ function renderForm() {
     <div class="min-h-screen py-8">
         <div class="max-w-3xl mx-auto px-4">
             <div class="bg-white rounded-3xl shadow-2xl overflow-hidden fade-in">
-                <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-8 text-white text-center" style="position:relative;">
-                    <!-- Botón retroceso a categorías -->
+                <!-- Header púrpura con flecha centrada verticalmente -->
+                <div class="form-header-purple">
                     <button type="button" id="form-back-btn" class="back-btn-inheader" title="Volver a categorías">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-                    <h2 class="text-3xl font-black mb-2">${state.editingVacancy ? 'Editar' : 'Nueva'} Vacante</h2>
-                    <p class="text-purple-200">Completa la información</p>
+                    <div class="form-header-content">
+                        <h2 class="text-3xl font-black mb-2">${state.editingVacancy ? 'Editar' : 'Nueva'} Vacante</h2>
+                        <p class="text-purple-200">Completa la información</p>
+                    </div>
                 </div>
                 <form id="vacancy-form" class="p-8 space-y-6">
                     <div class="input-group">
@@ -674,6 +684,8 @@ function attachEvents() {
             resetAuthForm();
             render();
         });
+        // Botón Restablecer contraseña
+        document.getElementById('forgot-password-btn')?.addEventListener('click', handleForgotPassword);
         document.getElementById('guest-btn')?.addEventListener('click', handleGuestAccess);
     }
 
@@ -705,8 +717,14 @@ function attachEvents() {
             state.view = 'login';
             render();
         });
-        // Botón retroceso dentro del header púrpura de signup
+        // Flecha retroceso en header del signup → login
         document.getElementById('signup-back-btn')?.addEventListener('click', () => {
+            state.view = 'login';
+            resetAuthForm();
+            render();
+        });
+        // Botón Cancelar en signup → login
+        document.getElementById('signup-cancel-btn')?.addEventListener('click', () => {
             state.view = 'login';
             resetAuthForm();
             render();
@@ -836,7 +854,7 @@ function attachEvents() {
         document.getElementById('work_days').oninput = (e) => state.formData.work_days = e.target.value;
         document.getElementById('schedule').oninput = (e) => state.formData.schedule = e.target.value;
         document.getElementById('cancel-btn')?.addEventListener('click', cancelForm);
-        // Botón retroceso dentro del header púrpura de Nueva Vacante
+        // Flecha retroceso en header de Nueva Vacante → categorías
         document.getElementById('form-back-btn')?.addEventListener('click', () => {
             state.view = 'categories';
             state.editingVacancy = null;

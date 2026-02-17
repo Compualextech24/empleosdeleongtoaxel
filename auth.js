@@ -41,8 +41,7 @@ async function handleSignup(e) {
             options: { emailRedirectTo: ENDPOINTS.SUPABASE_REDIRECT_URL }
         });
         
-        // Detectar correo duplicado
-        // Supabase puede retornar error explícito O un usuario con identities vacías (modo "email confirmation" activo)
+        // Detectar correo duplicado — Supabase puede lanzar error explícito
         if (error) {
             if (error.message && (
                 error.message.includes('already registered') ||
@@ -57,9 +56,7 @@ async function handleSignup(e) {
             throw error;
         }
 
-        // FIX CORREO DUPLICADO: Supabase en modo "confirm email" NO lanza error cuando el correo
-        // ya existe — en cambio devuelve data.user con el arreglo "identities" vacío [].
-        // Detectamos ese caso aquí antes de mostrar éxito.
+        // FIX: Supabase en modo "confirm email" devuelve identities:[] en vez de error
         if (data?.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
             hideLoading();
             showModal('error', 'Correo ya registrado', `El correo ${state.formData.email.trim().toLowerCase()} ya tiene una cuenta registrada. Por favor inicia sesión o usa otro correo.`);
@@ -81,7 +78,6 @@ async function handleSignup(e) {
 
 // ==================== RESTABLECER CONTRASEÑA ====================
 function handleForgotPassword() {
-    // Modal personalizado con input de correo
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
@@ -120,31 +116,22 @@ function handleForgotPassword() {
         </div>
     `;
     document.getElementById('modal-root').appendChild(modal);
+    setTimeout(() => { const i = document.getElementById('reset-email-input'); if (i) i.focus(); }, 100);
 
-    // Foco automático al input
-    setTimeout(() => {
-        const input = document.getElementById('reset-email-input');
-        if (input) input.focus();
-    }, 100);
-
-    // Cancelar
     modal.querySelector('.modal-cancel-reset').onclick = () => modal.remove();
     modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
 
-    // Enviar
-    modal.querySelector('.modal-send-reset').onclick = async () => {
+    const sendBtn = modal.querySelector('.modal-send-reset');
+    sendBtn.onclick = async () => {
         const emailInput = document.getElementById('reset-email-input');
         const errorMsg   = document.getElementById('reset-error-msg');
         const email = emailInput?.value?.trim().toLowerCase();
-
-        // Validación básica
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email || !emailRegex.test(email)) {
             if (errorMsg) errorMsg.style.display = 'block';
             if (emailInput) emailInput.style.borderColor = '#ef4444';
             return;
         }
-
         modal.remove();
         showLoading();
         try {
@@ -153,21 +140,18 @@ function handleForgotPassword() {
             });
             if (error) throw error;
             hideLoading();
-            showModal(
-                'success',
-                '¡Correo enviado! 📧',
-                `Se envió un enlace para restablecer tu contraseña a:\n${email}\n\nRevisa tu bandeja de entrada y también la carpeta de Spam. El enlace expira en 1 hora.`
-            );
-        } catch (error) {
-            console.error('❌ Error reset password:', error);
+            showModal('success', '¡Correo enviado! 📧',
+                `Se envió un enlace para restablecer tu contraseña a:\n${email}\n\nRevisa tu bandeja de entrada y también la carpeta de Spam. El enlace expira en 1 hora.`);
+        } catch (err) {
+            console.error('❌ Error reset password:', err);
             hideLoading();
             showModal('error', 'Error', 'No se pudo enviar el correo. Verifica que la dirección sea correcta e intenta de nuevo.');
         }
     };
 
-    // Permitir enviar con Enter
-    modal.querySelector('#reset-email-input')?.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') modal.querySelector('.modal-send-reset').click();
+    // Enviar con Enter
+    document.getElementById('reset-email-input')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') sendBtn.click();
     });
 }
 

@@ -1,5 +1,4 @@
 /* ==================== BOTÓN RETROCESO FIJO (Login → Ecosistema) ==================== */
-/* position:fixed → no se mueve al hacer scroll */
 .back-btn-fixed {
     position: fixed;
     top: 18px;
@@ -18,22 +17,49 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    transition: background 0.25s ease, transform 0.2s ease;
     font-size: 0.9rem;
 }
 .back-btn-fixed:hover {
     background: rgba(255, 255, 255, 0.38);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 .back-btn-fixed:active { transform: scale(0.95); }
 
-/* ==================== BOTÓN RETROCESO DENTRO DE HEADER PÚRPURA ==================== */
-/* Signup → Login  |  Nueva Vacante → Categorías */
+/* ==================== HEADER PÚRPURA CON FLECHA CENTRADA VERTICALMENTE ==================== */
+/* Signup: Crear Cuenta */
+.signup-header-purple {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    padding: 32px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    position: relative;
+    min-height: 160px;
+}
+.signup-header-content {
+    flex: 1;
+    text-align: center;
+}
+
+/* Nueva Vacante / Editar Vacante */
+.form-header-purple {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    padding: 32px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    position: relative;
+    min-height: 120px;
+}
+.form-header-content {
+    flex: 1;
+    text-align: center;
+}
+
+/* Botón flecha — centrado verticalmente gracias al flexbox del padre */
 .back-btn-inheader {
-    position: absolute;
-    top: 16px;
-    left: 16px;
+    flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -49,13 +75,70 @@
     cursor: pointer;
     font-size: 0.85rem;
     transition: background 0.2s ease, transform 0.15s ease;
-    z-index: 10;
+    margin-right: 8px;
 }
 .back-btn-inheader:hover {
     background: rgba(255, 255, 255, 0.32);
     transform: translateY(-1px);
 }
 .back-btn-inheader:active { transform: scale(0.95); }
+
+/* ==================== LOGIN: FILA DE BOTONES ==================== */
+.login-btn-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+}
+.login-btn-main { flex: 1.4; }
+
+/* Botón Registrarse — blanco con borde púrpura */
+.login-btn-register {
+    flex: 1;
+    background: #ffffff;
+    color: #7c3aed;
+    border: 2px solid #7c3aed;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0 14px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    white-space: nowrap;
+}
+.login-btn-register:hover { background: #f5f0ff; transform: translateY(-1px); }
+.login-btn-register:active { transform: translateY(0); }
+
+/* Botón Cancelar — rojo */
+.login-btn-cancel {
+    flex: 1;
+    background: #ffffff;
+    color: #dc2626;
+    border: 2px solid #dc2626;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0 14px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    white-space: nowrap;
+}
+.login-btn-cancel:hover { background: #fff5f5; transform: translateY(-1px); }
+.login-btn-cancel:active { transform: translateY(0); }
+
+/* Enlace Restablecer — rojo */
+.login-forgot-link {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #dc2626;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+}
+.login-forgot-link:hover { color: #b91c1c; }
 
 /* ==================== RESET Y CONFIGURACIÓN BASE ==================== */
 * {
@@ -1884,42 +1967,3 @@ header.top-header p {
 header.top-header .header-title-block h1 {
     font-size: 1.375rem !important;  /* 22px en lugar de 24px */
 }
-/* ==================== LOGIN: FILA DE BOTONES Y ENLACE RESTABLECER ==================== */
-.login-btn-row {
-    display: flex;
-    gap: 10px;
-    align-items: stretch;
-}
-.login-btn-main { flex: 1.4; }
-.login-btn-register {
-    flex: 1;
-    background: #ffffff;
-    color: #7c3aed;
-    border: 2px solid #7c3aed;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 0 14px;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
-    white-space: nowrap;
-}
-.login-btn-register:hover {
-    background: #f5f0ff;
-    transform: translateY(-1px);
-}
-.login-btn-register:active { transform: translateY(0); }
-
-.login-forgot-link {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    color: #dc2626;
-    font-weight: 700;
-    font-size: 0.875rem;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: color 0.2s ease;
-}
-.login-forgot-link:hover { color: #b91c1c; }
