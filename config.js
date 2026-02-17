@@ -77,31 +77,37 @@ const escapeHtml = (text) => {
 };
 
 // ==================== MODAL ESTILO WINDOWS ====================
+// Tipos disponibles: success, error, warning, info, question (positivo/neutro), question-danger (destructivo → header rojo)
 const showModal = (type, title, message, onConfirm = null) => {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
-    
+
     const icons = {
-        success: 'fa-check-circle',
-        error: 'fa-exclamation-circle',
-        warning: 'fa-exclamation-triangle',
-        info: 'fa-info-circle',
-        question: 'fa-question-circle'
+        success:         'fa-check-circle',
+        error:           'fa-exclamation-circle',
+        warning:         'fa-exclamation-triangle',
+        info:            'fa-info-circle',
+        question:        'fa-question-circle',
+        'question-danger': 'fa-exclamation-triangle'
     };
-    
+
     const colors = {
-        success: '#22c55e',
-        error: '#ef4444',
-        warning: '#f59e0b',
-        info: '#3b82f6',
-        question: '#667eea'
+        success:         '#22c55e',
+        error:           '#ef4444',
+        warning:         '#f59e0b',
+        info:            '#3b82f6',
+        question:        '#22c55e',          // positivo → verde
+        'question-danger': '#ef4444'         // destructivo → rojo
     };
-    
-    const isQuestion = type === 'question';
-    
+
+    // Clase CSS del header (question-danger usa la clase de error para el fondo rojo)
+    const headerClass = type === 'question-danger' ? 'modal-header-error' : `modal-header-${type}`;
+
+    const isQuestion = type === 'question' || type === 'question-danger';
+
     modal.innerHTML = `
         <div class="modal-window">
-            <div class="modal-header modal-header-${type}">
+            <div class="modal-header ${headerClass}">
                 <i class="fas ${icons[type]}" style="color:${colors[type]}"></i>
                 <div class="header-text">
                     <h3>${escapeHtml(title)}</h3>
@@ -109,16 +115,16 @@ const showModal = (type, title, message, onConfirm = null) => {
             </div>
             <div class="modal-body">${escapeHtml(message)}</div>
             <div class="modal-footer">
-                ${isQuestion 
+                ${isQuestion
                     ? '<button class="btn btn-secondary modal-cancel">Cancelar</button><button class="btn btn-primary modal-confirm">Aceptar</button>'
                     : '<button class="btn btn-primary modal-ok">Aceptar</button>'
                 }
             </div>
         </div>
     `;
-    
+
     document.getElementById('modal-root').appendChild(modal);
-    
+
     if (isQuestion) {
         modal.querySelector('.modal-cancel').onclick = () => modal.remove();
         modal.querySelector('.modal-confirm').onclick = () => {
@@ -129,7 +135,7 @@ const showModal = (type, title, message, onConfirm = null) => {
         modal.querySelector('.modal-ok').onclick = () => modal.remove();
         setTimeout(() => modal.remove(), 8000);
     }
-    
+
     modal.onclick = (e) => {
         if (e.target === modal && !isQuestion) modal.remove();
     };

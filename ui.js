@@ -188,9 +188,9 @@ function renderCategories() {
                             <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50" style="top:70px;right:16px;position:fixed">
-                                    <div class="px-4 py-2 border-b">
-                                        <p class="text-xs text-gray-500">Sesión</p>
-                                        <p class="text-sm font-semibold truncate">${escapeHtml(state.user.email)}</p>
+                                    <div class="px-4 py-2 border-b" style="background:rgba(251,191,36,0.25);border-radius:8px 8px 0 0;">
+                                        <p class="text-xs font-bold" style="color:#92400e;">Sesión activa</p>
+                                        <p class="text-sm font-bold truncate" style="color:#1a1a1a;" title="${escapeHtml(state.user.email)}">${escapeHtml(state.user.email)}</p>
                                     </div>
                                     <button id="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
                                         <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
@@ -234,6 +234,21 @@ function renderCategories() {
             <div class="text-center mt-10 fade-in">
                 <button id="see-all-btn" class="btn btn-see-all">
                     <i class="fas fa-th-list mr-2"></i> Ver todas las vacantes
+                </button>
+            </div>
+
+            <!-- FIX #6: Aviso de precaución visible para todos (invitados y usuarios) -->
+            <div id="warning-banner" class="warning-banner fade-in">
+                <div class="warning-banner-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="warning-banner-text">
+                    <strong>⚠️ AVISO IMPORTANTE ⚠️</strong><br>
+                    Esta plataforma es solo un tablón informativo. No verificamos las vacantes.<br>
+                    <strong>¡Protégete de fraudes antes de presentarte!</strong>
+                </div>
+                <button id="read-warning-btn" class="warning-banner-btn">
+                    <i class="fas fa-file-alt mr-1"></i> Leer aviso completo
                 </button>
             </div>
         </main>
@@ -283,9 +298,9 @@ function renderDashboard() {
                             <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div style="position:fixed;top:70px;right:16px;z-index:9999" class="w-56 bg-white rounded-xl shadow-2xl py-2">
-                                    <div class="px-4 py-2 border-b">
-                                        <p class="text-xs text-gray-500">Sesión</p>
-                                        <p class="text-sm font-semibold truncate">${escapeHtml(state.user.email)}</p>
+                                    <div class="px-4 py-2 border-b" style="background:rgba(251,191,36,0.25);border-radius:8px 8px 0 0;">
+                                        <p class="text-xs font-bold" style="color:#92400e;">Sesión activa</p>
+                                        <p class="text-sm font-bold truncate" style="color:#1a1a1a;" title="${escapeHtml(state.user.email)}">${escapeHtml(state.user.email)}</p>
                                     </div>
                                     <button id="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
                                         <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
@@ -607,9 +622,16 @@ function attachEvents() {
         loginForm.onsubmit = handleLogin;
         document.getElementById('email').oninput = (e) => state.formData.email = e.target.value;
         document.getElementById('password').oninput = (e) => state.formData.password = e.target.value;
+        // FIX #7: Toggle sin re-render - manipulamos el DOM directamente
         document.getElementById('toggle-pwd')?.addEventListener('click', () => {
+            const pwdInput = document.getElementById('password');
+            const icon = document.querySelector('#toggle-pwd i');
+            if (!pwdInput) return;
             state.showPassword = !state.showPassword;
-            render();
+            pwdInput.type = state.showPassword ? 'text' : 'password';
+            if (icon) {
+                icon.className = `fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}`;
+            }
         });
         document.getElementById('go-signup')?.addEventListener('click', () => {
             state.view = 'signup';
@@ -626,13 +648,22 @@ function attachEvents() {
         document.getElementById('email').oninput = (e) => state.formData.email = e.target.value;
         document.getElementById('password').oninput = (e) => state.formData.password = e.target.value;
         document.getElementById('confirm-password').oninput = (e) => state.formData.confirmPassword = e.target.value;
+        // FIX #7: Toggle sin re-render para signup
         document.getElementById('toggle-pwd')?.addEventListener('click', () => {
+            const pwdInput = document.getElementById('password');
+            const icon = document.querySelector('#toggle-pwd i');
+            if (!pwdInput) return;
             state.showPassword = !state.showPassword;
-            render();
+            pwdInput.type = state.showPassword ? 'text' : 'password';
+            if (icon) icon.className = `fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}`;
         });
         document.getElementById('toggle-confirm-pwd')?.addEventListener('click', () => {
+            const confirmInput = document.getElementById('confirm-password');
+            const icon = document.querySelector('#toggle-confirm-pwd i');
+            if (!confirmInput) return;
             state.showConfirmPassword = !state.showConfirmPassword;
-            render();
+            confirmInput.type = state.showConfirmPassword ? 'text' : 'password';
+            if (icon) icon.className = `fas ${state.showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`;
         });
         document.getElementById('go-login')?.addEventListener('click', () => {
             state.view = 'login';
@@ -640,10 +671,13 @@ function attachEvents() {
         });
     }
 
-    // Terms
+    // Terms - FIX #7: checkbox sin re-render, solo habilita/deshabilita el botón
     document.getElementById('accept-terms')?.addEventListener('change', (e) => {
         state.acceptedTerms = e.target.checked;
-        render();
+        const acceptBtn = document.getElementById('accept-btn');
+        if (acceptBtn) {
+            acceptBtn.disabled = !state.acceptedTerms;
+        }
     });
     document.getElementById('accept-btn')?.addEventListener('click', handleAcceptTerms);
 
@@ -683,6 +717,12 @@ function attachEvents() {
         state.selectedCategory = null;
         state.dateFilter = null;
         state.view = 'dashboard';
+        render();
+    });
+
+    // FIX #6: Botón del banner de advertencia → abre la vista de términos/aviso
+    document.getElementById('read-warning-btn')?.addEventListener('click', () => {
+        state.view = 'terms';
         render();
     });
 
@@ -781,7 +821,13 @@ async function init() {
             await loadVacancies();
         }
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
-            console.log('🔐 Auth:', event);
+            console.log('🔐 Auth event:', event);
+
+            // FIX #4: Si hay un loader activo en cualquier evento, limpiarlo para no bloquear
+            if (event !== 'INITIAL_SESSION') {
+                hideLoading();
+            }
+
             if (state.isLoggingOut && event === 'SIGNED_OUT') {
                 console.log('✅ Logout completado - estado ya reseteado');
                 state.isLoggingOut = false;
@@ -791,7 +837,10 @@ async function init() {
                 console.log('⏭️ SIGNED_OUT ignorado - ya procesado');
                 return;
             }
-            if (event === 'SIGNED_IN' && session?.user) {
+
+            // FIX #3: Manejar EMAIL_CONFIRMED y USER_UPDATED (cuando el usuario
+            // confirma su correo y Supabase redirige de vuelta a la app)
+            if ((event === 'SIGNED_IN' || event === 'EMAIL_CONFIRMED' || event === 'USER_UPDATED') && session?.user) {
                 state.user = session.user;
                 state.isGuest = false;
                 const accepted = localStorage.getItem('terms_accepted_' + session.user.id);
@@ -800,7 +849,11 @@ async function init() {
                 await loadVacancies();
                 hideLoading();
                 render();
-                showModal('success', '¡Bienvenido!', 'Has iniciado sesión correctamente');
+                if (event === 'EMAIL_CONFIRMED') {
+                    showModal('success', '✅ Correo confirmado', '¡Tu cuenta fue verificada! Has iniciado sesión correctamente.');
+                } else if (event === 'SIGNED_IN') {
+                    showModal('success', '¡Bienvenido!', 'Has iniciado sesión correctamente');
+                }
             } else if (event === 'SIGNED_OUT' && state.user && !state.isLoggingOut) {
                 console.log('🔄 SIGNED_OUT inesperado detectado - reseteando estado');
                 resetCompleteState();

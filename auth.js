@@ -16,7 +16,8 @@ async function handleLogin(e) {
         console.log('✅ Login exitoso');
     } catch (error) {
         console.error('❌ Error login:', error);
-        showModal('error', 'Error de inicio de sesión', error.message || 'Verifica tus credenciales');
+        // FIX #2: Siempre mostrar mensaje en español, sin importar el error de Supabase
+        showModal('error', 'Credenciales incorrectas', 'Correo o contraseña incorrectos. Por favor valida tu información.');
         hideLoading();
     }
 }
@@ -40,14 +41,15 @@ async function handleSignup(e) {
             options: { emailRedirectTo: ENDPOINTS.SUPABASE_REDIRECT_URL }
         });
         if (error) throw error;
-        showModal('success', '¡Registro exitoso!', 'Revisa tu correo para confirmar tu cuenta');
+        // FIX #3: Modal claro explicando que se envió correo de confirmación
+        hideLoading();
+        showModal('info', '📧 Revisa tu correo', `Se envió un enlace de confirmación a:\n${state.formData.email.trim().toLowerCase()}\n\nHaz clic en ese enlace para activar tu cuenta y luego inicia sesión normalmente. Si no lo ves, revisa tu carpeta de Spam.`);
         state.view = 'login';
         resetAuthForm();
         render();
     } catch (error) {
         console.error('❌ Error signup:', error);
-        showModal('error', 'Error', error.message);
-    } finally {
+        showModal('error', 'Error de registro', error.message || 'No se pudo crear la cuenta. Intenta de nuevo.');
         hideLoading();
     }
 }
@@ -57,32 +59,35 @@ async function handleLogout() {
         console.log('⏸️ Ya hay un logout en proceso');
         return;
     }
-    showModal('question', 'Cerrar sesión', '¿Estás seguro de que deseas cerrar sesión?', async () => {
+    // FIX #1: header rojo para acción destructiva
+    // FIX #4: reset de estado ANTES de signOut para evitar spinner bloqueante
+    showModal('question-danger', 'Cerrar sesión', '¿Estás seguro de que deseas cerrar sesión?', async () => {
         console.log('🚪 Cerrando sesión...');
         state.isLoggingOut = true;
-        showLoading();
+
+        // FIX #4: Primero reseteamos el estado y renderizamos login,
+        // luego llamamos signOut en background para no quedar atascados si falla
+        resetCompleteState();
+        render();
+
         try {
             await supabaseClient.auth.signOut();
-            resetCompleteState();
             console.log('✅ Sesión cerrada exitosamente');
-            render();
         } catch (error) {
-            console.error('❌ Error logout:', error);
-            showModal('error', 'Error', 'Hubo un problema al cerrar sesión');
-            state.isLoggingOut = false;
-        } finally {
-            hideLoading();
+            console.error('❌ Error logout (no crítico, ya se reseteó el estado):', error);
+            // El estado ya fue reseteado, la UI ya muestra el login, no bloqueamos al usuario
         }
     });
 }
 
 async function handleDeleteAccount() {
-    showModal('question', 'Eliminar cuenta', '¿ELIMINAR tu cuenta y TODAS tus vacantes? Esta acción no se puede deshacer.', async () => {
+    // FIX #1: header rojo para acción destructiva
+    showModal('question-danger', 'Eliminar cuenta', '¿ELIMINAR tu cuenta y TODAS tus vacantes? Esta acción no se puede deshacer.', async () => {
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-window">
-                <div class="modal-header">
+                <div class="modal-header modal-header-error">
                     <i class="fas fa-exclamation-triangle" style="color:#ef4444"></i>
                     <div class="header-text">
                         <h3>Confirmación final</h3>

@@ -121,8 +121,9 @@ body {
 }
 
 .modal-header.modal-header-question {
-    background: rgba(102, 126, 234, 0.15);
-    border-bottom: 1px solid rgba(102, 126, 234, 0.25);
+    /* Verde traslúcido para preguntas neutras/positivas */
+    background: rgba(34, 197, 94, 0.15);
+    border-bottom: 1px solid rgba(34, 197, 94, 0.25);
 }
 
 .modal-header i {
@@ -1393,4 +1394,61 @@ header.top-header p {
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 6px;
+}
+
+/* ==================== FIX #6: BANNER DE ADVERTENCIA PARA VISITANTES ==================== */
+.warning-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(220, 38, 38, 0.15);
+    border: 2px solid rgba(220, 38, 38, 0.6);
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-top: 28px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.2);
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.warning-banner-icon {
+    font-size: 28px;
+    color: #fca5a5;
+    flex-shrink: 0;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.warning-banner-text {
+    flex: 1;
+    min-width: 200px;
+    font-size: 14px;
+    color: #fff;
+    line-height: 1.5;
+}
+
+.warning-banner-text strong {
+    color: #fca5a5;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+
+.warning-banner-btn {
+    background: rgba(220, 38, 38, 0.85);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.warning-banner-btn:hover {
+    background: rgba(185, 28, 28, 0.95);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
 }
