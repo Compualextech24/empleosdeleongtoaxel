@@ -1,3 +1,38 @@
+/* ==================== BOTÓN RETROCESO AL ECOSISTEMA ==================== */
+.back-btn-ecosystem {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    border-radius: 50px;
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+.back-btn-ecosystem:hover {
+    background: rgba(255, 255, 255, 0.38);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+.back-btn-ecosystem:active {
+    transform: translateY(0);
+}
+.back-btn-ecosystem i {
+    font-size: 0.85rem;
+}
+
 /* ==================== RESET Y CONFIGURACIÓN BASE ==================== */
 * {
     margin: 0;

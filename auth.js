@@ -42,6 +42,7 @@ async function handleSignup(e) {
         });
         
         // Detectar correo duplicado
+        // Supabase puede retornar error explícito O un usuario con identities vacías (modo "email confirmation" activo)
         if (error) {
             if (error.message && (
                 error.message.includes('already registered') ||
@@ -54,6 +55,15 @@ async function handleSignup(e) {
                 return;
             }
             throw error;
+        }
+
+        // FIX CORREO DUPLICADO: Supabase en modo "confirm email" NO lanza error cuando el correo
+        // ya existe — en cambio devuelve data.user con el arreglo "identities" vacío [].
+        // Detectamos ese caso aquí antes de mostrar éxito.
+        if (data?.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+            hideLoading();
+            showModal('error', 'Correo ya registrado', `El correo ${state.formData.email.trim().toLowerCase()} ya tiene una cuenta registrada. Por favor inicia sesión o usa otro correo.`);
+            return;
         }
         
         // FIX #3: Modal claro explicando que se envió correo de confirmación

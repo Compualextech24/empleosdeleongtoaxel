@@ -2,6 +2,13 @@
 function renderLogin() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
+        <!-- Botón de retroceso al ecosistema -->
+        <a href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
+           class="back-btn-ecosystem"
+           title="Volver al inicio">
+            <i class="fas fa-arrow-left"></i>
+            <span>Volver</span>
+        </a>
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
             <div class="login-header-wrapper">
                 <div class="login-logo-wrap">
