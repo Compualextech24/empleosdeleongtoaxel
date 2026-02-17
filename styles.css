@@ -1096,18 +1096,44 @@ header.top-header p {
 .login-logo-wrap {
     width: 100%;
     overflow: hidden;
-    border-radius: 0; /* la card ya tiene roundings */
-    max-height: 200px;
+    border-radius: 0;
+    height: 140px;          /* reducido de 200px a 140px */
+    max-height: 140px;
     position: relative;
     background: rgba(0,0,0,0.15);
 }
 
 .login-logo-img {
     width: 100%;
-    height: 200px;
+    height: 140px;
     object-fit: cover;
-    object-position: center;
+    object-position: center top; /* centra desde arriba para mostrar la cara del logo */
     display: block;
+}
+
+/* ==================== SHIMMER EN TÍTULO DEL LOGIN ==================== */
+@keyframes loginTitleShimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+.login-title-shimmer {
+    display: inline-block;
+    background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #ffffff 35%,
+        rgba(255,255,255,0.0) 45%,
+        #e8d5ff 50%,
+        rgba(255,255,255,0.0) 55%,
+        #ffffff 65%,
+        #ffffff 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: loginTitleShimmer 3s linear infinite;
 }
 
 /* ==================== BARRA ACCIÓN RÁPIDA (Leer Términos / Añadir Vacante) ==================== */
@@ -1137,11 +1163,13 @@ header.top-header p {
     backdrop-filter: blur(8px);
 }
 
-/* Manita animada en los botones de acción rápida */
-.quick-btn .hand-point {
-    display: inline-block;
-    font-size: 16px;
+/* Manita ÚNICA a la izquierda de los dos botones */
+.quick-bar-hand {
+    font-size: 22px;
+    display: flex;
+    align-items: center;
     animation: pointingHand 1s ease-in-out infinite;
+    flex-shrink: 0;
     margin-right: 2px;
 }
 
@@ -1186,7 +1214,7 @@ header.top-header p {
 .categories-screen-bg .cat-screen-title {
     color: #6d28d9;
     text-shadow: none;
-    font-size: 1.25rem;   /* 20px — más grande que antes */
+    font-size: 1.375rem;  /* 22px — +2px más */
     font-weight: 900;
     text-align: center;
     letter-spacing: 0.2px;
@@ -1262,6 +1290,11 @@ header.top-header p {
 }
 
 /* ==================== FIRMA / FOOTER ==================== */
+@keyframes footerScroll {
+    0%   { transform: translateX(60%); }
+    100% { transform: translateX(-60%); }
+}
+
 .app-footer {
     text-align: center;
     margin-top: 32px;
@@ -1271,6 +1304,13 @@ header.top-header p {
     font-weight: 400;
     letter-spacing: 0.2px;
     border-top: 1px solid rgba(0,0,0,0.06);
+    overflow: hidden;       /* esconde el texto fuera del borde */
+    white-space: nowrap;
+}
+
+.app-footer span {
+    display: inline-block;
+    animation: footerScroll 8s linear infinite;
 }
 
 .categories-screen-bg .app-footer {

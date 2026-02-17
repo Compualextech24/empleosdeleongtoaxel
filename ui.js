@@ -12,8 +12,8 @@ function renderLogin() {
                     <div style="display:none;padding:32px 0 8px;" class="text-6xl">💼</div>
                 </div>
                 <div style="padding: 0 32px 28px;">
-                    <h1 class="text-3xl font-black mb-2">Empleos León GTO</h1>
-                    <p class="text-purple-200 text-sm font-semibold tracking-wide">Axellabs Created</p>
+                    <h1 class="text-3xl font-black mb-2 login-title-shimmer">Empleos León GTO</h1>
+                    <p class="text-purple-200 text-sm font-semibold tracking-wide">Axellabs Created by Axeltech</p>
                 </div>
             </div>
             <form id="login-form" class="p-8 space-y-6">
@@ -221,11 +221,12 @@ function renderCategories() {
 
         <!-- Barra de acceso rápido -->
         <div class="quick-action-bar">
+            <span class="quick-bar-hand">👉</span>
             <button id="quick-terms-btn" class="quick-btn quick-btn-red">
-                <span class="hand-point">👉</span><i class="fas fa-file-alt"></i> Leer Términos
+                <i class="fas fa-file-alt"></i> Leer Términos
             </button>
             <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue">
-                <span class="hand-point">👉</span><i class="fas fa-plus"></i> Añadir Vacante
+                <i class="fas fa-plus"></i> Añadir Vacante
             </button>
         </div>
 
@@ -259,7 +260,7 @@ function renderCategories() {
 
             <!-- Firma -->
             <div class="app-footer fade-in">
-                <span>Created by <strong>Axellabstech</strong></span>
+                <span>Axellabs Created by <strong>Axeltech</strong></span>
             </div>
         </main>
     </div>`;
@@ -367,7 +368,7 @@ function renderDashboard() {
             </section>
             <!-- Firma -->
             <div class="app-footer fade-in">
-                <span>Created by <strong>Axellabstech</strong></span>
+                <span>Axellabs Created by <strong>Axeltech</strong></span>
             </div>
         </main>
     </div>`;
