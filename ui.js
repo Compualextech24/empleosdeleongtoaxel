@@ -109,11 +109,25 @@ function renderTerms() {
     </div>`;
 }
 
-function renderDashboard() {
-    const displayVacancies = state.filteredVacancies;
-    const userVacancies = state.user ? displayVacancies.filter(v => v.user_id === state.user.id) : [];
-    const otherVacancies = state.user ? displayVacancies.filter(v => v.user_id !== state.user.id) : displayVacancies;
-    
+// ==================== PANTALLA DE CATEGORÍAS ====================
+function renderCategories() {
+    const CATEGORIES = [
+        { name: 'Fábricas y Calzado',       icon: 'fa-industry',         emoji: '🏭', color: '#8b5cf6', light: 'rgba(139,92,246,0.12)' },
+        { name: 'Tiendas y Ventas',          icon: 'fa-shopping-cart',    emoji: '🛒', color: '#ec4899', light: 'rgba(236,72,153,0.12)' },
+        { name: 'Hospitales y Salud',        icon: 'fa-heartbeat',        emoji: '🏥', color: '#ef4444', light: 'rgba(239,68,68,0.12)'  },
+        { name: 'Hoteles y Restaurantes',    icon: 'fa-utensils',         emoji: '🍽️', color: '#f97316', light: 'rgba(249,115,22,0.12)' },
+        { name: 'Bodegas y Transporte',      icon: 'fa-truck',            emoji: '🚚', color: '#eab308', light: 'rgba(234,179,8,0.12)'  },
+        { name: 'Oficinas y Administración', icon: 'fa-building',         emoji: '🏢', color: '#3b82f6', light: 'rgba(59,130,246,0.12)' },
+        { name: 'Obra y Construcción',       icon: 'fa-hard-hat',         emoji: '🏗️', color: '#78716c', light: 'rgba(120,113,108,0.12)'},
+        { name: 'Escuelas y Clases',         icon: 'fa-graduation-cap',   emoji: '📚', color: '#10b981', light: 'rgba(16,185,129,0.12)' },
+        { name: 'Sistemas y Computación',    icon: 'fa-laptop-code',      emoji: '💻', color: '#06b6d4', light: 'rgba(6,182,212,0.12)'  },
+        { name: 'Leyes y Consultas',         icon: 'fa-balance-scale',    emoji: '⚖️', color: '#6366f1', light: 'rgba(99,102,241,0.12)' },
+        { name: 'Bancos y Contabilidad',     icon: 'fa-coins',            emoji: '🏦', color: '#84cc16', light: 'rgba(132,204,22,0.12)' },
+        { name: 'Mantenimiento y Limpieza',  icon: 'fa-broom',            emoji: '🧹', color: '#14b8a6', light: 'rgba(20,184,166,0.12)' },
+    ];
+
+    const totalVacancies = state.vacancies.length;
+
     return `
     <div class="min-h-screen">
         <header class="bg-white shadow-lg sticky top-0 z-50 top-header">
@@ -123,19 +137,113 @@ function renderDashboard() {
                         <div class="text-4xl">💼</div>
                         <div>
                             <h1 class="text-2xl font-black">Empleos León GTO</h1>
-                            <p class="text-sm">${displayVacancies.length} vacante${displayVacancies.length !== 1 ? 's' : ''} ${state.dateFilter ? 'filtrada' + (displayVacancies.length !== 1 ? 's' : '') : 'disponible' + (displayVacancies.length !== 1 ? 's' : '')}</p>
+                            <p class="text-sm">${totalVacancies} vacante${totalVacancies !== 1 ? 's' : ''} disponible${totalVacancies !== 1 ? 's' : ''}</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-3">
                         ${state.isGuest ? `
-                            <span class="guest-badge"><i class="fas fa-user"></i> Modo Invitado</span>
-                            <button id="go-login" class="btn btn-outline">Iniciar Sesión</button>
+                            <span class="guest-badge"><i class="fas fa-user"></i> Invitado</span>
+                            <button id="go-login" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Sesión</button>
                         ` : state.user ? `
                             <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i> Nueva</button>
-                            <button id="calendar-btn" class="btn btn-calendar">${state.dateFilter ? 'Filtrado' : 'Filtrar'}</button>
                             <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
-                                <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50">
+                                <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50" style="top:70px;right:16px;position:fixed">
+                                    <div class="px-4 py-2 border-b">
+                                        <p class="text-xs text-gray-500">Sesión</p>
+                                        <p class="text-sm font-semibold truncate">${escapeHtml(state.user.email)}</p>
+                                    </div>
+                                    <button id="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
+                                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                                    </button>
+                                    <button id="delete-account" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 flex items-center gap-2">
+                                        <i class="fas fa-trash"></i> Eliminar Cuenta
+                                    </button>
+                                </div>
+                            ` : ''}
+                        ` : `
+                            <button id="go-login" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+                        `}
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-5xl mx-auto px-4 py-10">
+            <div class="text-center mb-10 fade-in">
+                <h2 class="text-3xl font-black text-white mb-2">¿Qué tipo de empleo buscas?</h2>
+                <p class="text-purple-200 text-lg">Selecciona una categoría para ver las vacantes disponibles</p>
+            </div>
+
+            <div class="categories-grid fade-in">
+                ${CATEGORIES.map(cat => {
+                    const count = state.vacancies.filter(v => v.category === cat.name).length;
+                    return `
+                    <button class="category-card" data-category="${escapeHtml(cat.name)}" style="--cat-color:${cat.color};--cat-light:${cat.light}">
+                        <div class="category-icon-wrap">
+                            <i class="fas ${cat.icon}"></i>
+                        </div>
+                        <div class="category-info">
+                            <span class="category-name">${escapeHtml(cat.name)}</span>
+                            <span class="category-count">${count} vacante${count !== 1 ? 's' : ''}</span>
+                        </div>
+                        <i class="fas fa-chevron-right category-arrow"></i>
+                    </button>`;
+                }).join('')}
+            </div>
+
+            <div class="text-center mt-10 fade-in">
+                <button id="see-all-btn" class="btn btn-see-all">
+                    <i class="fas fa-th-list mr-2"></i> Ver todas las vacantes
+                </button>
+            </div>
+        </main>
+    </div>`;
+}
+
+function renderDashboard() {
+    // Filter by selected category if set
+    const baseVacancies = state.selectedCategory
+        ? state.vacancies.filter(v => v.category === state.selectedCategory)
+        : state.vacancies;
+    const displayVacancies = state.dateFilter
+        ? (() => {
+            const filterDate = state.dateFilter.toLocaleDateString('es-MX');
+            return baseVacancies.filter(v => {
+                if (!v.created_at) return false;
+                return new Date(v.created_at).toLocaleDateString('es-MX') === filterDate;
+            });
+          })()
+        : baseVacancies;
+
+    const userVacancies = state.user ? displayVacancies.filter(v => v.user_id === state.user.id) : [];
+    const otherVacancies = state.user ? displayVacancies.filter(v => v.user_id !== state.user.id) : displayVacancies;
+    
+    return `
+    <div class="min-h-screen">
+        <header class="bg-white shadow-lg sticky top-0 z-50 top-header">
+            <div class="max-w-7xl mx-auto px-4 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <button id="back-categories" class="btn-back" title="Volver a categorías">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="text-4xl">💼</div>
+                        <div>
+                            <h1 class="text-xl font-black">${state.selectedCategory ? escapeHtml(state.selectedCategory) : 'Todas las Vacantes'}</h1>
+                            <p class="text-sm">${displayVacancies.length} vacante${displayVacancies.length !== 1 ? 's' : ''} ${state.dateFilter ? 'filtradas' : 'disponibles'}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        ${state.isGuest ? `
+                            <span class="guest-badge"><i class="fas fa-user"></i> Invitado</span>
+                            <button id="go-login" class="btn btn-outline">Sesión</button>
+                        ` : state.user ? `
+                            <button id="new-vacancy" class="btn btn-new-vacancy"><i class="fas fa-plus"></i> Nueva</button>
+                            <button id="calendar-btn" class="btn btn-calendar ${state.dateFilter ? 'btn-calendar-active' : ''}" title="${state.dateFilter ? 'Filtro activo' : 'Filtrar por fecha'}"><i class="fas fa-calendar-alt"></i>${state.dateFilter ? ' ●' : ''}</button>
+                            <button id="user-menu" class="btn btn-secondary"><i class="fas fa-user"></i></button>
+                            ${state.menuOpen ? `
+                                <div style="position:fixed;top:70px;right:16px;z-index:9999" class="w-56 bg-white rounded-xl shadow-2xl py-2">
                                     <div class="px-4 py-2 border-b">
                                         <p class="text-xs text-gray-500">Sesión</p>
                                         <p class="text-sm font-semibold truncate">${escapeHtml(state.user.email)}</p>
@@ -166,29 +274,27 @@ function renderDashboard() {
             ` : ''}
             <section>
                 <h2 class="text-2xl font-black mb-6 dashboard-section-title">
-                    <i class="fas fa-search text-purple-600"></i> ${state.user ? 'Otras Vacantes' : 'Todas las Vacantes'}
+                    <i class="fas fa-search text-purple-600"></i> ${state.user ? 'Otras Vacantes' : 'Vacantes Disponibles'}
                 </h2>
-                ${state.vacancies.length === 0 ? `
+                ${baseVacancies.length === 0 ? `
                     <div class="text-center py-12">
                         <div class="text-6xl mb-4">📭</div>
-                        <h3 class="text-xl font-bold text-white">No hay vacantes disponibles</h3>
+                        <h3 class="text-xl font-bold text-white">No hay vacantes en esta categoría</h3>
                         ${state.isGuest ? `
                             <p class="text-gray-300 mt-2">Regístrate para publicar la primera vacante</p>
-                            <button id="go-signup-from-empty" class="btn btn-primary mt-4">
-                                <i class="fas fa-user-plus"></i> Crear Cuenta
-                            </button>
+                            <button id="go-signup-from-empty" class="btn btn-primary mt-4"><i class="fas fa-user-plus"></i> Crear Cuenta</button>
                         ` : ''}
                     </div>
                 ` : displayVacancies.length === 0 && state.dateFilter ? `
                     <div class="text-center py-12">
                         <div class="text-6xl mb-4">🔍</div>
-                        <h3 class="text-xl font-bold text-white">No hay vacantes para la fecha seleccionada</h3>
-                        <button onclick="clearDateFilter()" class="btn btn-secondary mt-4">Quitar Filtro</button>
+                        <h3 class="text-xl font-bold text-white">No hay vacantes para esa fecha</h3>
+                        <button onclick="clearDateFilter()" class="btn btn-cancel mt-4"><i class="fas fa-times mr-1"></i> Quitar Filtro</button>
                     </div>
                 ` : otherVacancies.length === 0 && !state.isGuest ? `
                     <div class="text-center py-12">
                         <div class="text-6xl mb-4">🎉</div>
-                        <h3 class="text-xl font-bold text-white">¡Eres el primero! Solo tú has publicado vacantes</h3>
+                        <h3 class="text-xl font-bold text-white">¡Eres el primero! Solo tú has publicado en esta categoría</h3>
                     </div>
                 ` : `
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -201,6 +307,10 @@ function renderDashboard() {
 }
 
 function renderVacancyCard(vacancy, isOwner) {
+    const reqLines = vacancy.requirements
+        ? vacancy.requirements.split('\n').map(l => l.trim()).filter(l => l.length > 0)
+        : [];
+
     return `
     <div class="vacancy-card">
         <div class="h-48 bg-gray-200 overflow-hidden">
@@ -210,13 +320,21 @@ function renderVacancyCard(vacancy, isOwner) {
             <h3 class="font-bold mb-2 truncate">${escapeHtml(vacancy.company)}</h3>
             <p class="job-title text-purple-600 mb-3 truncate">${escapeHtml(vacancy.job_title)}</p>
             ${vacancy.category ? `<span class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-3">${escapeHtml(vacancy.category)}</span>` : ''}
-            <p class="text-sm text-gray-600 mb-4 line-clamp-3 description">${escapeHtml(vacancy.description)}</p>
+            <p class="text-sm text-gray-600 mb-3 line-clamp-3 description">${escapeHtml(vacancy.description)}</p>
+            ${reqLines.length > 0 ? `
+                <div class="requirements-block mb-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2"><i class="fas fa-clipboard-list mr-1"></i>Requisitos</p>
+                    <ul class="requirements-list">
+                        ${reqLines.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : ''}
             <div class="space-y-2 mb-4 text-sm text-gray-700">
                 ${vacancy.location ? `<div><i class="fas fa-map-marker-alt text-purple-600 mr-2"></i>${escapeHtml(vacancy.location)}</div>` : ''}
                 ${vacancy.contact_phone ? `<div><i class="fas fa-phone text-purple-600 mr-2"></i>${escapeHtml(vacancy.contact_phone)}</div>` : ''}
                 ${vacancy.publication_date ? `<div><i class="fas fa-calendar text-purple-600 mr-2"></i>${escapeHtml(vacancy.publication_date)}</div>` : ''}
                 ${vacancy.work_days ? `<div><i class="fas fa-clock text-purple-600 mr-2"></i>${escapeHtml(vacancy.work_days)}</div>` : ''}
-                ${vacancy.schedule ? `<div><i class="fas fa-hours text-purple-600 mr-2"></i>${escapeHtml(vacancy.schedule)}</div>` : ''}
+                ${vacancy.schedule ? `<div><i class="fas fa-business-time text-purple-600 mr-2"></i>${escapeHtml(vacancy.schedule)}</div>` : ''}
             </div>
             ${isOwner ? `
                 <div class="flex gap-2">
@@ -264,8 +382,24 @@ function renderForm() {
                         <input type="text" id="job_title" placeholder="Ej: Desarrollador" value="${escapeHtml(state.formData.job_title)}">
                     </div>
                     <div class="input-group">
-                        <label>Descripción</label>
-                        <textarea id="description" rows="5" placeholder="Describe el puesto...">${escapeHtml(state.formData.description)}</textarea>
+                        <label>Descripción breve</label>
+                        <textarea id="description" rows="3" placeholder="Ej: Se solicita personal para limpieza y acabado de costura...">${escapeHtml(state.formData.description)}</textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Requisitos <span class="req-hint">— uno por línea, Enter para agregar</span></label>
+                        <div class="requirements-textarea-wrap">
+                            <textarea id="requirements" rows="5" class="requirements-input" placeholder="Acta de nacimiento&#10;INE&#10;CURP&#10;Carta de no antecedentes penales&#10;Comprobante de domicilio">${escapeHtml(state.formData.requirements)}</textarea>
+                            <div class="req-lines-preview" id="req-preview" aria-hidden="true">
+                                ${state.formData.requirements
+                                    ? state.formData.requirements.split('\n')
+                                        .map(l => l.trim())
+                                        .filter(l => l.length > 0)
+                                        .map(l => `<span class="req-pill">${escapeHtml(l)}</span>`)
+                                        .join('')
+                                    : '<span class="req-empty-hint">Los requisitos aparecerán aquí</span>'
+                                }
+                            </div>
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>Ubicación</label>
@@ -398,6 +532,9 @@ function render() {
         case 'terms':
             content = renderTerms();
             break;
+        case 'categories':
+            content = renderCategories();
+            break;
         case 'dashboard':
             content = renderDashboard();
             break;
@@ -484,6 +621,29 @@ function attachEvents() {
         render();
     });
 
+    // Categories screen
+    document.querySelectorAll('[data-category]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.selectedCategory = btn.dataset.category;
+            state.dateFilter = null;
+            state.view = 'dashboard';
+            render();
+        });
+    });
+    document.getElementById('see-all-btn')?.addEventListener('click', () => {
+        state.selectedCategory = null;
+        state.dateFilter = null;
+        state.view = 'dashboard';
+        render();
+    });
+
+    // Back to categories button
+    document.getElementById('back-categories')?.addEventListener('click', () => {
+        state.view = 'categories';
+        state.dateFilter = null;
+        render();
+    });
+
     // Vacancy cards
     document.querySelectorAll('[data-edit]').forEach(btn => {
         btn.addEventListener('click', () => handleEditVacancy(btn.dataset.edit));
@@ -508,6 +668,19 @@ function attachEvents() {
         document.getElementById('company').oninput = (e) => state.formData.company = e.target.value;
         document.getElementById('job_title').oninput = (e) => state.formData.job_title = e.target.value;
         document.getElementById('description').oninput = (e) => state.formData.description = e.target.value;
+        document.getElementById('requirements').oninput = (e) => {
+            state.formData.requirements = e.target.value;
+            // Update live preview
+            const preview = document.getElementById('req-preview');
+            if (preview) {
+                const lines = e.target.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                if (lines.length > 0) {
+                    preview.innerHTML = lines.map(l => `<span class="req-pill">${escapeHtml(l)}</span>`).join('');
+                } else {
+                    preview.innerHTML = '<span class="req-empty-hint">Los requisitos aparecerán aquí</span>';
+                }
+            }
+        };
         document.getElementById('location').oninput = (e) => state.formData.location = e.target.value;
         document.getElementById('category').onchange = (e) => state.formData.category = e.target.value;
         document.getElementById('contact_phone').oninput = (e) => state.formData.contact_phone = e.target.value;
@@ -555,7 +728,7 @@ async function init() {
             state.user = data.session.user;
             const accepted = localStorage.getItem('terms_accepted_' + data.session.user.id);
             state.acceptedTerms = !!accepted;
-            state.view = accepted ? 'dashboard' : 'terms';
+            state.view = accepted ? 'categories' : 'terms';
             await loadVacancies();
         }
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
@@ -574,7 +747,7 @@ async function init() {
                 state.isGuest = false;
                 const accepted = localStorage.getItem('terms_accepted_' + session.user.id);
                 state.acceptedTerms = !!accepted;
-                state.view = accepted ? 'dashboard' : 'terms';
+                state.view = accepted ? 'categories' : 'terms';
                 await loadVacancies();
                 hideLoading();
                 render();
@@ -589,7 +762,7 @@ async function init() {
             .channel(ENDPOINTS.CHANNELS.VACANCIES)
             .on('postgres_changes', { event: '*', schema: 'public', table: ENDPOINTS.TABLES.VACANCIES }, async () => {
                 await loadVacancies();
-                if (state.view === 'dashboard') render();
+                if (state.view === 'dashboard' || state.view === 'categories') render();
             })
             .subscribe();
         render();

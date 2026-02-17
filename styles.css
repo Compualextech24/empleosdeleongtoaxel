@@ -896,6 +896,274 @@ header.top-header p {
     color: white !important;
 }
 
+/* ==================== REQUISITOS TEXTAREA CON PREVIEW ==================== */
+.req-hint {
+    font-size: 11px;
+    color: #9ca3af;
+    font-weight: 400;
+    font-style: italic;
+    margin-left: 6px;
+}
+
+.requirements-textarea-wrap {
+    position: relative;
+}
+
+.requirements-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px 10px 0 0;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%);
+    transition: all 0.2s;
+    line-height: 1.7;
+    color: #374151;
+    border-bottom: 1px dashed #e9ecef;
+}
+
+.requirements-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+    border-bottom: 1px dashed #667eea;
+}
+
+.req-lines-preview {
+    background: #f8f7ff;
+    border: 2px solid #e9ecef;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 10px 14px;
+    min-height: 44px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+}
+
+.requirements-input:focus + .req-lines-preview,
+.requirements-textarea-wrap:focus-within .req-lines-preview {
+    border-color: #667eea;
+}
+
+.req-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: white;
+    border: 1.5px solid rgba(102,126,234,0.3);
+    color: #4b5563;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.req-pill::before {
+    content: '✓';
+    color: #667eea;
+    font-weight: 700;
+    font-size: 11px;
+}
+
+.req-empty-hint {
+    font-size: 12px;
+    color: #c4b5fd;
+    font-style: italic;
+    padding: 4px 6px;
+}
+
+/* ==================== PANTALLA DE CATEGORÍAS ==================== */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.category-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--cat-color, #667eea);
+    border-radius: 0 2px 2px 0;
+    transition: width 0.25s ease;
+}
+
+.category-card:hover {
+    border-color: var(--cat-color, #667eea);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    background: white;
+}
+
+.category-card:hover::before {
+    width: 6px;
+}
+
+.category-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--cat-light, rgba(102,126,234,0.12));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+}
+
+.category-icon-wrap i {
+    font-size: 20px;
+    color: var(--cat-color, #667eea);
+}
+
+.category-card:hover .category-icon-wrap {
+    background: var(--cat-color, #667eea);
+}
+
+.category-card:hover .category-icon-wrap i {
+    color: white;
+}
+
+.category-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.category-name {
+    display: block;
+    font-weight: 700;
+    font-size: 15px;
+    color: #1f2937;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.category-count {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+.category-arrow {
+    color: #d1d5db;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.category-card:hover .category-arrow {
+    color: var(--cat-color, #667eea);
+    transform: translateX(4px);
+}
+
+/* ==================== BOTÓN VER TODAS ==================== */
+.btn-see-all {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 14px;
+    padding: 14px 32px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+.btn-see-all:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* ==================== BOTÓN REGRESO ==================== */
+.btn-back {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.35);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.btn-back:hover {
+    background: rgba(255,255,255,0.35);
+    transform: translateX(-2px);
+}
+
+/* ==================== BOTÓN CALENDARIO ACTIVO ==================== */
+.btn-calendar-active {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    box-shadow: 0 4px 14px rgba(245,158,11,0.5) !important;
+    animation: pulse 2s infinite;
+}
+
+/* ==================== LISTA DE REQUISITOS EN CARDS ==================== */
+.requirements-block {
+    background: #f8f7ff;
+    border: 1px solid rgba(102,126,234,0.15);
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.requirements-list li {
+    font-size: 13px;
+    color: #374151;
+    padding: 3px 0;
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.requirements-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: 700;
+    font-size: 12px;
+}
+
 /* ==================== SCROLLBAR PERSONALIZADO ==================== */
 ::-webkit-scrollbar {
     width: 12px;

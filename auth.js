@@ -138,7 +138,7 @@ async function handleGuestAccess() {
     showLoading();
     try {
         state.isGuest = true;
-        state.view = 'dashboard';
+        state.view = 'categories';
         await loadVacancies();
         console.log('✅ Acceso invitado exitoso. Vacantes cargadas:', state.vacancies.length);
         render();
@@ -162,7 +162,7 @@ function handleAcceptTerms() {
     if (state.user) {
         localStorage.setItem('terms_accepted_' + state.user.id, 'true');
     }
-    state.view = 'dashboard';
+    state.view = 'categories';
     render();
 }
 
@@ -233,6 +233,7 @@ async function handleSaveVacancy(e) {
             company: state.formData.company?.trim() || 'SIN INFORMACIÓN',
             job_title: state.formData.job_title?.trim() || 'SIN INFORMACIÓN',
             description: state.formData.description?.trim() || 'SIN INFORMACIÓN',
+            requirements: state.formData.requirements?.trim() || null,
             location: state.formData.location?.trim() || null,
             contact_phone: state.formData.contact_phone?.trim() || null,
             publication_date: state.formData.publication_date?.trim() || null,
@@ -297,6 +298,7 @@ function handleEditVacancy(vacancyId) {
         company: vacancy.company || '',
         job_title: vacancy.job_title || '',
         description: vacancy.description || '',
+        requirements: vacancy.requirements || '',
         location: vacancy.location || '',
         contact_phone: vacancy.contact_phone || '',
         publication_date: vacancy.publication_date || '',
@@ -392,15 +394,16 @@ function startAutofill() {
         return;
     }
     const data = state.aiExtractedData;
-    if (data.company) state.formData.company = data.company;
-    if (data.job_title) state.formData.job_title = data.job_title;
-    if (data.description) state.formData.description = data.description;
-    if (data.location) state.formData.location = data.location;
-    if (data.contact_phone) state.formData.contact_phone = data.contact_phone;
-    if (data.publication_date) state.formData.publication_date = data.publication_date;
-    if (data.schedule) state.formData.schedule = data.schedule;
-    if (data.work_days) state.formData.work_days = data.work_days;
-    if (data.category) state.formData.category = data.category;
+    if (data.company)           state.formData.company           = data.company;
+    if (data.job_title)         state.formData.job_title         = data.job_title;
+    if (data.description)       state.formData.description       = data.description;
+    if (data.requirements)      state.formData.requirements      = data.requirements;
+    if (data.location)          state.formData.location          = data.location;
+    if (data.contact_phone)     state.formData.contact_phone     = data.contact_phone;
+    if (data.publication_date)  state.formData.publication_date  = data.publication_date;
+    if (data.schedule)          state.formData.schedule          = data.schedule;
+    if (data.work_days)         state.formData.work_days         = data.work_days;
+    if (data.category)          state.formData.category          = data.category;
     state.aiChatOpen = false;
     state.aiMessages = [];
     state.aiExtractedData = null;
@@ -470,6 +473,7 @@ function resetJobForm() {
     state.formData.company = '';
     state.formData.job_title = '';
     state.formData.description = '';
+    state.formData.requirements = '';
     state.formData.location = '';
     state.formData.contact_phone = '';
     state.formData.publication_date = '';
