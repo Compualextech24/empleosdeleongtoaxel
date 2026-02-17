@@ -98,7 +98,7 @@ async function handleDeleteAccount() {
                     <input type="text" id="delete-confirm-input" style="width:100%;padding:10px;border:2px solid #e5e7eb;border-radius:6px;font-size:14px" placeholder="ELIMINAR">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-cancel" onclick="this.closest('.modal-overlay').remove()">Cancelar</button>
+                    <button class="btn btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancelar</button>
                     <button class="btn btn-primary" style="background:#ef4444" id="confirm-delete-btn">Eliminar</button>
                 </div>
             </div>
@@ -196,28 +196,73 @@ async function loadVacancies() {
 async function handleImageUpload(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-        showModal('error', 'Archivo muy grande', 'Máximo 2MB');
-        e.target.value = '';
-        return;
-    }
+
+    // Validar tipo
     if (!file.type.startsWith('image/')) {
-        showModal('error', 'Tipo inválido', 'Solo imágenes');
+        showModal('error', 'Tipo inválido', 'Solo se permiten imágenes (JPG, PNG, WEBP).');
         e.target.value = '';
         return;
     }
+
+    // Límite generoso — comprimimos de todas formas
+    if (file.size > 10 * 1024 * 1024) {
+        showModal('error', 'Archivo muy grande', 'La imagen no debe superar 10MB.');
+        e.target.value = '';
+        return;
+    }
+
     try {
+        showLoading();
+        // Comprimir con Canvas: máximo 800px de ancho/alto, calidad 0.75
+        const compressedBase64 = await compressImage(file, 800, 0.75);
+        state.formData.imageBase64 = compressedBase64;
+        hideLoading();
+        render();
+    } catch (error) {
+        hideLoading();
+        console.error('❌ Error procesando imagen:', error);
+        showModal('error', 'Error', 'No se pudo procesar la imagen. Intenta con otra.');
+        e.target.value = '';
+    }
+}
+
+// ==================== COMPRESOR DE IMAGEN (Canvas) ====================
+function compressImage(file, maxSize, quality) {
+    return new Promise((resolve, reject) => {
         const reader = new FileReader();
+        reader.onerror = () => reject(new Error('Error leyendo archivo'));
         reader.onload = (ev) => {
-            state.formData.imageBase64 = ev.target.result;
-            render();
+            const img = new Image();
+            img.onerror = () => reject(new Error('Error cargando imagen'));
+            img.onload = () => {
+                try {
+                    // Calcular nuevas dimensiones manteniendo aspecto
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxSize || h > maxSize) {
+                        if (w >= h) {
+                            h = Math.round((h * maxSize) / w);
+                            w = maxSize;
+                        } else {
+                            w = Math.round((w * maxSize) / h);
+                            h = maxSize;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width  = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    const base64 = canvas.toDataURL('image/jpeg', quality);
+                    resolve(base64);
+                } catch (err) {
+                    reject(err);
+                }
+            };
+            img.src = ev.target.result;
         };
         reader.readAsDataURL(file);
-    } catch (error) {
-        console.error('❌ Error reading image:', error);
-        showModal('error', 'Error', 'No se pudo leer la imagen');
-        e.target.value = '';
-    }
+    });
 }
 
 async function handleSaveVacancy(e) {

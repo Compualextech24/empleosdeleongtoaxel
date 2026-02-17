@@ -12,8 +12,8 @@ function renderLogin() {
                     <div style="display:none;padding:32px 0 8px;" class="text-6xl">💼</div>
                 </div>
                 <div style="padding: 0 32px 28px;">
-                    <h1 class="text-3xl font-black mb-2 login-title-shimmer">Empleos León GTO</h1>
-                    <p class="text-purple-200 text-sm font-semibold tracking-wide">Axellabs Created by Axeltech</p>
+                    <h1 class="text-3xl font-black mb-2">Empleos León GTO</h1>
+                    <p class="text-purple-200 text-sm font-semibold tracking-wide">Axellabs Created</p>
                 </div>
             </div>
             <form id="login-form" class="p-8 space-y-6">
@@ -221,12 +221,11 @@ function renderCategories() {
 
         <!-- Barra de acceso rápido -->
         <div class="quick-action-bar">
-            <span class="quick-bar-hand">👉</span>
             <button id="quick-terms-btn" class="quick-btn quick-btn-red">
-                <i class="fas fa-file-alt"></i> Leer Términos
+                <span class="hand-point">👉</span><i class="fas fa-file-alt"></i> Leer Términos
             </button>
             <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue">
-                <i class="fas fa-plus"></i> Añadir Vacante
+                <span class="hand-point">👉</span><i class="fas fa-plus"></i> Añadir Vacante
             </button>
         </div>
 
@@ -260,7 +259,7 @@ function renderCategories() {
 
             <!-- Firma -->
             <div class="app-footer fade-in">
-                <span>Axellabs Created by <strong>Axeltech</strong></span>
+                <span>Created by <strong>Axellabstech</strong></span>
             </div>
         </main>
     </div>`;
@@ -368,7 +367,7 @@ function renderDashboard() {
             </section>
             <!-- Firma -->
             <div class="app-footer fade-in">
-                <span>Axellabs Created by <strong>Axeltech</strong></span>
+                <span>Created by <strong>Axellabstech</strong></span>
             </div>
         </main>
     </div>`;
@@ -728,7 +727,34 @@ function attachEvents() {
             render();
         });
     });
-    // see-all-btn ya no existe, Todas está como primera card
+
+    // Botones de acción rápida en pantalla de categorías
+    document.getElementById('quick-terms-btn')?.addEventListener('click', () => {
+        // Llevar a la vista de términos (ya existe en la app)
+        state.view = 'terms';
+        render();
+    });
+
+    document.getElementById('quick-vacancy-btn')?.addEventListener('click', () => {
+        if (state.user) {
+            // Usuario logueado → ir directo al formulario
+            state.view = 'form';
+            resetJobForm();
+            clearAIData();
+            render();
+        } else {
+            // Invitado o sin sesión → mostrar modal explicativo con opción de registro
+            showModal(
+                'question',
+                'Necesitas una cuenta',
+                'Para publicar vacantes debes iniciar sesión o crear una cuenta gratuita. ¿Deseas registrarte ahora?',
+                () => {
+                    state.view = 'signup';
+                    render();
+                }
+            );
+        }
+    });
 
     // Back to categories button
     document.getElementById('back-categories')?.addEventListener('click', () => {
