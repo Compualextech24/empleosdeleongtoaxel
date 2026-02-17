@@ -238,6 +238,7 @@ async function handleSaveVacancy(e) {
             publication_date: state.formData.publication_date?.trim() || null,
             schedule: state.formData.schedule?.trim() || null,
             work_days: state.formData.work_days?.trim() || null,
+            category: state.formData.category?.trim() || null,
             image_base64: state.formData.imageBase64
         };
         let result;
@@ -301,6 +302,7 @@ function handleEditVacancy(vacancyId) {
         publication_date: vacancy.publication_date || '',
         schedule: vacancy.schedule || '',
         work_days: vacancy.work_days || '',
+        category: vacancy.category || '',
         imageBase64: vacancy.image_base64 || '',
         email: '',
         password: '',
@@ -398,6 +400,7 @@ function startAutofill() {
     if (data.publication_date) state.formData.publication_date = data.publication_date;
     if (data.schedule) state.formData.schedule = data.schedule;
     if (data.work_days) state.formData.work_days = data.work_days;
+    if (data.category) state.formData.category = data.category;
     state.aiChatOpen = false;
     state.aiMessages = [];
     state.aiExtractedData = null;
@@ -472,5 +475,6 @@ function resetJobForm() {
     state.formData.publication_date = '';
     state.formData.schedule = '';
     state.formData.work_days = '';
+    state.formData.category = '';
     state.formData.imageBase64 = '';
 }
