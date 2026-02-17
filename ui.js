@@ -7,7 +7,7 @@ function renderLogin() {
            class="back-btn-ecosystem"
            title="Volver al inicio">
             <i class="fas fa-arrow-left"></i>
-            <span>Volver</span>
+            <span> </span>
         </a>
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
             <div class="login-header-wrapper">
@@ -918,4 +918,5 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
     init();
+
 }
