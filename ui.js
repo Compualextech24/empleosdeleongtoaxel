@@ -195,7 +195,7 @@ function renderCategories() {
                             <span class="guest-badge" style="font-size:11px;padding:5px 9px;"><i class="fas fa-user"></i> Invitado</span>
                             <button id="go-login" class="btn btn-outline" style="padding:7px 10px;font-size:12px;"><i class="fas fa-sign-in-alt"></i> Sesión</button>
                         ` : state.user ? `
-                            <button id="new-vacancy" class="btn btn-new-vacancy" style="padding:7px 11px;font-size:12px;"><i class="fas fa-plus"></i> Nueva</button>
+                            <button id="new-vacancy" class="btn btn-new-vacancy" style="padding:7px 11px;font-size:12px;"><i class="fas fa-plus"></i><span class="btn-nueva-text"> Nueva</span></button>
                             <button id="user-menu" class="btn btn-secondary" style="padding:7px 10px;font-size:12px;width:36px;height:36px;"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50" style="top:70px;right:16px;position:fixed">
@@ -226,7 +226,7 @@ function renderCategories() {
                 <i class="fas fa-file-alt"></i> Leer Términos
             </button>
             <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue">
-                <i class="fas fa-plus"></i> Añadir Vacante
+                <i class="fas fa-plus"></i> Publicar
             </button>
         </div>
 
@@ -303,7 +303,7 @@ function renderDashboard() {
                             <span class="guest-badge" style="font-size:11px;padding:5px 9px;"><i class="fas fa-user"></i> Invitado</span>
                             <button id="go-login" class="btn btn-outline" style="padding:7px 10px;font-size:12px;">Sesión</button>
                         ` : state.user ? `
-                            <button id="new-vacancy" class="btn btn-new-vacancy" style="padding:7px 11px;font-size:12px;"><i class="fas fa-plus"></i> Nueva</button>
+                            <button id="new-vacancy" class="btn btn-new-vacancy" style="padding:7px 11px;font-size:12px;"><i class="fas fa-plus"></i><span class="btn-nueva-text"> Nueva</span></button>
                             <button id="calendar-btn" class="btn btn-calendar ${state.dateFilter ? 'btn-calendar-active' : ''}" style="padding:7px 10px;font-size:12px;" title="${state.dateFilter ? 'Filtro activo' : 'Filtrar por fecha'}"><i class="fas fa-calendar-alt"></i>${state.dateFilter ? ' ●' : ''}</button>
                             <button id="user-menu" class="btn btn-secondary" style="padding:7px 10px;font-size:12px;width:36px;height:36px;"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
@@ -391,8 +391,8 @@ function renderVacancyCard(vacancy, isOwner) {
                 : '<div class="w-full h-full flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>'}
         </div>
         <div class="p-6 card-content">
-            <h3 class="card-company truncate">${escapeHtml(vacancy.company)}</h3>
-            <p class="job-title text-purple-600 mb-3 truncate">${escapeHtml(vacancy.job_title)}</p>
+            <h3 class="card-company">${escapeHtml(vacancy.company)}</h3>
+            <p class="job-title text-purple-600 mb-3">${escapeHtml(vacancy.job_title)}</p>
             ${vacancy.category ? `<span class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-3">${escapeHtml(vacancy.category)}</span>` : ''}
             ${hasDesc ? `<p class="card-description">${escapeHtml(vacancy.description)}</p>` : ''}
             ${hasReqs ? `
