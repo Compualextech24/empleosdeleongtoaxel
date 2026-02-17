@@ -101,7 +101,7 @@ const showModal = (type, title, message, onConfirm = null) => {
     
     modal.innerHTML = `
         <div class="modal-window">
-            <div class="modal-header">
+            <div class="modal-header modal-header-${type}">
                 <i class="fas ${icons[type]}" style="color:${colors[type]}"></i>
                 <div class="header-text">
                     <h3>${escapeHtml(title)}</h3>
