@@ -116,7 +116,7 @@ const showModal = (type, title, message, onConfirm = null) => {
             <div class="modal-body">${escapeHtml(message)}</div>
             <div class="modal-footer">
                 ${isQuestion
-                    ? '<button class="btn btn-secondary modal-cancel">Cancelar</button><button class="btn btn-primary modal-confirm">Aceptar</button>'
+                    ? '<button class="btn btn-cancel modal-cancel">Cancelar</button><button class="btn btn-primary modal-confirm">Aceptar</button>'
                     : '<button class="btn btn-primary modal-ok">Aceptar</button>'
                 }
             </div>
@@ -242,7 +242,7 @@ function renderCalendar() {
     calendarHTML += `
                 </div>
                 <div class="calendar-actions">
-                    <button class="btn btn-secondary" onclick="clearDateFilter()"><i class="fas fa-times"></i> Limpiar</button>
+                    <button class="btn btn-cancel" onclick="clearDateFilter()"><i class="fas fa-times"></i> Limpiar</button>
                     <button class="btn btn-primary" onclick="closeCalendar()"><i class="fas fa-check"></i> Cerrar</button>
                 </div>
             </div>

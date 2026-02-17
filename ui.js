@@ -172,13 +172,12 @@ function renderCategories() {
     const totalVacancies = state.vacancies.length;
 
     return `
-    <div class="min-h-screen">
+    <div class="categories-screen-bg">
         <header class="bg-white shadow-lg sticky top-0 z-50 top-header">
             <div class="max-w-7xl mx-auto px-4 py-4">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-3">
-                        <div class="text-4xl">💼</div>
-                        <div>
+                        <div class="header-title-block">
                             <h1 class="text-2xl font-black">Empleos León GTO</h1>
                             <p class="text-sm">${totalVacancies} vacante${totalVacancies !== 1 ? 's' : ''} disponible${totalVacancies !== 1 ? 's' : ''}</p>
                         </div>
@@ -222,8 +221,8 @@ function renderCategories() {
             </button>
         </div>
 
-        <main class="max-w-5xl mx-auto px-4 pt-6 pb-10">
-            <div class="text-center mb-6 fade-in">
+        <main class="max-w-5xl mx-auto px-4 pt-6 pb-10" style="background:#fff;">
+            <div class="text-center mb-5 fade-in">
                 <h2 class="cat-screen-title">Selecciona una opción</h2>
             </div>
 
@@ -284,8 +283,7 @@ function renderDashboard() {
                         <button id="back-categories" class="btn-back" title="Volver a categorías">
                             <i class="fas fa-chevron-left"></i>
                         </button>
-                        <div class="text-4xl">💼</div>
-                        <div>
+                        <div class="header-title-block">
                             <h1 class="text-xl font-black">${state.selectedCategory ? escapeHtml(state.selectedCategory) : 'Todas las Vacantes'}</h1>
                             <p class="text-sm">${displayVacancies.length} vacante${displayVacancies.length !== 1 ? 's' : ''} ${state.dateFilter ? 'filtradas' : 'disponibles'}</p>
                         </div>
@@ -358,6 +356,10 @@ function renderDashboard() {
                     </div>
                 `}
             </section>
+            <!-- Firma -->
+            <div class="app-footer fade-in">
+                <span>Created by <strong>Axellabstech</strong></span>
+            </div>
         </main>
     </div>`;
 }
