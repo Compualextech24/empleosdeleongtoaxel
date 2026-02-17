@@ -1116,20 +1116,18 @@ header.top-header p {
 }
 
 /* ==================== LOGO EN LOGIN ==================== */
-.login-logo-wrap {
-    width: 100%;
-    overflow: hidden;
-    border-radius: 0;
-    height: clamp(160px, 28vw, 240px);
-    position: relative;
+/* Wrapper unificado para logo + texto con mismo gradiente */
+.login-header-wrapper {
+    padding: 0;
     background: linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #6d28d9 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Destello animado sobre el logo — igual que las category cards */
-.login-logo-wrap::after {
+/* Destello animado sobre TODO el header (logo + texto) */
+.login-header-wrapper::after {
     content: '';
     position: absolute;
     top: -30%;
@@ -1152,6 +1150,18 @@ header.top-header p {
     opacity: 0;
 }
 
+.login-logo-wrap {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0;
+    height: clamp(160px, 28vw, 240px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Sin background propio - hereda del wrapper */
+}
+
 .login-logo-img {
     width: 100%;
     height: 100%;
@@ -1159,6 +1169,15 @@ header.top-header p {
     object-position: center center;
     display: block;
     padding: 12px;
+    position: relative;
+    z-index: 6;
+}
+
+/* Div del texto sin background - hereda del wrapper */
+.login-text-wrap {
+    padding: 0 32px 28px;
+    position: relative;
+    z-index: 6;
 }
 
 /* ==================== BARRA ACCIÓN RÁPIDA (Leer Términos / Añadir Vacante) ==================== */

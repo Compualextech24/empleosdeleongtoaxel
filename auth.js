@@ -40,7 +40,22 @@ async function handleSignup(e) {
             password: state.formData.password,
             options: { emailRedirectTo: ENDPOINTS.SUPABASE_REDIRECT_URL }
         });
-        if (error) throw error;
+        
+        // Detectar correo duplicado
+        if (error) {
+            if (error.message && (
+                error.message.includes('already registered') ||
+                error.message.includes('User already registered') ||
+                error.message.includes('duplicate') ||
+                error.status === 422
+            )) {
+                hideLoading();
+                showModal('error', 'Correo ya registrado', `El correo ${state.formData.email.trim().toLowerCase()} ya tiene una cuenta. Por favor inicia sesión o usa otro correo.`);
+                return;
+            }
+            throw error;
+        }
+        
         // FIX #3: Modal claro explicando que se envió correo de confirmación
         hideLoading();
         showModal('info', '📧 Revisa tu correo', `Se envió un enlace de confirmación a:\n${state.formData.email.trim().toLowerCase()}\n\nHaz clic en ese enlace para activar tu cuenta y luego inicia sesión normalmente. Si no lo ves, revisa tu carpeta de Spam.`);

@@ -3,7 +3,7 @@ function renderLogin() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
-            <div class="text-center text-white" style="padding:0; background: linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #6d28d9 100%);">
+            <div class="login-header-wrapper">
                 <div class="login-logo-wrap">
                     <img src="https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/logosempleosleonaxel.png"
                          alt="Empleos León GTO"
@@ -11,7 +11,7 @@ function renderLogin() {
                          onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                     <div style="display:none;padding:32px 0 8px;" class="text-6xl">💼</div>
                 </div>
-                <div style="padding: 0 32px 28px; background: linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #6d28d9 100%);">
+                <div class="login-text-wrap">
                     <h1 class="text-3xl font-black mb-2">Empleos León GTO</h1>
                     <p style="color:rgba(233,213,255,0.9); font-size:0.875rem; font-weight:600; letter-spacing:0.05em;">Axellabs Created</p>
                 </div>
