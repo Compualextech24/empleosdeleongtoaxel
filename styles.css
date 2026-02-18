@@ -2071,18 +2071,11 @@ header.top-header .header-title-block h1 {
     line-height: 1;
 }
 
-/* En móvil: FAB centrado abajo */
+/* Móvil: FAB abajo a la derecha normal, no centrado */
 @media (max-width: 480px) {
     .axelbot-fab {
         bottom: 20px;
-        right: 50%;
-        transform: translateX(50%);
-    }
-    .axelbot-fab:hover {
-        transform: translateX(50%) translateY(-4px) scale(1.08);
-    }
-    .axelbot-fab:active {
-        transform: translateX(50%) scale(0.93);
+        right: 16px;
     }
 }
 .axelbot-fab:hover {
@@ -2104,14 +2097,12 @@ header.top-header .header-title-block h1 {
     right: 16px;
     z-index: 8001;
     width: min(380px, calc(100vw - 28px));
-    /* Más alto que antes */
     height: min(600px, calc(100vh - 170px));
     max-height: min(600px, calc(100vh - 170px));
     display: flex;
     flex-direction: column;
     border-radius: 22px;
     overflow: hidden;
-    /* Fondo principal del chat — morado muy suave */
     background: linear-gradient(160deg, #f3f0ff 0%, #ede9fe 55%, #ddd6fe 100%);
     box-shadow:
         0 24px 64px rgba(109,40,217,0.22),
@@ -2121,16 +2112,17 @@ header.top-header .header-title-block h1 {
     transform-origin: bottom right;
 }
 
-/* En móvil: centrado horizontal, pegado al fondo con margen */
+/* Móvil: centrado horizontal, ocupa casi toda la pantalla */
 @media (max-width: 480px) {
     .axelbot-window {
-        right: 50%;
-        transform: translateX(50%);
+        right: auto;
+        left: 10px;
         bottom: 90px;
         width: calc(100vw - 20px);
-        height: calc(100vh - 130px);
-        max-height: calc(100vh - 130px);
+        height: calc(100svh - 120px);
+        max-height: calc(100svh - 120px);
         border-radius: 18px;
+        transform-origin: bottom center;
     }
 }
 @keyframes axelbotSlideIn {

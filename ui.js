@@ -793,53 +793,53 @@ async function sendAxelbotMessage() {
     axelbotLoading = true;
     renderAxelbotChat();
 
-    // Construir historial en formato que Gradio espera (sin el mensaje actual)
-    const history = axelbotMessages.slice(0, -1).map(m => ({
-        role: m.role === 'user' ? 'user' : 'assistant',
-        content: m.content
-    }));
-
-    const HF_BASE = 'https://alejandrott24-mi-gemma-servidor.hf.space';
+    // Construir mensajes con system prompt + historial + mensaje actual
+    const messages = [
+        { role: 'system', content: AXELBOT_SYSTEM_PROMPT },
+        ...axelbotMessages.slice(0, -1).map(m => ({
+            role: m.role === 'user' ? 'user' : 'assistant',
+            content: m.content
+        })),
+        { role: 'user', content: text }
+    ];
 
     let reply = null;
 
     try {
-        // Gradio ChatInterface — endpoint correcto con formato correcto
-        const res = await fetch(`${HF_BASE}/run/predict`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                fn_index: 0,   // ChatInterface siempre es fn_index 0
-                data: [
-                    text,      // mensaje actual del usuario
-                    history    // historial previo (sin el mensaje actual)
-                ]
-            }),
-            signal: AbortSignal.timeout(30000)
-        });
+        // HF Inference API — compatible con CORS desde GitHub Pages
+        const res = await fetch(
+            'https://api-inference.huggingface.co/models/Qwen/Qwen2.5-3B-Instruct/v1/chat/completions',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer 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'
+                },
+                body: JSON.stringify({
+                    model: 'Qwen/Qwen2.5-3B-Instruct',
+                    messages: messages,
+                    max_tokens: 400,
+                    temperature: 0.7,
+                    stream: false
+                }),
+                signal: AbortSignal.timeout(30000)
+            }
+        );
 
         if (res.ok) {
             const data = await res.json();
-            // Gradio devuelve { data: ["respuesta_del_bot"] }
-            reply = Array.isArray(data.data) ? data.data[0] : null;
-
-            // A veces Gradio devuelve el historial completo en lugar de solo el último texto
-            if (Array.isArray(reply)) {
-                const last = reply[reply.length - 1];
-                reply = last?.content || (Array.isArray(last) ? last[1] : null);
-            }
-
-            if (reply && typeof reply === 'string') {
+            reply = data.choices?.[0]?.message?.content?.trim() || null;
+            if (reply) {
                 reply = reply
                     .replace(/^Axelbot:\s*/i, '')
                     .replace(/^Asistente:\s*/i, '')
                     .trim();
             }
         } else {
-            console.warn('Axelbot: HF Space respondió con error', res.status);
+            console.warn('Axelbot: HF API error', res.status);
         }
     } catch (e) {
-        console.warn('Axelbot: error conectando con HF Space —', e.message);
+        console.warn('Axelbot error:', e.message);
     }
 
     if (reply) {
