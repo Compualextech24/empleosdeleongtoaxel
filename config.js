@@ -51,17 +51,25 @@ let state = {
 const showLoading = () => {
     if (document.getElementById('loader-overlay')) return;
     state.loading = true;
+    state.isRendering = false; // ← desbloquear render si estaba atascado
     const loader = document.createElement('div');
     loader.id = 'loader-overlay';
     loader.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)';
     loader.innerHTML = '<div class="loader"></div>';
     document.body.appendChild(loader);
+    // Global safety: auto-hide after 15 seconds to prevent infinite spinner
+    setTimeout(() => {
+        if (document.getElementById('loader-overlay')) {
+            console.warn('⚠️ Safety timeout: cerrando spinner automáticamente');
+            hideLoading();
+        }
+    }, 15000);
 };
 
 const hideLoading = () => {
     state.loading = false;
-    const loader = document.getElementById('loader-overlay');
-    if (loader) loader.remove();
+    // Remove ALL loader overlays (safety in case of duplicates)
+    document.querySelectorAll('#loader-overlay').forEach(el => el.remove());
 };
 
 const escapeHtml = (text) => {
@@ -267,6 +275,7 @@ function resetCompleteState() {
     state.menuOpen = false;
     state.acceptedTerms = false;
     state.loading = false;
+    state.isRendering = false; // CRITICAL: always unlock render cycle
     state.isLoggingOut = false;
     resetAuthForm();
     resetJobForm();

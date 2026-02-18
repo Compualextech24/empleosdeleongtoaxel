@@ -628,43 +628,34 @@ function renderAIChat() {
 
 // ==================== RENDER PRINCIPAL ====================
 function render() {
+    // Safety: if a previous render got stuck, auto-release after 500ms
     if (state.isRendering) {
-        console.log('⏸️ Render ya en progreso, saltando...');
+        console.log('⏸️ Render en progreso, reintentando...');
+        setTimeout(() => { state.isRendering = false; render(); }, 500);
         return;
     }
     state.isRendering = true;
-    const app = document.getElementById('app');
-    if (!app) {
+    try {
+        const app = document.getElementById('app');
+        if (!app) { state.isRendering = false; return; }
+        let content = '';
+        switch (state.view) {
+            case 'login':      content = renderLogin();      break;
+            case 'signup':     content = renderSignup();     break;
+            case 'terms':      content = renderTerms();      break;
+            case 'categories': content = renderCategories(); break;
+            case 'dashboard':  content = renderDashboard();  break;
+            case 'form':       content = renderForm();       break;
+            default:           content = renderLogin();
+        }
+        app.innerHTML = content + renderCalendar();
+        attachEvents();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch(err) {
+        console.error('❌ Error en render:', err);
+    } finally {
         state.isRendering = false;
-        return;
     }
-    let content = '';
-    switch (state.view) {
-        case 'login':
-            content = renderLogin();
-            break;
-        case 'signup':
-            content = renderSignup();
-            break;
-        case 'terms':
-            content = renderTerms();
-            break;
-        case 'categories':
-            content = renderCategories();
-            break;
-        case 'dashboard':
-            content = renderDashboard();
-            break;
-        case 'form':
-            content = renderForm();
-            break;
-        default:
-            content = renderLogin();
-    }
-    app.innerHTML = content + renderCalendar();
-    attachEvents();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    state.isRendering = false;
 }
 
 // ==================== EVENTOS ====================
@@ -951,21 +942,21 @@ async function init() {
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             console.log('🔐 Auth event:', event);
 
-            // FIX #4: Si hay un loader activo en cualquier evento, limpiarlo para no bloquear
+            // Always hide any loading spinner on auth events (except INITIAL_SESSION)
             if (event !== 'INITIAL_SESSION') {
                 hideLoading();
+                state.isRendering = false; // ← CRITICAL: unblock render lock
             }
 
-            // PASSWORD_RECOVERY: Usuario hizo click en el link del email de recovery
-            // → No loguearlo automáticamente, mostrar modal para nueva contraseña
+            // PASSWORD_RECOVERY → show new password modal
             if (event === 'PASSWORD_RECOVERY') {
-                console.log('🔑 PASSWORD_RECOVERY detectado - mostrando modal de nueva contraseña');
+                console.log('🔑 PASSWORD_RECOVERY - mostrando modal');
                 showNewPasswordModal();
                 return;
             }
 
             if (state.isLoggingOut && event === 'SIGNED_OUT') {
-                console.log('✅ Logout completado - estado ya reseteado');
+                console.log('✅ Logout completado');
                 state.isLoggingOut = false;
                 return;
             }
@@ -974,8 +965,6 @@ async function init() {
                 return;
             }
 
-            // FIX #3: Manejar EMAIL_CONFIRMED y USER_UPDATED (cuando el usuario
-            // confirma su correo y Supabase redirige de vuelta a la app)
             if ((event === 'SIGNED_IN' || event === 'EMAIL_CONFIRMED' || event === 'USER_UPDATED') && session?.user) {
                 state.user = session.user;
                 state.isGuest = false;
@@ -991,7 +980,7 @@ async function init() {
                     showModal('success', '¡Bienvenido!', 'Has iniciado sesión correctamente');
                 }
             } else if (event === 'SIGNED_OUT' && state.user && !state.isLoggingOut) {
-                console.log('🔄 SIGNED_OUT inesperado detectado - reseteando estado');
+                console.log('🔄 SIGNED_OUT inesperado - reseteando estado');
                 resetCompleteState();
                 render();
             }

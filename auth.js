@@ -14,9 +14,11 @@ async function handleLogin(e) {
         if (error) throw error;
         if (!data || !data.user) throw new Error('No se recibió información del usuario');
         console.log('✅ Login exitoso');
+        // hideLoading() will be called by onAuthStateChange → SIGNED_IN
+        // but we add a safety fallback here in case the event is delayed
+        setTimeout(() => hideLoading(), 3000);
     } catch (error) {
         console.error('❌ Error login:', error);
-        // FIX #2: Siempre mostrar mensaje en español, sin importar el error de Supabase
         showModal('error', 'Credenciales incorrectas', 'Correo o contraseña incorrectos. Por favor valida tu información.');
         hideLoading();
     }
@@ -568,8 +570,7 @@ async function handleSaveVacancy(e) {
         await loadVacancies();
 
         clearTimeout(safetyTimer);
-        hideLoading();           // ← quitar spinner ANTES de render
-        state.isRendering = false;
+        hideLoading();
         state.view = 'dashboard';
         render();
         showModal('success', '¡Éxito!', wasEditing ? 'Vacante actualizada ✅' : 'Vacante publicada ✅');
@@ -578,8 +579,9 @@ async function handleSaveVacancy(e) {
         clearTimeout(safetyTimer);
         console.error('❌ Error saving:', error);
         hideLoading();
-        state.isRendering = false;
         showModal('error', 'Error al guardar', error.message || 'No se pudo guardar la vacante. Intenta de nuevo.');
+    } finally {
+        state.loading = false;
     }
 }
 
