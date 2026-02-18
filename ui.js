@@ -943,6 +943,13 @@ async function init() {
             // FIX #3: Manejar EMAIL_CONFIRMED y USER_UPDATED (cuando el usuario
             // confirma su correo y Supabase redirige de vuelta a la app)
             if ((event === 'SIGNED_IN' || event === 'EMAIL_CONFIRMED' || event === 'USER_UPDATED') && session?.user) {
+                // FIX PASSWORD_RECOVERY: Si estamos en flujo de reset de contraseña,
+                // ignorar USER_UPDATED/SIGNED_IN para no redirigir al dashboard
+                if (state.isResettingPassword) {
+                    console.log('⏭️ USER_UPDATED/SIGNED_IN ignorado — flujo de reset de contraseña activo');
+                    state.isResettingPassword = false;
+                    return;
+                }
                 state.user = session.user;
                 state.isGuest = false;
                 const accepted = localStorage.getItem('terms_accepted_' + session.user.id);
