@@ -703,16 +703,18 @@ function renderAxelbotChat() {
                 <div class="axelbot-avatar">🤖</div>
                 <div class="axelbot-header-info">
                     <h4>Axelbot</h4>
-                    <span>Asistente de Empleos León GTO</span>
+                    <span>Asistente · Empleos León GTO</span>
                 </div>
                 <div class="axelbot-online-dot"></div>
-                <button class="axelbot-close-btn" id="axelbot-close"><i class="fas fa-times"></i></button>
+                <button class="axelbot-close-btn" id="axelbot-close" title="Cerrar">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="axelbot-messages" id="axelbot-msgs">
                 ${messagesHTML}
                 ${typingHTML}
             </div>
-            <div class="axelbot-footer">
+            <div class="axelbot-footer-wrap">
                 <textarea
                     class="axelbot-input"
                     id="axelbot-input"
@@ -721,11 +723,11 @@ function renderAxelbotChat() {
                     maxlength="500"
                     ${axelbotLoading ? 'disabled' : ''}
                 ></textarea>
-                <button class="axelbot-send-btn" id="axelbot-send" ${axelbotLoading ? 'disabled' : ''}>
+                <button class="axelbot-send-btn" id="axelbot-send" title="Enviar" ${axelbotLoading ? 'disabled' : ''}>
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
-            <div class="axelbot-disclaimer">Axelbot puede cometer errores. Verifica la información importante.</div>
+            <div class="axelbot-disclaimer">Axelbot puede cometer errores · Verifica información importante</div>
         </div>
     `;
 
@@ -786,52 +788,92 @@ async function sendAxelbotMessage() {
     const text = input?.value?.trim();
     if (!text) return;
 
-    // Añadir mensaje del usuario
     axelbotMessages.push({ role: 'user', content: text });
     if (input) { input.value = ''; input.style.height = 'auto'; }
     axelbotLoading = true;
     renderAxelbotChat();
 
-    try {
-        // Construir historial para la API (últimos 10 mensajes para no exceder contexto)
-        const recentMessages = axelbotMessages.slice(-10);
-        const apiMessages = recentMessages.map(m => ({
-            role: m.role === 'user' ? 'user' : 'assistant',
-            content: m.content
-        }));
+    // Últimos 6 intercambios para no saturar el contexto
+    const history = axelbotMessages.slice(-12).map(m => ({
+        role: m.role === 'user' ? 'user' : 'assistant',
+        content: m.content
+    }));
 
-        // Llamar al mismo edge function que usa el autofill, pasando el prompt de sistema
-        const response = await fetch(EndpointHelpers.getAIExtractUrl(), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${ENDPOINTS.SUPABASE_ANON_KEY}`
-            },
-            body: JSON.stringify({
-                mode: 'axelbot',
-                system: AXELBOT_SYSTEM_PROMPT,
-                messages: apiMessages
-            })
-        });
+    // Payload estándar — compatible con FastAPI/OpenAI-style y Gradio
+    const payload = {
+        message:  text,
+        messages: history,
+        system:   AXELBOT_SYSTEM_PROMPT,
+        prompt:   `${AXELBOT_SYSTEM_PROMPT}\n\nUsuario: ${text}\nAxelbot:`,
+        inputs:   text,
+        text:     text
+    };
 
-        if (!response.ok) throw new Error(`Error ${response.status}`);
-        const data = await response.json();
+    // Endpoints a intentar en orden — el primero que responda bien gana
+    const HF_BASE = 'https://alejandrott24-mi-gemma-servidor.hf.space';
+    const ENDPOINTS_TO_TRY = [
+        `${HF_BASE}/chat`,
+        `${HF_BASE}/generate`,
+        `${HF_BASE}/api/chat`,
+        `${HF_BASE}/api/generate`,
+        `${HF_BASE}/run/predict`,   // Gradio standard
+        `${HF_BASE}/api/predict`,
+    ];
 
-        const reply = data.message || data.reply || data.content ||
-            'Entendido. ¿En qué más te puedo ayudar con tu búsqueda de empleo?';
+    let reply = null;
 
+    for (const url of ENDPOINTS_TO_TRY) {
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                signal: AbortSignal.timeout(18000)  // 18s timeout por endpoint
+            });
+
+            if (!res.ok) continue;  // probar siguiente
+
+            const data = await res.json();
+
+            // Intentar extraer la respuesta de todos los formatos conocidos
+            reply =
+                data.response   ||   // FastAPI custom
+                data.reply       ||
+                data.message     ||
+                data.output      ||
+                data.generated_text ||
+                data.content     ||
+                (Array.isArray(data.data) && data.data[0]) ||  // Gradio
+                (data.choices?.[0]?.message?.content)       ||  // OpenAI-style
+                (data.choices?.[0]?.text)                   ||
+                null;
+
+            if (reply && typeof reply === 'string' && reply.trim().length > 0) {
+                // Limpiar posibles prefijos que el modelo repita
+                reply = reply
+                    .replace(/^Axelbot:\s*/i, '')
+                    .replace(/^Asistente:\s*/i, '')
+                    .trim();
+                break;  // encontramos respuesta válida
+            }
+            reply = null;  // respuesta vacía, probar siguiente
+        } catch (e) {
+            // timeout o error de red — probar siguiente endpoint
+            console.warn(`Axelbot: endpoint ${url} falló —`, e.message);
+        }
+    }
+
+    if (reply) {
         axelbotMessages.push({ role: 'bot', content: reply });
-
-    } catch (err) {
-        console.error('❌ Axelbot error:', err);
+    } else {
         axelbotMessages.push({
             role: 'bot',
-            content: 'Ups, tuve un problema de conexión. Por favor intenta de nuevo en un momento. 🔄'
+            content: 'En este momento no pude conectarme con mi servidor. Por favor intenta en unos segundos. 🔄'
         });
-    } finally {
-        axelbotLoading = false;
-        renderAxelbotChat();
     }
+
+    axelbotLoading = false;
+    renderAxelbotChat();
 }
 
 // Exponer para los botones del HTML
