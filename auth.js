@@ -243,17 +243,10 @@ function showNewPasswordModal() {
 
         modal.remove();
         showLoading();
-        // ⚠️ FIX: marcar que estamos en flujo de reset para que el evento
-        // USER_UPDATED de onAuthStateChange no redirija al dashboard
-        state.isResettingPassword = true;
         try {
             // Actualizar contraseña en Supabase
             const { error } = await supabaseClient.auth.updateUser({ password: pwd });
             if (error) throw error;
-
-            // Cerrar sesión explícitamente para garantizar que el usuario
-            // tenga que iniciar sesión con la nueva contraseña
-            await supabaseClient.auth.signOut();
 
             hideLoading();
             // Resetear estado y volver a login
@@ -262,7 +255,6 @@ function showNewPasswordModal() {
             showModal('success', '¡Contraseña actualizada! 🎉', 'Tu contraseña ha sido cambiada exitosamente. Ahora puedes iniciar sesión con tu nueva contraseña.');
         } catch (err) {
             hideLoading();
-            state.isResettingPassword = false;
             console.error('❌ Error actualizando contraseña:', err);
             showModal('error', 'Error', 'No se pudo actualizar la contraseña. Intenta de nuevo o contacta soporte.');
             resetCompleteState();
@@ -490,9 +482,9 @@ function compressImage(file, maxSize, quality) {
 async function handleSaveVacancy(e) {
     e.preventDefault();
     if (state.loading) return;
+    // Si el usuario no subió imagen propia, usar la predeterminada
     if (!state.formData.imageBase64) {
-        showModal('error', 'Imagen requerida', 'Debes subir al menos una imagen para publicar la vacante.');
-        return;
+        state.formData.imageBase64 = 'https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/SINFOTO.jpg';
     }
     if (!state.user?.id) {
         showModal('error', 'Sesión requerida', 'Inicia sesión para publicar');

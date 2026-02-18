@@ -472,20 +472,15 @@ function renderForm() {
                 </div>
                 <form id="vacancy-form" class="p-8 space-y-6">
                     <div class="input-group">
-                        <label>Imagen *</label>
-                        <div class="image-upload-area ${state.formData.imageBase64 ? 'has-image' : ''}">
-                            ${state.formData.imageBase64 ? `
-                                <div class="image-preview-container">
-                                    <img src="${state.formData.imageBase64}" alt="Vista previa">
-                                </div>
-                            ` : `
-                                <div class="text-gray-500">
-                                    <i class="fas fa-cloud-upload-alt text-4xl mb-2"></i>
-                                    <p>Click para subir imagen</p>
-                                    <p class="text-xs">Máx 2MB</p>
-                                </div>
-                            `}
+                        <label>Imagen</label>
+                        <div class="image-upload-area has-image" id="image-upload-area">
+                            <div class="image-preview-container">
+                                <img src="${state.formData.imageBase64 || 'https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/SINFOTO.jpg'}" alt="Vista previa">
+                            </div>
                         </div>
+                        <p id="img-upload-hint" style="text-align:center;margin-top:8px;font-size:13px;font-weight:600;color:#1d4ed8;cursor:pointer;text-decoration:underline;letter-spacing:0.01em;">
+                            <i class="fas fa-camera" style="margin-right:4px;"></i>Haz click aquí para actualizar la imagen
+                        </p>
                         <input type="file" accept="image/*" id="img" style="display:none">
                     </div>
                     <div class="input-group">
@@ -832,12 +827,16 @@ function attachEvents() {
     if (vacancyForm) {
         vacancyForm.onsubmit = handleSaveVacancy;
 
-        // Fix: clicking the image area triggers the hidden file input
+        // Clicking the image area OR the blue hint text triggers the hidden file input
         const imageArea = document.querySelector('.image-upload-area');
-        const imgInput = document.getElementById('img');
+        const imgInput  = document.getElementById('img');
+        const imgHint   = document.getElementById('img-upload-hint');
         if (imageArea && imgInput) {
             imageArea.addEventListener('click', () => imgInput.click());
             imgInput.addEventListener('change', handleImageUpload);
+        }
+        if (imgHint && imgInput) {
+            imgHint.addEventListener('click', () => imgInput.click());
         }
 
         document.getElementById('company').oninput = (e) => state.formData.company = e.target.value;
@@ -943,13 +942,6 @@ async function init() {
             // FIX #3: Manejar EMAIL_CONFIRMED y USER_UPDATED (cuando el usuario
             // confirma su correo y Supabase redirige de vuelta a la app)
             if ((event === 'SIGNED_IN' || event === 'EMAIL_CONFIRMED' || event === 'USER_UPDATED') && session?.user) {
-                // FIX PASSWORD_RECOVERY: Si estamos en flujo de reset de contraseña,
-                // ignorar USER_UPDATED/SIGNED_IN para no redirigir al dashboard
-                if (state.isResettingPassword) {
-                    console.log('⏭️ USER_UPDATED/SIGNED_IN ignorado — flujo de reset de contraseña activo');
-                    state.isResettingPassword = false;
-                    return;
-                }
                 state.user = session.user;
                 state.isGuest = false;
                 const accepted = localStorage.getItem('terms_accepted_' + session.user.id);
