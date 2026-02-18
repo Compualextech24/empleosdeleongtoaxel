@@ -211,10 +211,9 @@ function showNewPasswordModal() {
     // Cancelar → volver a login sin hacer nada
     modal.querySelector('.modal-cancel-new-pwd').onclick = () => {
         modal.remove();
-        state.isResettingPassword = false;
         resetCompleteState();
         render();
-        showModal('info', 'Cambio cancelado', 'No se actualizó tu contraseña. Vuelve a iniciar sesión.');
+        showModal('info', 'Cambio cancelado', 'No se actualizó tu contraseña. Vuelve a login.');
     };
 
     // Aceptar → actualizar contraseña
@@ -245,20 +244,17 @@ function showNewPasswordModal() {
         modal.remove();
         showLoading();
         try {
+            // Actualizar contraseña en Supabase
             const { error } = await supabaseClient.auth.updateUser({ password: pwd });
             if (error) throw error;
 
-            // Cerrar sesión para que el usuario haga login con la nueva contraseña.
-            // isResettingPassword sigue en true para bloquear el SIGNED_OUT del handler.
-            await supabaseClient.auth.signOut();
             hideLoading();
-            state.isResettingPassword = false;
+            // Resetear estado y volver a login
             resetCompleteState();
             render();
             showModal('success', '¡Contraseña actualizada! 🎉', 'Tu contraseña ha sido cambiada exitosamente. Ahora puedes iniciar sesión con tu nueva contraseña.');
         } catch (err) {
             hideLoading();
-            state.isResettingPassword = false;
             console.error('❌ Error actualizando contraseña:', err);
             showModal('error', 'Error', 'No se pudo actualizar la contraseña. Intenta de nuevo o contacta soporte.');
             resetCompleteState();
@@ -485,18 +481,20 @@ function compressImage(file, maxSize, quality) {
 
 async function handleSaveVacancy(e) {
     e.preventDefault();
+    // Bloquear doble envío
     if (state.loading) return;
+
     if (!state.user?.id) {
         showModal('error', 'Sesión requerida', 'Inicia sesión para publicar');
         return;
     }
 
-    // Si no subió imagen propia, usar la predeterminada
+    // Si no subió imagen propia usar la predeterminada
     if (!state.formData.imageBase64) {
         state.formData.imageBase64 = 'https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/SINFOTO.jpg';
     }
 
-    // Validar campos obligatorios: empresa, descripción, fecha y categoría
+    // ── Validar campos obligatorios ──
     const missingFields = [];
     if (!state.formData.company?.trim())          missingFields.push('• Nombre de la empresa');
     if (!state.formData.description?.trim())      missingFields.push('• Descripción breve');
@@ -504,35 +502,50 @@ async function handleSaveVacancy(e) {
     if (!state.formData.category?.trim())         missingFields.push('• Categoría');
 
     if (missingFields.length > 0) {
-        showModal(
-            'warning',
-            'Campos requeridos',
-            `Por favor completa los siguientes campos antes de publicar:\n${missingFields.join('\n')}`
-        );
+        showModal('warning', 'Campos requeridos',
+            `Por favor completa los siguientes campos antes de publicar:\n${missingFields.join('\n')}`);
         return;
     }
 
-    proceedSaveVacancy();
-}
+    // ── Validar formato de fecha DD/MM/AAAA ──
+    const dateVal = state.formData.publication_date.trim();
+    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (!dateRegex.test(dateVal)) {
+        showModal('warning', 'Formato de fecha incorrecto',
+            'La fecha debe tener el formato DD/MM/AAAA (ej: 25/07/2025)');
+        return;
+    }
 
-async function proceedSaveVacancy() {
-    if (state.loading) return;
+    // Marcar como cargando ANTES de la operación asíncrona para bloquear re-envíos
+    state.loading = true;
     showLoading();
+
+    // Activar timeout de seguridad: si en 20 seg no termina, forzar limpieza
+    const safetyTimer = setTimeout(() => {
+        if (state.loading) {
+            console.warn('⚠️ Timeout de seguridad activado — limpiando spinner');
+            hideLoading();
+            state.isRendering = false;
+            showModal('error', 'Tiempo agotado', 'La operación tardó demasiado. Verifica tu conexión e intenta de nuevo.');
+        }
+    }, 20000);
+
     try {
         const vacancyData = {
-            user_id: state.user.id,
-            company: state.formData.company?.trim() || 'SIN INFORMACIÓN',
-            job_title: state.formData.job_title?.trim() || 'SIN INFORMACIÓN',
-            description: state.formData.description?.trim() || 'SIN INFORMACIÓN',
-            requirements: state.formData.requirements?.trim() || null,
-            location: state.formData.location?.trim() || null,
-            contact_phone: state.formData.contact_phone?.trim() || null,
+            user_id:          state.user.id,
+            company:          state.formData.company?.trim().toUpperCase() || 'SIN INFORMACIÓN',
+            job_title:        state.formData.job_title?.trim() || 'SIN INFORMACIÓN',
+            description:      state.formData.description?.trim() || 'SIN INFORMACIÓN',
+            requirements:     state.formData.requirements?.trim() || null,
+            location:         state.formData.location?.trim() || null,
+            contact_phone:    state.formData.contact_phone?.trim() || null,
             publication_date: state.formData.publication_date?.trim() || null,
-            schedule: state.formData.schedule?.trim() || null,
-            work_days: state.formData.work_days?.trim() || null,
-            category: state.formData.category?.trim() || null,
-            image_base64: state.formData.imageBase64
+            schedule:         state.formData.schedule?.trim() || null,
+            work_days:        state.formData.work_days?.trim() || null,
+            category:         state.formData.category?.trim() || null,
+            image_base64:     state.formData.imageBase64
         };
+
         let result;
         if (state.editingVacancy) {
             result = await supabaseClient
@@ -545,20 +558,34 @@ async function proceedSaveVacancy() {
                 .insert([vacancyData]);
         }
         if (result.error) throw result.error;
+
         const wasEditing = !!state.editingVacancy;
         state.editingVacancy = null;
         resetJobForm();
         clearAIData();
+
+        // Cargar vacantes actualizado ANTES de cambiar vista para evitar race con realtime
         await loadVacancies();
+
+        clearTimeout(safetyTimer);
+        hideLoading();           // ← quitar spinner ANTES de render
+        state.isRendering = false;
         state.view = 'dashboard';
         render();
-        showModal('success', '¡Éxito!', wasEditing ? 'Vacante actualizada' : 'Vacante publicada');
+        showModal('success', '¡Éxito!', wasEditing ? 'Vacante actualizada ✅' : 'Vacante publicada ✅');
+
     } catch (error) {
+        clearTimeout(safetyTimer);
         console.error('❌ Error saving:', error);
-        showModal('error', 'Error', error.message || 'No se pudo guardar');
-    } finally {
         hideLoading();
+        state.isRendering = false;
+        showModal('error', 'Error al guardar', error.message || 'No se pudo guardar la vacante. Intenta de nuevo.');
     }
+}
+
+// Alias vacío para compatibilidad por si algo lo llama externamente
+async function proceedSaveVacancy() {
+    console.warn('proceedSaveVacancy() llamado directamente — usar handleSaveVacancy()');
 }
 
 async function handleDeleteVacancy(vacancyId) {
