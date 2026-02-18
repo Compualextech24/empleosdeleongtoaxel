@@ -471,6 +471,7 @@ function renderForm() {
                     </div>
                 </div>
                 <form id="vacancy-form" class="p-8 space-y-6">
+                    <!-- ── IMAGEN ── -->
                     <div class="input-group">
                         <label>Imagen</label>
                         <div class="image-upload-area has-image" id="image-upload-area">
@@ -483,16 +484,17 @@ function renderForm() {
                         </p>
                         <input type="file" accept="image/*" id="img" style="display:none">
                     </div>
+                    <!-- ── EMPRESA (obligatorio, mayúsculas) ── -->
                     <div class="input-group">
-                        <label>Empresa</label>
-                        <input type="text" id="company" placeholder="Ej: Calzado León" value="${escapeHtml(state.formData.company)}">
+                        <label>Empresa <span style="color:#ef4444">*</span></label>
+                        <input type="text" id="company" placeholder="EJ: CALZADO LEÓN" value="${escapeHtml(state.formData.company)}" style="text-transform:uppercase;" autocomplete="off">
                     </div>
                     <div class="input-group">
                         <label>Puesto</label>
                         <input type="text" id="job_title" placeholder="Ej: Desarrollador" value="${escapeHtml(state.formData.job_title)}">
                     </div>
                     <div class="input-group">
-                        <label>Descripción breve</label>
+                        <label>Descripción breve <span style="color:#ef4444">*</span></label>
                         <textarea id="description" rows="3" placeholder="Ej: Se solicita personal para limpieza y acabado de costura...">${escapeHtml(state.formData.description)}</textarea>
                     </div>
                     <div class="input-group">
@@ -513,10 +515,10 @@ function renderForm() {
                     </div>
                     <div class="input-group">
                         <label>Ubicación</label>
-                        <input type="text" id="location" placeholder="León, GTO" value="${escapeHtml(state.formData.location)}">
+                        <input type="text" id="location" placeholder="León, GTO" value="${escapeHtml(state.formData.location || 'León, gto')}">
                     </div>
                     <div class="input-group">
-                        <label>Categoría</label>
+                        <label>Categoría <span style="color:#ef4444">*</span></label>
                         <select id="category">
                             <option value="">-- Selecciona una categoría --</option>
                             <option value="Fábricas y Calzado"      ${state.formData.category === 'Fábricas y Calzado'      ? 'selected' : ''}>🏭 Fábricas y Calzado</option>
@@ -539,7 +541,7 @@ function renderForm() {
                             <input type="text" id="contact_phone" placeholder="477-123-4567" value="${escapeHtml(state.formData.contact_phone)}">
                         </div>
                         <div class="input-group">
-                            <label>Fecha publicación</label>
+                            <label>Fecha publicación <span style="color:#ef4444">*</span></label>
                             <textarea id="publication_date" rows="2" placeholder="15 de enero 2025">${escapeHtml(state.formData.publication_date)}</textarea>
                         </div>
                     </div>
@@ -839,7 +841,18 @@ function attachEvents() {
             imgHint.addEventListener('click', () => imgInput.click());
         }
 
-        document.getElementById('company').oninput = (e) => state.formData.company = e.target.value;
+        // Auto-inicializar ubicación si el state está vacío
+        if (!state.formData.location) {
+            state.formData.location = 'León, gto';
+            const locInput = document.getElementById('location');
+            if (locInput) locInput.value = 'León, gto';
+        }
+
+        document.getElementById('company').oninput = (e) => {
+            const upper = e.target.value.toUpperCase();
+            e.target.value = upper;          // forzar visualmente
+            state.formData.company = upper;
+        };
         document.getElementById('job_title').oninput = (e) => state.formData.job_title = e.target.value;
         document.getElementById('description').oninput = (e) => state.formData.description = e.target.value;
         document.getElementById('requirements').oninput = (e) => {
@@ -905,42 +918,71 @@ function attachEvents() {
 async function init() {
     console.log('🚀 Inicializando...');
     try {
+        // ── Detectar si la URL viene de un link de recuperación de contraseña ──
+        // Supabase redirige con hash #access_token=...&type=recovery
+        // En ese caso NO hacemos auto-login; dejamos que onAuthStateChange
+        // dispare PASSWORD_RECOVERY y muestre el modal de nueva contraseña.
+        const hashStr = window.location.hash.replace('#', '');
+        const hashParams = new URLSearchParams(hashStr);
+        const isRecoveryLink = hashParams.get('type') === 'recovery';
+        if (isRecoveryLink) {
+            console.log('🔑 URL de recuperación detectada — esperando evento PASSWORD_RECOVERY');
+            state.isResettingPassword = true;
+        }
+
         const { data } = await supabaseClient.auth.getSession();
-        if (data?.session?.user) {
+        if (data?.session?.user && !isRecoveryLink) {
+            // Login normal — no es un link de recovery
             state.user = data.session.user;
             const accepted = localStorage.getItem('terms_accepted_' + data.session.user.id);
             state.acceptedTerms = !!accepted;
             state.view = accepted ? 'categories' : 'terms';
             await loadVacancies();
         }
+
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             console.log('🔐 Auth event:', event);
 
-            // FIX #4: Si hay un loader activo en cualquier evento, limpiarlo para no bloquear
+            // Limpiar loader en cualquier evento (excepto el inicial)
             if (event !== 'INITIAL_SESSION') {
                 hideLoading();
             }
 
-            // PASSWORD_RECOVERY: Usuario hizo click en el link del email de recovery
-            // → No loguearlo automáticamente, mostrar modal para nueva contraseña
+            // ── PASSWORD_RECOVERY ──
+            // El usuario llegó desde el link del correo de recuperación.
+            // Supabase ya tiene sesión activa pero NO lo redirigimos al dashboard;
+            // mostramos el modal para que ingrese su nueva contraseña.
             if (event === 'PASSWORD_RECOVERY') {
-                console.log('🔑 PASSWORD_RECOVERY detectado - mostrando modal de nueva contraseña');
+                console.log('🔑 PASSWORD_RECOVERY — mostrando modal de nueva contraseña');
+                state.isResettingPassword = true;
+                // Necesitamos tener state.user para que updateUser() funcione
+                if (session?.user) state.user = session.user;
+                // Nos aseguramos de estar en la vista de login (fondo limpio)
+                state.view = 'login';
+                render();
                 showNewPasswordModal();
                 return;
             }
 
+            // ── SIGNED_IN / USER_UPDATED durante flujo de reset ──
+            // Supabase a veces dispara SIGNED_IN justo después de PASSWORD_RECOVERY,
+            // y USER_UPDATED cuando se llama updateUser(). Los ignoramos ambos.
+            if (state.isResettingPassword && (event === 'SIGNED_IN' || event === 'USER_UPDATED')) {
+                console.log('⏭️ Evento ignorado durante reset de contraseña:', event);
+                return;
+            }
+
             if (state.isLoggingOut && event === 'SIGNED_OUT') {
-                console.log('✅ Logout completado - estado ya reseteado');
+                console.log('✅ Logout completado');
                 state.isLoggingOut = false;
                 return;
             }
             if (event === 'SIGNED_OUT' && !state.user) {
-                console.log('⏭️ SIGNED_OUT ignorado - ya procesado');
+                console.log('⏭️ SIGNED_OUT ignorado — estado ya limpio');
                 return;
             }
 
-            // FIX #3: Manejar EMAIL_CONFIRMED y USER_UPDATED (cuando el usuario
-            // confirma su correo y Supabase redirige de vuelta a la app)
+            // ── Login normal / confirmación de correo ──
             if ((event === 'SIGNED_IN' || event === 'EMAIL_CONFIRMED' || event === 'USER_UPDATED') && session?.user) {
                 state.user = session.user;
                 state.isGuest = false;
@@ -956,7 +998,7 @@ async function init() {
                     showModal('success', '¡Bienvenido!', 'Has iniciado sesión correctamente');
                 }
             } else if (event === 'SIGNED_OUT' && state.user && !state.isLoggingOut) {
-                console.log('🔄 SIGNED_OUT inesperado detectado - reseteando estado');
+                console.log('🔄 SIGNED_OUT inesperado — reseteando estado');
                 resetCompleteState();
                 render();
             }

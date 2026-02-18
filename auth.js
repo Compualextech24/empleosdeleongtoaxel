@@ -211,9 +211,10 @@ function showNewPasswordModal() {
     // Cancelar → volver a login sin hacer nada
     modal.querySelector('.modal-cancel-new-pwd').onclick = () => {
         modal.remove();
+        state.isResettingPassword = false;
         resetCompleteState();
         render();
-        showModal('info', 'Cambio cancelado', 'No se actualizó tu contraseña. Vuelve a login.');
+        showModal('info', 'Cambio cancelado', 'No se actualizó tu contraseña. Vuelve a iniciar sesión.');
     };
 
     // Aceptar → actualizar contraseña
@@ -244,17 +245,20 @@ function showNewPasswordModal() {
         modal.remove();
         showLoading();
         try {
-            // Actualizar contraseña en Supabase
             const { error } = await supabaseClient.auth.updateUser({ password: pwd });
             if (error) throw error;
 
+            // Cerrar sesión para que el usuario haga login con la nueva contraseña.
+            // isResettingPassword sigue en true para bloquear el SIGNED_OUT del handler.
+            await supabaseClient.auth.signOut();
             hideLoading();
-            // Resetear estado y volver a login
+            state.isResettingPassword = false;
             resetCompleteState();
             render();
             showModal('success', '¡Contraseña actualizada! 🎉', 'Tu contraseña ha sido cambiada exitosamente. Ahora puedes iniciar sesión con tu nueva contraseña.');
         } catch (err) {
             hideLoading();
+            state.isResettingPassword = false;
             console.error('❌ Error actualizando contraseña:', err);
             showModal('error', 'Error', 'No se pudo actualizar la contraseña. Intenta de nuevo o contacta soporte.');
             resetCompleteState();
@@ -482,48 +486,28 @@ function compressImage(file, maxSize, quality) {
 async function handleSaveVacancy(e) {
     e.preventDefault();
     if (state.loading) return;
-    // Si el usuario no subió imagen propia, usar la predeterminada
-    if (!state.formData.imageBase64) {
-        state.formData.imageBase64 = 'https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/SINFOTO.jpg';
-    }
     if (!state.user?.id) {
         showModal('error', 'Sesión requerida', 'Inicia sesión para publicar');
         return;
     }
 
-    // Verificar si hay otros datos además de la imagen
-    const hasOtherData = (
-        state.formData.company?.trim() ||
-        state.formData.job_title?.trim() ||
-        state.formData.description?.trim() ||
-        state.formData.requirements?.trim() ||
-        state.formData.location?.trim() ||
-        state.formData.contact_phone?.trim() ||
-        state.formData.publication_date?.trim() ||
-        state.formData.schedule?.trim() ||
-        state.formData.work_days?.trim() ||
-        state.formData.category?.trim()
-    );
-
-    if (!hasOtherData) {
-        // Solo hay imagen — NO permitir publicar, exigir datos mínimos
-        showModal(
-            'warning',
-            'Datos incompletos',
-            'No es posible publicar una vacante solo con imagen. Por favor agrega al menos el nombre de la empresa y una descripción para poder publicarla.'
-        );
-        return;
+    // Si no subió imagen propia, usar la predeterminada
+    if (!state.formData.imageBase64) {
+        state.formData.imageBase64 = 'https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/SINFOTO.jpg';
     }
 
-    // Validar campos mínimos obligatorios: empresa + descripción
-    const hasCompany     = state.formData.company?.trim();
-    const hasDescription = state.formData.description?.trim();
+    // Validar campos obligatorios: empresa, descripción, fecha y categoría
+    const missingFields = [];
+    if (!state.formData.company?.trim())          missingFields.push('• Nombre de la empresa');
+    if (!state.formData.description?.trim())      missingFields.push('• Descripción breve');
+    if (!state.formData.publication_date?.trim()) missingFields.push('• Fecha de publicación');
+    if (!state.formData.category?.trim())         missingFields.push('• Categoría');
 
-    if (!hasCompany || !hasDescription) {
+    if (missingFields.length > 0) {
         showModal(
             'warning',
             'Campos requeridos',
-            `Por favor completa los siguientes campos antes de publicar:\n${!hasCompany ? '• Nombre de la empresa\n' : ''}${!hasDescription ? '• Descripción de la vacante' : ''}`
+            `Por favor completa los siguientes campos antes de publicar:\n${missingFields.join('\n')}`
         );
         return;
     }
