@@ -59,7 +59,9 @@ function renderLogin() {
                 </div>
             </form>
         </div>
-    </div>`;
+    </div>
+    <!-- Axelbot FAB — disponible también en login -->
+    <button class="axelbot-fab pulse" id="axelbot-fab" title="Hablar con Axelbot">🤖</button>`;
 }
 
 function renderSignup() {
@@ -246,14 +248,17 @@ function renderCategories() {
             </div>
         </header>
 
-        <!-- Barra de acceso rápido — una sola manita fuera de los botones -->
+        <!-- Barra de acceso rápido — manita + 3 botones -->
         <div class="quick-action-bar">
             <span class="quick-action-hand">👉</span>
             <button id="quick-terms-btn" class="quick-btn quick-btn-red">
-                <i class="fas fa-file-alt"></i> Leer Términos
+                <i class="fas fa-file-alt"></i> Términos
             </button>
             <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue">
                 <i class="fas fa-plus"></i> Publicar
+            </button>
+            <button id="quick-axelbot-btn" class="quick-btn quick-btn-purple">
+                🤖 Axelbot
             </button>
         </div>
 
@@ -627,6 +632,212 @@ function renderAIChat() {
     </div>`;
 }
 
+// ==================== AXELBOT — CHAT FLOTANTE ====================
+// El chat vive fuera del #app para no ser destruido en cada render()
+// Se monta una sola vez en el DOM y persiste entre vistas
+
+const AXELBOT_SYSTEM_PROMPT = `Eres Axelbot, el asistente virtual oficial de "Empleos León GTO", 
+un portal comunitario de vacantes en León, Guanajuato, México. Tu misión es ayudar tanto a 
+buscadores de empleo como a empresas que quieran publicar vacantes.
+
+PERSONALIDAD:
+- Amigable, cercano y profesional. Hablas en español mexicano natural.
+- Eres entusiasta y motivador, especialmente con personas que buscan empleo.
+- Eres conciso: evitas respuestas largas innecesarias.
+- Usas emojis con moderación (máximo 2 por respuesta).
+
+CONOCIMIENTO DEL PORTAL:
+- El portal muestra vacantes por categorías: Fábricas y Calzado, Tiendas y Ventas, Hospitales y Salud, 
+  Hoteles y Restaurantes, Bodegas y Transporte, Oficinas y Administración, Obra y Construcción, 
+  Escuelas y Clases, Sistemas y Computación, Leyes y Consultas, Bancos y Contabilidad, 
+  Mantenimiento y Limpieza, Otros.
+- Para ver vacantes no se requiere cuenta. Para publicar sí.
+- El registro es gratuito. Se requiere correo electrónico.
+- Cada vacante puede incluir: empresa, puesto, descripción, requisitos, ubicación, teléfono, horario, días y categoría.
+- Los interesados contactan directamente por WhatsApp al número de la vacante.
+
+LÍMITES:
+- No tienes acceso en tiempo real a las vacantes actuales.
+- No puedes crear ni eliminar vacantes, eso lo hace el usuario registrado.
+- Si alguien pregunta algo fuera del tema de empleo, redirígelos amablemente.
+- No compartas información personal ni inventes datos de vacantes.`;
+
+let axelbotMessages = []; // historial del chat
+let axelbotOpen = false;
+let axelbotLoading = false;
+
+function mountAxelbot() {
+    // Solo montar una vez
+    if (document.getElementById('axelbot-root')) return;
+
+    const root = document.createElement('div');
+    root.id = 'axelbot-root';
+    document.body.appendChild(root);
+    renderAxelbotChat();
+}
+
+function renderAxelbotChat() {
+    const root = document.getElementById('axelbot-root');
+    if (!root) return;
+
+    if (!axelbotOpen) {
+        root.innerHTML = '';
+        return;
+    }
+
+    const messagesHTML = axelbotMessages.map(m => `
+        <div class="axelbot-msg ${m.role === 'user' ? 'user' : 'bot'}">
+            ${escapeHtml(m.content)}
+        </div>
+    `).join('');
+
+    const typingHTML = axelbotLoading ? `
+        <div class="axelbot-msg bot axelbot-typing">
+            <span></span><span></span><span></span>
+        </div>
+    ` : '';
+
+    root.innerHTML = `
+        <div class="axelbot-window" id="axelbot-window">
+            <div class="axelbot-header">
+                <div class="axelbot-avatar">🤖</div>
+                <div class="axelbot-header-info">
+                    <h4>Axelbot</h4>
+                    <span>Asistente de Empleos León GTO</span>
+                </div>
+                <div class="axelbot-online-dot"></div>
+                <button class="axelbot-close-btn" id="axelbot-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="axelbot-messages" id="axelbot-msgs">
+                ${messagesHTML}
+                ${typingHTML}
+            </div>
+            <div class="axelbot-footer">
+                <textarea
+                    class="axelbot-input"
+                    id="axelbot-input"
+                    placeholder="Escribe tu pregunta..."
+                    rows="1"
+                    maxlength="500"
+                    ${axelbotLoading ? 'disabled' : ''}
+                ></textarea>
+                <button class="axelbot-send-btn" id="axelbot-send" ${axelbotLoading ? 'disabled' : ''}>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="axelbot-disclaimer">Axelbot puede cometer errores. Verifica la información importante.</div>
+        </div>
+    `;
+
+    // Scroll al fondo
+    setTimeout(() => {
+        const msgs = document.getElementById('axelbot-msgs');
+        if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    }, 50);
+
+    // Bind eventos
+    document.getElementById('axelbot-close')?.addEventListener('click', closeAxelbot);
+    document.getElementById('axelbot-send')?.addEventListener('click', sendAxelbotMessage);
+    document.getElementById('axelbot-input')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendAxelbotMessage();
+        }
+    });
+    // Auto-resize textarea
+    document.getElementById('axelbot-input')?.addEventListener('input', (e) => {
+        e.target.style.height = 'auto';
+        e.target.style.height = Math.min(e.target.scrollHeight, 96) + 'px';
+    });
+
+    // Focus al input
+    setTimeout(() => document.getElementById('axelbot-input')?.focus(), 100);
+}
+
+function openAxelbot() {
+    axelbotOpen = true;
+    // Mensaje de bienvenida solo la primera vez
+    if (axelbotMessages.length === 0) {
+        axelbotMessages.push({
+            role: 'bot',
+            content: '¡Hola! Soy Axelbot 👋 el asistente de Empleos León GTO. ¿En qué te puedo ayudar hoy? Puedo orientarte sobre cómo buscar o publicar vacantes.'
+        });
+    }
+    renderAxelbotChat();
+}
+
+function closeAxelbot() {
+    const win = document.getElementById('axelbot-window');
+    if (win) {
+        win.classList.add('closing');
+        setTimeout(() => {
+            axelbotOpen = false;
+            renderAxelbotChat();
+        }, 200);
+    } else {
+        axelbotOpen = false;
+        renderAxelbotChat();
+    }
+}
+
+async function sendAxelbotMessage() {
+    if (axelbotLoading) return;
+    const input = document.getElementById('axelbot-input');
+    const text = input?.value?.trim();
+    if (!text) return;
+
+    // Añadir mensaje del usuario
+    axelbotMessages.push({ role: 'user', content: text });
+    if (input) { input.value = ''; input.style.height = 'auto'; }
+    axelbotLoading = true;
+    renderAxelbotChat();
+
+    try {
+        // Construir historial para la API (últimos 10 mensajes para no exceder contexto)
+        const recentMessages = axelbotMessages.slice(-10);
+        const apiMessages = recentMessages.map(m => ({
+            role: m.role === 'user' ? 'user' : 'assistant',
+            content: m.content
+        }));
+
+        // Llamar al mismo edge function que usa el autofill, pasando el prompt de sistema
+        const response = await fetch(EndpointHelpers.getAIExtractUrl(), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${ENDPOINTS.SUPABASE_ANON_KEY}`
+            },
+            body: JSON.stringify({
+                mode: 'axelbot',
+                system: AXELBOT_SYSTEM_PROMPT,
+                messages: apiMessages
+            })
+        });
+
+        if (!response.ok) throw new Error(`Error ${response.status}`);
+        const data = await response.json();
+
+        const reply = data.message || data.reply || data.content ||
+            'Entendido. ¿En qué más te puedo ayudar con tu búsqueda de empleo?';
+
+        axelbotMessages.push({ role: 'bot', content: reply });
+
+    } catch (err) {
+        console.error('❌ Axelbot error:', err);
+        axelbotMessages.push({
+            role: 'bot',
+            content: 'Ups, tuve un problema de conexión. Por favor intenta de nuevo en un momento. 🔄'
+        });
+    } finally {
+        axelbotLoading = false;
+        renderAxelbotChat();
+    }
+}
+
+// Exponer para los botones del HTML
+window.openAxelbot = openAxelbot;
+window.closeAxelbot = closeAxelbot;
+
 // ==================== RENDER PRINCIPAL ====================
 function render() {
     // Safety: if a previous render got stuck, auto-release after 500ms
@@ -661,6 +872,16 @@ function render() {
 
 // ==================== EVENTOS ====================
 function attachEvents() {
+    // Axelbot — FAB y botón rápido (presentes en login y categorías)
+    document.getElementById('axelbot-fab')?.addEventListener('click', () => {
+        mountAxelbot();
+        openAxelbot();
+    });
+    document.getElementById('quick-axelbot-btn')?.addEventListener('click', () => {
+        mountAxelbot();
+        openAxelbot();
+    });
+
     // Login
     const loginForm = document.getElementById('login-form');
     if (loginForm) {

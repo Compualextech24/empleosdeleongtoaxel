@@ -1358,21 +1358,30 @@ header.top-header p {
     display: inline-block;
 }
 
+/* Manita única externa — apunta a AMBOS botones desde el centro */
+.quick-action-hand {
+    font-size: 22px;
+    /* Reducida de infinite a 3 repeticiones para ahorrar GPU */
+    animation: pointingHand 1s ease-in-out 3;
+    flex-shrink: 0;
+    line-height: 1;
+    display: inline-block;
+}
+
 .quick-btn {
-    flex: 1;
-    max-width: 220px;
-    padding: 11px 20px;
+    padding: 9px 14px;
     border-radius: 14px;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     border: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    transition: all 0.25s ease;
-    backdrop-filter: blur(8px);
+    gap: 6px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* backdrop-filter eliminado — costoso en Android gama media */
+    white-space: nowrap;
 }
 
 /* Manita interna en los botones — ELIMINADA (se usa solo la externa) */
@@ -1380,34 +1389,46 @@ header.top-header p {
     display: none;
 }
 
-/* Rojo translúcido — menos transparencia, más visible */
+/* Rojo sólido — sin transparencia para evitar compositing */
 .quick-btn-red {
-    background: rgba(200, 30, 30, 0.72);
+    background: #c01e1e;
     color: #fff;
-    border: 1.5px solid rgba(255, 100, 100, 0.55);
-    box-shadow: 0 3px 14px rgba(200,30,30,0.32);
+    border: 1.5px solid rgba(255,100,100,0.4);
+    box-shadow: 0 3px 10px rgba(180,20,20,0.35);
 }
 
 .quick-btn-red:hover {
-    background: rgba(200, 30, 30, 0.88);
-    border-color: rgba(255, 120, 120, 0.8);
+    background: #a81818;
     transform: translateY(-2px);
-    box-shadow: 0 7px 22px rgba(200,30,30,0.42);
+    box-shadow: 0 6px 18px rgba(180,20,20,0.45);
 }
 
-/* Azul translúcido — menos transparencia, más visible */
+/* Azul — tamaño reducido igual que los otros */
 .quick-btn-blue {
-    background: rgba(30, 80, 220, 0.72);
+    background: #1a52d4;
     color: #fff;
-    border: 1.5px solid rgba(100, 150, 255, 0.55);
-    box-shadow: 0 3px 14px rgba(30,80,220,0.32);
+    border: 1.5px solid rgba(100,150,255,0.4);
+    box-shadow: 0 3px 10px rgba(25,75,210,0.35);
 }
 
 .quick-btn-blue:hover {
-    background: rgba(30, 80, 220, 0.88);
-    border-color: rgba(120, 160, 255, 0.8);
+    background: #1542b8;
     transform: translateY(-2px);
-    box-shadow: 0 7px 22px rgba(30,80,220,0.42);
+    box-shadow: 0 6px 18px rgba(25,75,210,0.45);
+}
+
+/* Morado — Axelbot */
+.quick-btn-purple {
+    background: #6d28d9;
+    color: #fff;
+    border: 1.5px solid rgba(167,139,250,0.4);
+    box-shadow: 0 3px 10px rgba(109,40,217,0.35);
+}
+
+.quick-btn-purple:hover {
+    background: #5b21b6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(109,40,217,0.45);
 }
 
 /* ==================== PANTALLA CATEGORÍAS — fondo blanco ==================== */
@@ -1521,12 +1542,13 @@ header.top-header p {
 
 .app-footer-inner {
     display: inline-block;
-    animation: marqueeScroll 12s linear infinite;
+    animation: marqueeScroll 16s linear infinite;
     font-size: 13px;
     color: #6b7280;
     font-weight: 500;
     letter-spacing: 0.3px;
-    padding: 0 40px; /* espacio entre repeticiones */
+    padding: 0 40px;
+    will-change: transform; /* le dice al navegador que prepare esta capa en GPU */
 }
 
 .app-footer-inner strong {
@@ -2020,4 +2042,282 @@ header.top-header .header-title-block h1 {
 .btn-whatsapp-card:active {
     transform: translateY(0);
     box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
+}
+/* ==================== AXELBOT — CHAT FLOTANTE ==================== */
+
+/* Botón flotante de apertura (esquina inferior derecha) */
+.axelbot-fab {
+    position: fixed;
+    bottom: 72px; /* encima del visit-counter-bar */
+    right: 18px;
+    z-index: 8000;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 18px rgba(109,40,217,0.55), 0 1px 4px rgba(0,0,0,0.18);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    line-height: 1;
+}
+.axelbot-fab:hover {
+    transform: translateY(-3px) scale(1.07);
+    box-shadow: 0 8px 28px rgba(109,40,217,0.65);
+}
+.axelbot-fab:active { transform: scale(0.94); }
+
+/* Pulso de atención — solo 3 veces al cargar */
+@keyframes axelbotPulse {
+    0%,100% { box-shadow: 0 4px 18px rgba(109,40,217,0.55); }
+    50%      { box-shadow: 0 4px 32px rgba(109,40,217,0.9), 0 0 0 8px rgba(109,40,217,0.18); }
+}
+.axelbot-fab.pulse {
+    animation: axelbotPulse 1.1s ease-in-out 3;
+}
+
+/* Ventana del chat */
+.axelbot-window {
+    position: fixed;
+    bottom: 136px;
+    right: 16px;
+    z-index: 8001;
+    width: min(360px, calc(100vw - 32px));
+    max-height: 520px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.18),
+        0 4px 16px rgba(109,40,217,0.12),
+        0 0 0 1px rgba(109,40,217,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: axelbotSlideIn 0.28s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    transform-origin: bottom right;
+}
+@keyframes axelbotSlideIn {
+    from { opacity: 0; transform: scale(0.85) translateY(16px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+.axelbot-window.closing {
+    animation: axelbotSlideOut 0.2s ease-in forwards;
+}
+@keyframes axelbotSlideOut {
+    from { opacity: 1; transform: scale(1)    translateY(0);    }
+    to   { opacity: 0; transform: scale(0.88) translateY(12px); }
+}
+
+/* Header del chat */
+.axelbot-header {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    padding: 14px 16px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+/* Destello puntual en el header — 1 sola vez cada 6s */
+.axelbot-header::after {
+    content: '';
+    position: absolute;
+    top: -40%; left: -60%;
+    width: 45%; height: 180%;
+    background: linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0) 100%);
+    animation: cardShimmer 6s ease-in-out infinite;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-120%) skewX(-15deg);
+}
+
+.axelbot-avatar {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.22);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(255,255,255,0.35);
+}
+
+.axelbot-header-info {
+    flex: 1;
+    min-width: 0;
+}
+.axelbot-header-info h4 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.2;
+}
+.axelbot-header-info span {
+    color: rgba(255,255,255,0.78);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* Indicador de estado en línea */
+.axelbot-online-dot {
+    width: 8px; height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px rgba(74,222,128,0.3);
+    animation: onlinePulse 2.5s ease-in-out infinite;
+}
+@keyframes onlinePulse {
+    0%,100% { box-shadow: 0 0 0 2px rgba(74,222,128,0.3); }
+    50%      { box-shadow: 0 0 0 5px rgba(74,222,128,0.12); }
+}
+
+.axelbot-close-btn {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.28);
+    color: #fff;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: background 0.18s ease;
+}
+.axelbot-close-btn:hover { background: rgba(255,255,255,0.3); }
+
+/* Área de mensajes */
+.axelbot-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 14px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scroll-behavior: smooth;
+    background: #fafafa;
+}
+.axelbot-messages::-webkit-scrollbar { width: 4px; }
+.axelbot-messages::-webkit-scrollbar-track { background: transparent; }
+.axelbot-messages::-webkit-scrollbar-thumb { background: rgba(109,40,217,0.25); border-radius: 4px; }
+
+/* Mensajes individuales */
+.axelbot-msg {
+    max-width: 88%;
+    padding: 9px 13px;
+    border-radius: 16px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+/* Mensajes del usuario — texto en negrita suave, burbuja morada clara */
+.axelbot-msg.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: #fff;
+    font-weight: 600;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 2px 8px rgba(109,40,217,0.25);
+}
+
+/* Respuestas del bot — cursiva, burbuja blanca con borde */
+.axelbot-msg.bot {
+    align-self: flex-start;
+    background: #ffffff;
+    color: #374151;
+    font-style: italic;
+    font-weight: 400;
+    border: 1px solid rgba(109,40,217,0.14);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+
+/* Animación de typing (3 puntos) */
+.axelbot-typing {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 10px 14px;
+}
+.axelbot-typing span {
+    width: 7px; height: 7px;
+    background: #9ca3af;
+    border-radius: 50%;
+    animation: typingDot 1.2s ease-in-out infinite;
+}
+.axelbot-typing span:nth-child(2) { animation-delay: 0.2s; }
+.axelbot-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingDot {
+    0%,60%,100% { transform: translateY(0);    opacity: 0.5; }
+    30%          { transform: translateY(-5px); opacity: 1;   }
+}
+
+/* Footer de escritura */
+.axelbot-footer {
+    padding: 10px 12px;
+    background: #fff;
+    border-top: 1px solid rgba(109,40,217,0.1);
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+.axelbot-input {
+    flex: 1;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    max-height: 96px;
+    min-height: 38px;
+    line-height: 1.45;
+    color: #111827;
+    background: #f9fafb;
+    transition: border-color 0.18s ease;
+}
+.axelbot-input:focus {
+    border-color: #7c3aed;
+    background: #fff;
+}
+.axelbot-input::placeholder { color: #9ca3af; }
+
+.axelbot-send-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    box-shadow: 0 2px 8px rgba(109,40,217,0.35);
+}
+.axelbot-send-btn:hover { transform: scale(1.1); box-shadow: 0 4px 14px rgba(109,40,217,0.5); }
+.axelbot-send-btn:active { transform: scale(0.94); }
+.axelbot-send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* Nota de pie en el chat */
+.axelbot-disclaimer {
+    text-align: center;
+    font-size: 10.5px;
+    color: #9ca3af;
+    padding: 0 12px 8px;
+    background: #fff;
+    flex-shrink: 0;
 }
