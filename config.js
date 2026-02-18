@@ -35,7 +35,8 @@ let state = {
         schedule: '',
         work_days: '',
         category: '',
-        imageBase64: ''
+        imageBase64: '',
+        requirements: 'Disponibilidad y actitud de trabajar'
     },
     aiChatOpen: false,
     aiMessages: [],

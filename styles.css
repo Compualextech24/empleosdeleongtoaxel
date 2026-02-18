@@ -606,6 +606,17 @@ textarea {
     flex: 1;
 }
 
+/* Info rows y botón de acción siempre al fondo de la card */
+.vacancy-card .card-info-rows {
+    margin-top: auto;
+}
+
+/* Botón WhatsApp / Editar+Eliminar siempre pegados al fondo */
+.vacancy-card .btn-whatsapp-card,
+.vacancy-card .flex.gap-2 {
+    margin-top: auto;
+}
+
 /* Description in bold, no fixed height — adapts to content */
 .card-description {
     font-size: 14px;

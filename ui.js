@@ -420,16 +420,16 @@ function renderVacancyCard(vacancy, isOwner) {
             <h3 class="card-company">${escapeHtml(vacancy.company)}</h3>
             <p class="job-title text-purple-600 mb-3">${escapeHtml(vacancy.job_title)}</p>
             ${vacancy.category ? `<span class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-3">${escapeHtml(vacancy.category)}</span>` : ''}
-            ${hasDesc ? `<p class="card-description">${escapeHtml(vacancy.description)}</p>` : ''}
+            ${hasDesc ? `<p class="card-description mb-3">${escapeHtml(vacancy.description)}</p>` : ''}
             ${hasReqs ? `
-                <div class="requirements-block ${hasDesc ? 'mt-3' : 'mt-0'} mb-4">
+                <div class="requirements-block mb-4">
                     <p class="req-block-title"><i class="fas fa-clipboard-list mr-1"></i>Requisitos</p>
                     <ul class="requirements-list">
                         ${reqLines.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
                     </ul>
                 </div>
             ` : ''}
-            <div class="card-info-rows ${(hasDesc || hasReqs) ? 'mt-3' : ''} mb-4">
+            <div class="card-info-rows mb-4">
                 ${vacancy.location      ? `<div class="card-info-row"><i class="fas fa-map-marker-alt"></i><span>${escapeHtml(vacancy.location)}</span></div>` : ''}
                 ${vacancy.contact_phone ? `<div class="card-info-row"><i class="fas fa-phone"></i><span>${escapeHtml(vacancy.contact_phone)}</span></div>` : ''}
                 ${vacancy.publication_date ? `<div class="card-info-row"><i class="fas fa-calendar"></i><span>${escapeHtml(vacancy.publication_date)}</span></div>` : ''}
@@ -437,7 +437,7 @@ function renderVacancyCard(vacancy, isOwner) {
                 ${vacancy.schedule      ? `<div class="card-info-row"><i class="fas fa-business-time"></i><span>${escapeHtml(vacancy.schedule)}</span></div>` : ''}
             </div>
             ${isOwner ? `
-                <div class="flex gap-2 mt-auto pt-2">
+                <div class="flex gap-2">
                     <button data-edit="${vacancy.id}" class="btn btn-edit flex-1"><i class="fas fa-edit"></i> Editar</button>
                     <button data-delete="${vacancy.id}" class="btn btn-cancel flex-1"><i class="fas fa-trash"></i> Eliminar</button>
                 </div>
@@ -498,9 +498,9 @@ function renderForm() {
                         <textarea id="description" rows="3" maxlength="300" placeholder="Ej: Se solicita personal para limpieza y acabado de costura...">${escapeHtml(state.formData.description)}</textarea>
                     </div>
                     <div class="input-group">
-                        <label>Requisitos <span class="req-hint">— uno por línea, Enter para agregar</span></label>
+                        <label>Requisitos <span class="req-hint">— uno por línea, Enter para agregar más</span></label>
                         <div class="requirements-textarea-wrap">
-                            <textarea id="requirements" rows="5" maxlength="500" class="requirements-input" placeholder="Acta de nacimiento&#10;INE&#10;CURP&#10;Carta de no antecedentes penales&#10;Comprobante de domicilio">${escapeHtml(state.formData.requirements)}</textarea>
+                            <textarea id="requirements" rows="5" maxlength="500" class="requirements-input" placeholder="Disponibilidad y actitud de trabajar&#10;Acta de nacimiento&#10;INE&#10;CURP&#10;Carta de no antecedentes penales">${escapeHtml(state.formData.requirements)}</textarea>
                             <div class="req-lines-preview" id="req-preview" aria-hidden="true">
                                 ${state.formData.requirements
                                     ? state.formData.requirements.split('\n')

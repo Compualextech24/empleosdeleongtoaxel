@@ -618,7 +618,7 @@ function handleEditVacancy(vacancyId) {
         company: vacancy.company || '',
         job_title: vacancy.job_title || '',
         description: vacancy.description || '',
-        requirements: vacancy.requirements || '',
+        requirements: vacancy.requirements || 'Disponibilidad y actitud de trabajar',
         location: vacancy.location || '',
         contact_phone: vacancy.contact_phone || '',
         publication_date: vacancy.publication_date || '',
@@ -864,7 +864,7 @@ function resetJobForm() {
     state.formData.company = '';
     state.formData.job_title = '';
     state.formData.description = '';
-    state.formData.requirements = '';
+    state.formData.requirements = 'Disponibilidad y actitud de trabajar';
     state.formData.location = '';
     state.formData.contact_phone = '';
     state.formData.publication_date = '';
