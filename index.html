@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Portal de Vacantes - Empleos León GTO">
     <meta name="theme-color" content="#667eea">
+
     <title>Empleos León GTO - Portal de Vacantes</title>
-    
-    <link rel="icon" type="image/png" href="faviconempleos.png">
-    
+
+    <!-- FAVICON — archivo faviconempleos.png debe estar en la raíz del repo -->
+    <link rel="icon" type="image/png" sizes="32x32" href="faviconempleos.png">
+    <link rel="apple-touch-icon"      sizes="180x180" href="faviconempleos.png"> <!-- ÍCONO EN PANTALLA DE INICIO iOS -->
+
+
+    <!-- PWA MANIFEST — descomenta cuando crees el archivo manifest.json -->
+    <!-- <link rel="manifest" href="manifest.json"> -->
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -17,14 +24,25 @@
     <div id="app"></div>
     <div id="modal-root"></div>
 
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- App Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> <!-- SUPABASE — DEBE IR ANTES DE TUS SCRIPTS -->
+
     <script src="endpoints.js"></script>
     <script src="config.js"></script>
     <script src="counter.js"></script>
     <script src="auth.js"></script>
     <script src="ui.js"></script>
+
+    <!-- PWA SERVICE WORKER — descomenta cuando crees el archivo sw.js -->
+    <!--
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg  => console.log('SW registrado:', reg.scope))
+                    .catch(err => console.warn('SW falló:', err));
+            });
+        }
+    </script>
+    -->
 </body>
 </html>
