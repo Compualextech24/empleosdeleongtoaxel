@@ -441,7 +441,16 @@ function renderVacancyCard(vacancy, isOwner) {
                     <button data-edit="${vacancy.id}" class="btn btn-edit flex-1"><i class="fas fa-edit"></i> Editar</button>
                     <button data-delete="${vacancy.id}" class="btn btn-cancel flex-1"><i class="fas fa-trash"></i> Eliminar</button>
                 </div>
-            ` : ''}
+            ` : `
+                ${vacancy.contact_phone ? (() => {
+                    const rawPhone = vacancy.contact_phone.replace(/[\s\-\(\)\.]/g, '');
+                    const phone = rawPhone.startsWith('+') ? rawPhone : `+52${rawPhone}`;
+                    const msg = encodeURIComponent('Hola, que tal 👋 vi el anuncio de una vacante, de la cual estoy interesado(a) a través de la página *ECOSISTEMA LEÓN*, ¿podría brindarme más detalles por favor?');
+                    return `<a href="https://wa.me/${phone}?text=${msg}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-card">
+                        <i class="fab fa-whatsapp"></i> Contactar WhatsApp
+                    </a>`;
+                })() : ''}
+            `}
         </div>
     </div>`;
 }
