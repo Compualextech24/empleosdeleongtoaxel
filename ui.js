@@ -201,6 +201,7 @@ function renderCategories() {
         { name: 'Leyes y Consultas',         icon: 'fa-balance-scale',    color: '#4338ca', color2: '#6366f1', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
         { name: 'Bancos y Contabilidad',     icon: 'fa-coins',            color: '#3f6212', color2: '#84cc16', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
         { name: 'Mantenimiento y Limpieza',  icon: 'fa-broom',            color: '#0f766e', color2: '#14b8a6', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Otros',                     icon: 'fa-ellipsis-h',       color: '#0369a1', color2: '#38bdf8', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
     ];
 
     const totalVacancies = state.vacancies.length;
@@ -262,16 +263,15 @@ function renderCategories() {
             </div>
 
             <div class="categories-grid fade-in">
-                ${CATEGORIES.map((cat, idx) => {
+                ${CATEGORIES.map((cat) => {
                     const isAll = cat.name === 'Todas';
                     const count = isAll ? totalVacancies : state.vacancies.filter(v => v.category === cat.name).length;
                     const countLabel = isAll ? `${count} vacante${count !== 1 ? 's' : ''} totales` : `${count} vacante${count !== 1 ? 's' : ''}`;
-                    const shimmerDelay = (idx * 0.45).toFixed(2);
                     return `
                     <button class="category-card-v2 ${isAll ? 'cat-all' : ''}"
                         data-category="${isAll ? '' : escapeHtml(cat.name)}"
                         data-is-all="${isAll}"
-                        style="--cat-c1:${cat.color};--cat-c2:${cat.color2};--shimmer-delay:${shimmerDelay}s">
+                        style="--cat-c1:${cat.color};--cat-c2:${cat.color2}">
                         <div class="cat-v2-icon-wrap" style="background:${cat.iconBg}">
                             <i class="fas ${cat.icon}"></i>
                         </div>
@@ -533,6 +533,7 @@ function renderForm() {
                             <option value="Leyes y Consultas"       ${state.formData.category === 'Leyes y Consultas'       ? 'selected' : ''}>⚖️ Leyes y Consultas</option>
                             <option value="Bancos y Contabilidad"   ${state.formData.category === 'Bancos y Contabilidad'   ? 'selected' : ''}>🏦 Bancos y Contabilidad</option>
                             <option value="Mantenimiento y Limpieza" ${state.formData.category === 'Mantenimiento y Limpieza' ? 'selected' : ''}>🧹 Mantenimiento y Limpieza</option>
+                            <option value="Otros"                   ${state.formData.category === 'Otros'                   ? 'selected' : ''}>🔹 Otros</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

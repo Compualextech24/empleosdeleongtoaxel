@@ -1427,36 +1427,33 @@ header.top-header p {
     letter-spacing: 0.2px;
 }
 
-/* ==================== CARDS DE CATEGORÍA — efecto shimmer animado ==================== */
-/* Animación que lanza un destello de luz de izquierda a derecha cada 4s */
-@keyframes cardShimmer {
-    0%   { transform: translateX(-120%) skewX(-15deg); opacity: 0; }
-    8%   { opacity: 1; }
-    55%  { transform: translateX(220%) skewX(-15deg); opacity: 1; }
-    62%  { opacity: 0; }
-    100% { transform: translateX(220%) skewX(-15deg); opacity: 0; }
-}
+/* ==================== CARDS DE CATEGORÍA — profundidad sin animación continua ==================== */
+/* El shimmer animado fue removido para mejorar rendimiento en móvil.
+   Se compensó con: sombra doble, borde interior luminoso, brillo superior fijo,
+   y un destello suave solo en hover (GPU-friendly, sin loop infinito). */
 
 .category-card-v2 {
-    box-shadow: 0 4px 18px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.32);
-    overflow: hidden; /* ya está, confirmamos */
+    box-shadow:
+        0 4px 14px rgba(0,0,0,0.28),          /* sombra principal */
+        0 1px 3px  rgba(0,0,0,0.18),           /* sombra base */
+        inset 0 1px 0 rgba(255,255,255,0.35),  /* borde luminoso superior */
+        inset 0 -1px 0 rgba(0,0,0,0.12);       /* borde oscuro inferior — da volumen */
+    overflow: hidden;
 }
 
-/* Brillo superior fijo — simula superficie curva / cristal */
+/* Brillo superior fijo — simula superficie convexa / glass */
 .category-card-v2::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 45%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0) 100%);
+    top: 0; left: 0; right: 0;
+    height: 48%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 100%);
     border-radius: 14px 14px 0 0;
     pointer-events: none;
     z-index: 1;
 }
 
-/* Destello animado — rayo de luz que cruza la card */
+/* Destello en hover — solo se activa cuando el usuario interactúa, sin loop */
 .category-card-v2::after {
     content: '';
     position: absolute;
@@ -1467,19 +1464,22 @@ header.top-header p {
     background: linear-gradient(
         105deg,
         rgba(255,255,255,0)    0%,
-        rgba(255,255,255,0.38) 45%,
-        rgba(255,255,255,0.55) 50%,
-        rgba(255,255,255,0.38) 55%,
+        rgba(255,255,255,0.32) 45%,
+        rgba(255,255,255,0.52) 50%,
+        rgba(255,255,255,0.32) 55%,
         rgba(255,255,255,0)    100%
     );
-    animation: cardShimmer 4s ease-in-out infinite;
-    animation-delay: var(--shimmer-delay, 0s);
+    transform: translateX(-120%) skewX(-15deg);
+    transition: transform 0.55s ease, opacity 0.55s ease;
+    opacity: 0;
     pointer-events: none;
     z-index: 3;
-    border-radius: 0;
-    /* Anula el ::after anterior que era solo un overlay de hover */
-    transform: translateX(-120%) skewX(-15deg);
-    opacity: 0;
+}
+
+/* Al hacer hover → el destello cruza UNA SOLA VEZ (sin loop, muy ligero) */
+.category-card-v2:hover::after {
+    transform: translateX(280%) skewX(-15deg);
+    opacity: 1;
 }
 
 .category-card-v2 > * {
@@ -1488,12 +1488,19 @@ header.top-header p {
 }
 
 .category-card-v2:hover {
-    transform: translateY(-3px) scale(1.01);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.38);
+    transform: translateY(-3px) scale(1.012);
+    box-shadow:
+        0 10px 28px rgba(0,0,0,0.32),
+        0 2px 6px  rgba(0,0,0,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.42),
+        inset 0 -1px 0 rgba(0,0,0,0.12);
 }
 
 .category-card-v2:active {
     transform: translateY(0) scale(0.98);
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.28);
 }
 
 /* ==================== FIRMA / FOOTER — MARQUEE CONTINUO ==================== */
