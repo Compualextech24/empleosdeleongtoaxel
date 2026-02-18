@@ -155,6 +155,119 @@ function handleForgotPassword() {
     });
 }
 
+// ==================== MODAL NUEVA CONTRASEÑA (después del link de recovery) ====================
+function showNewPasswordModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-window">
+            <div class="modal-header modal-header-info">
+                <i class="fas fa-key" style="color:#667eea;font-size:24px"></i>
+                <div class="header-text">
+                    <h3>Crear nueva contraseña</h3>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p style="color:#4b5563;font-size:14px;margin-bottom:16px;line-height:1.6;">
+                    Ingresa tu nueva contraseña (mínimo 6 caracteres).
+                </p>
+                <div style="position:relative;margin-bottom:14px;">
+                    <input
+                        type="password"
+                        id="new-password-input"
+                        placeholder="Nueva contraseña"
+                        style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;transition:border-color 0.2s;"
+                        onfocus="this.style.borderColor='#667eea'"
+                        onblur="this.style.borderColor='#e5e7eb'"
+                    >
+                    <i class="fas fa-lock" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:14px;pointer-events:none;"></i>
+                </div>
+                <div style="position:relative;">
+                    <input
+                        type="password"
+                        id="new-password-confirm"
+                        placeholder="Confirmar nueva contraseña"
+                        style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;transition:border-color 0.2s;"
+                        onfocus="this.style.borderColor='#667eea'"
+                        onblur="this.style.borderColor='#e5e7eb'"
+                    >
+                    <i class="fas fa-lock" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:14px;pointer-events:none;"></i>
+                </div>
+                <p id="new-pwd-error-msg" style="display:none;color:#ef4444;font-size:12px;margin-top:8px;">
+                    <i class="fas fa-exclamation-circle"></i> <span id="new-pwd-error-text"></span>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel modal-cancel-new-pwd">Cancelar</button>
+                <button class="btn btn-save modal-confirm-new-pwd">
+                    <i class="fas fa-check"></i> Aceptar
+                </button>
+            </div>
+        </div>
+    `;
+    document.getElementById('modal-root').appendChild(modal);
+    setTimeout(() => { const i = document.getElementById('new-password-input'); if (i) i.focus(); }, 100);
+
+    // Cancelar → volver a login sin hacer nada
+    modal.querySelector('.modal-cancel-new-pwd').onclick = () => {
+        modal.remove();
+        resetCompleteState();
+        render();
+        showModal('info', 'Cambio cancelado', 'No se actualizó tu contraseña. Vuelve a login.');
+    };
+
+    // Aceptar → actualizar contraseña
+    const confirmBtn = modal.querySelector('.modal-confirm-new-pwd');
+    confirmBtn.onclick = async () => {
+        const pwdInput = document.getElementById('new-password-input');
+        const confirmInput = document.getElementById('new-password-confirm');
+        const errorMsg = document.getElementById('new-pwd-error-msg');
+        const errorText = document.getElementById('new-pwd-error-text');
+
+        const pwd = pwdInput?.value?.trim();
+        const conf = confirmInput?.value?.trim();
+
+        // Validaciones
+        if (!pwd || pwd.length < 6) {
+            errorText.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+            errorMsg.style.display = 'block';
+            pwdInput.style.borderColor = '#ef4444';
+            return;
+        }
+        if (pwd !== conf) {
+            errorText.textContent = 'Las contraseñas no coinciden.';
+            errorMsg.style.display = 'block';
+            confirmInput.style.borderColor = '#ef4444';
+            return;
+        }
+
+        modal.remove();
+        showLoading();
+        try {
+            // Actualizar contraseña en Supabase
+            const { error } = await supabaseClient.auth.updateUser({ password: pwd });
+            if (error) throw error;
+
+            hideLoading();
+            // Resetear estado y volver a login
+            resetCompleteState();
+            render();
+            showModal('success', '¡Contraseña actualizada! 🎉', 'Tu contraseña ha sido cambiada exitosamente. Ahora puedes iniciar sesión con tu nueva contraseña.');
+        } catch (err) {
+            hideLoading();
+            console.error('❌ Error actualizando contraseña:', err);
+            showModal('error', 'Error', 'No se pudo actualizar la contraseña. Intenta de nuevo o contacta soporte.');
+            resetCompleteState();
+            render();
+        }
+    };
+
+    // Enter en segundo input → confirmar
+    document.getElementById('new-password-confirm')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') confirmBtn.click();
+    });
+}
+
 async function handleLogout() {
     if (state.isLoggingOut) {
         console.log('⏸️ Ya hay un logout en proceso');

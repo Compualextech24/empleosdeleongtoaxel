@@ -922,6 +922,14 @@ async function init() {
                 hideLoading();
             }
 
+            // PASSWORD_RECOVERY: Usuario hizo click en el link del email de recovery
+            // → No loguearlo automáticamente, mostrar modal para nueva contraseña
+            if (event === 'PASSWORD_RECOVERY') {
+                console.log('🔑 PASSWORD_RECOVERY detectado - mostrando modal de nueva contraseña');
+                showNewPasswordModal();
+                return;
+            }
+
             if (state.isLoggingOut && event === 'SIGNED_OUT') {
                 console.log('✅ Logout completado - estado ya reseteado');
                 state.isLoggingOut = false;

@@ -108,21 +108,26 @@
 .login-btn-register:hover { background: #f5f0ff; transform: translateY(-1px); }
 .login-btn-register:active { transform: translateY(0); }
 
-/* Botón Cancelar — rojo */
+/* Botón Cancelar — rojo degradado con letras blancas */
 .login-btn-cancel {
     flex: 1;
-    background: #ffffff;
-    color: #dc2626;
-    border: 2px solid #dc2626;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: #ffffff;
+    border: none;
     border-radius: 12px;
     font-size: 0.85rem;
     font-weight: 700;
     padding: 0 14px;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.15s ease;
+    transition: all 0.2s ease;
     white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
 }
-.login-btn-cancel:hover { background: #fff5f5; transform: translateY(-1px); }
+.login-btn-cancel:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
 .login-btn-cancel:active { transform: translateY(0); }
 
 /* Enlace Restablecer — rojo */
