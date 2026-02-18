@@ -793,74 +793,53 @@ async function sendAxelbotMessage() {
     axelbotLoading = true;
     renderAxelbotChat();
 
-    // Últimos 6 intercambios para no saturar el contexto
-    const history = axelbotMessages.slice(-12).map(m => ({
+    // Construir historial en formato que Gradio espera (sin el mensaje actual)
+    const history = axelbotMessages.slice(0, -1).map(m => ({
         role: m.role === 'user' ? 'user' : 'assistant',
         content: m.content
     }));
 
-    // Payload estándar — compatible con FastAPI/OpenAI-style y Gradio
-    const payload = {
-        message:  text,
-        messages: history,
-        system:   AXELBOT_SYSTEM_PROMPT,
-        prompt:   `${AXELBOT_SYSTEM_PROMPT}\n\nUsuario: ${text}\nAxelbot:`,
-        inputs:   text,
-        text:     text
-    };
-
-    // Endpoints a intentar en orden — el primero que responda bien gana
     const HF_BASE = 'https://alejandrott24-mi-gemma-servidor.hf.space';
-    const ENDPOINTS_TO_TRY = [
-        `${HF_BASE}/chat`,
-        `${HF_BASE}/generate`,
-        `${HF_BASE}/api/chat`,
-        `${HF_BASE}/api/generate`,
-        `${HF_BASE}/run/predict`,   // Gradio standard
-        `${HF_BASE}/api/predict`,
-    ];
 
     let reply = null;
 
-    for (const url of ENDPOINTS_TO_TRY) {
-        try {
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-                signal: AbortSignal.timeout(18000)  // 18s timeout por endpoint
-            });
+    try {
+        // Gradio ChatInterface — endpoint correcto con formato correcto
+        const res = await fetch(`${HF_BASE}/run/predict`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                fn_index: 0,   // ChatInterface siempre es fn_index 0
+                data: [
+                    text,      // mensaje actual del usuario
+                    history    // historial previo (sin el mensaje actual)
+                ]
+            }),
+            signal: AbortSignal.timeout(30000)
+        });
 
-            if (!res.ok) continue;  // probar siguiente
-
+        if (res.ok) {
             const data = await res.json();
+            // Gradio devuelve { data: ["respuesta_del_bot"] }
+            reply = Array.isArray(data.data) ? data.data[0] : null;
 
-            // Intentar extraer la respuesta de todos los formatos conocidos
-            reply =
-                data.response   ||   // FastAPI custom
-                data.reply       ||
-                data.message     ||
-                data.output      ||
-                data.generated_text ||
-                data.content     ||
-                (Array.isArray(data.data) && data.data[0]) ||  // Gradio
-                (data.choices?.[0]?.message?.content)       ||  // OpenAI-style
-                (data.choices?.[0]?.text)                   ||
-                null;
+            // A veces Gradio devuelve el historial completo en lugar de solo el último texto
+            if (Array.isArray(reply)) {
+                const last = reply[reply.length - 1];
+                reply = last?.content || (Array.isArray(last) ? last[1] : null);
+            }
 
-            if (reply && typeof reply === 'string' && reply.trim().length > 0) {
-                // Limpiar posibles prefijos que el modelo repita
+            if (reply && typeof reply === 'string') {
                 reply = reply
                     .replace(/^Axelbot:\s*/i, '')
                     .replace(/^Asistente:\s*/i, '')
                     .trim();
-                break;  // encontramos respuesta válida
             }
-            reply = null;  // respuesta vacía, probar siguiente
-        } catch (e) {
-            // timeout o error de red — probar siguiente endpoint
-            console.warn(`Axelbot: endpoint ${url} falló —`, e.message);
+        } else {
+            console.warn('Axelbot: HF Space respondió con error', res.status);
         }
+    } catch (e) {
+        console.warn('Axelbot: error conectando con HF Space —', e.message);
     }
 
     if (reply) {

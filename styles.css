@@ -2070,6 +2070,21 @@ header.top-header .header-title-block h1 {
     transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s ease;
     line-height: 1;
 }
+
+/* En móvil: FAB centrado abajo */
+@media (max-width: 480px) {
+    .axelbot-fab {
+        bottom: 20px;
+        right: 50%;
+        transform: translateX(50%);
+    }
+    .axelbot-fab:hover {
+        transform: translateX(50%) translateY(-4px) scale(1.08);
+    }
+    .axelbot-fab:active {
+        transform: translateX(50%) scale(0.93);
+    }
+}
 .axelbot-fab:hover {
     transform: translateY(-4px) scale(1.08);
     box-shadow: 0 10px 30px rgba(109,40,217,0.7), 0 2px 8px rgba(0,0,0,0.22);
@@ -2104,6 +2119,19 @@ header.top-header .header-title-block h1 {
         0 0 0 1px rgba(109,40,217,0.16);
     animation: axelbotSlideIn 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
     transform-origin: bottom right;
+}
+
+/* En móvil: centrado horizontal, pegado al fondo con margen */
+@media (max-width: 480px) {
+    .axelbot-window {
+        right: 50%;
+        transform: translateX(50%);
+        bottom: 90px;
+        width: calc(100vw - 20px);
+        height: calc(100vh - 130px);
+        max-height: calc(100vh - 130px);
+        border-radius: 18px;
+    }
 }
 @keyframes axelbotSlideIn {
     from { opacity:0; transform: scale(0.82) translateY(20px); }
