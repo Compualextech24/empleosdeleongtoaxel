@@ -7,21 +7,15 @@
     <meta name="theme-color" content="#667eea">
     <title>Empleos León GTO - Portal de Vacantes</title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="faviconempleos.png">
     <link rel="apple-touch-icon" sizes="180x180" href="faviconempleos.png">
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ==================== ESTILOS COMPLETOS ==================== -->
     <style>
-/* ==================== VARIABLES DE COLOR — sistema centralizado ==================== */
-/* Cambia un color aquí y se actualiza en TODA la app automáticamente */
+/* ==================== VARIABLES DE COLOR ==================== */
 :root {
-    /* Púrpura principal (headers, Axelbot, botones IA, scrollbar) */
     --purple-1: #7c3aed;
     --purple-2: #6d28d9;
     --purple-3: #5b21b6;
@@ -29,42 +23,28 @@
     --purple-light: #a78bfa;
     --purple-xlight: #c4b5fd;
     --purple-bg: rgba(109, 40, 217, 0.22);
-    --purple-dark-1: #1e1b4b;  /* footer contador */
+    --purple-dark-1: #1e1b4b;
     --purple-dark-2: #312e81;
     --purple-dark-3: #4c1d95;
-
-    /* Azul-morado (body background, header principal, btn-primary, loader) */
     --indigo-1: #667eea;
     --indigo-2: #764ba2;
-
-    /* Verde (btn-save, btn-new-vacancy, Axelbot online, badge invitado) */
     --green-1: #22c55e;
     --green-2: #16a34a;
     --green-3: #10b981;
     --green-4: #059669;
-
-    /* Rojo (cancelar, términos, advertencias, errores) */
     --red-1: #dc2626;
     --red-2: #b91c1c;
     --red-3: #991b1b;
     --red-bg: rgba(220, 38, 38, 0.15);
-
-    /* Azul acción (btn-outline, btn-edit, btn-send chat) */
     --blue-1: #3b82f6;
     --blue-2: #2563eb;
     --blue-3: #1d4ed8;
     --blue-4: #1e40af;
-
-    /* Naranja (btn-clean, categorías) */
     --orange-1: #f59e0b;
     --orange-2: #d97706;
     --orange-3: #b45309;
-
-    /* Dorado (Axelbot AI clásico, contador de visitas) */
     --gold: #FFD700;
     --gold-dim: rgba(255, 215, 0, 0.3);
-
-    /* Neutros UI */
     --gray-100: #f9fafb;
     --gray-200: #e5e7eb;
     --gray-300: #d1d5db;
@@ -74,16 +54,12 @@
     --gray-700: #374151;
     --gray-800: #1f2937;
     --gray-900: #111827;
-
-    /* Blancos translúcidos reutilizados en botones sobre gradiente */
     --white-10: rgba(255, 255, 255, 0.10);
     --white-18: rgba(255, 255, 255, 0.18);
     --white-22: rgba(255, 255, 255, 0.22);
     --white-32: rgba(255, 255, 255, 0.32);
     --white-40: rgba(255, 255, 255, 0.40);
     --white-45: rgba(255, 255, 255, 0.45);
-
-    /* Gradientes reutilizados */
     --grad-purple: linear-gradient(135deg, var(--purple-1) 0%, var(--purple-2) 100%);
     --grad-purple-header: linear-gradient(135deg, var(--purple-1) 0%, var(--purple-2) 60%, var(--purple-3) 100%);
     --grad-indigo: linear-gradient(135deg, var(--indigo-1) 0%, var(--indigo-2) 100%);
@@ -96,12 +72,8 @@
     --grad-dark: linear-gradient(135deg, #1f2937 0%, #0f172a 100%);
 }
 
-/* ==================== RESET Y CONFIGURACIÓN BASE ==================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* ==================== RESET Y BASE ==================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -155,23 +127,7 @@ body {
     0%   { transform: translateX(100%); }
     100% { transform: translateX(-100%); }
 }
-
-    50%     { box-shadow: 0 6px 34px rgba(109,40,217,0.85), 0 0 0 10px rgba(109,40,217,0.14); }
-}
-
-    to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-    to   { opacity: 0; transform: scale(0.86) translateY(14px); }
-}
-
-    50%     { box-shadow: 0 0 0 6px rgba(74,222,128,0.1); }
-}
-
-    30%          { transform: translateY(-5px); opacity: 1; }
-}
 @keyframes cardShimmer {
-    /* Alias de shimmerLight para uso en ::after de cards/header */
     0%   { left: -100%; opacity: 0; }
     10%  { opacity: 1; }
     60%  { left: 160%; opacity: 1; }
@@ -198,52 +154,35 @@ body {
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* Primario — azul-índigo */
-.btn-primary {
-    background: var(--indigo-1);
-    color: white;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
+.btn-primary { background: var(--indigo-1); color: white; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
 .btn-primary:hover:not(:disabled) { background: #5568d3; }
 
-/* Secundario — gris */
-.btn-secondary {
-    background: var(--gray-200);
-    color: var(--gray-700);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
+.btn-secondary { background: var(--gray-200); color: var(--gray-700); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 .btn-secondary:hover:not(:disabled) { background: var(--gray-300); }
 
-/* Azul acción — btn-outline y btn-edit comparten el mismo gradiente */
-.btn-outline,
-.btn-edit {
+.btn-outline, .btn-edit {
     background: var(--grad-blue);
     color: white;
     box-shadow: 0 4px 14px rgba(59,130,246,0.4);
     border: none;
 }
-.btn-outline:hover:not(:disabled),
-.btn-edit:hover:not(:disabled) {
+.btn-outline:hover:not(:disabled), .btn-edit:hover:not(:disabled) {
     background: var(--grad-blue-deep);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(59,130,246,0.45);
 }
 
-/* Verde guardar */
-.btn-save,
-.btn-new-vacancy {
+.btn-save, .btn-new-vacancy {
     background: var(--grad-green-save);
     color: white;
     box-shadow: 0 4px 14px rgba(34,197,94,0.4);
     font-weight: 700;
 }
-.btn-save:hover:not(:disabled),
-.btn-new-vacancy:hover:not(:disabled) {
+.btn-save:hover:not(:disabled), .btn-new-vacancy:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(34,197,94,0.5);
 }
 
-/* Diferencias de layout solo para btn-new-vacancy */
 .btn-new-vacancy {
     padding: 10px 16px;
     border-radius: 12px;
@@ -255,7 +194,6 @@ body {
 .btn-nueva-text { display: none; }
 @media (min-width: 640px) { .btn-nueva-text { display: inline; } }
 
-/* Naranja limpiar */
 .btn-clean {
     background: var(--grad-orange);
     color: white;
@@ -267,18 +205,13 @@ body {
     box-shadow: 0 8px 20px rgba(245,158,11,0.45);
 }
 
-/* Púrpura IA */
 .btn-autofill {
     background: linear-gradient(135deg, var(--purple-soft) 0%, var(--purple-1) 100%);
     color: white;
     box-shadow: 0 4px 14px rgba(139,92,246,0.4);
 }
-.btn-autofill:hover:not(:disabled) {
-    background: var(--grad-purple);
-    transform: translateY(-2px);
-}
+.btn-autofill:hover:not(:disabled) { background: var(--grad-purple); transform: translateY(-2px); }
 
-/* Azul-morado calendario */
 .btn-calendar {
     background: var(--grad-indigo);
     color: white;
@@ -287,12 +220,8 @@ body {
     padding: 10px 20px;
     border-radius: 12px;
 }
-.btn-calendar:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(102,126,234,0.5);
-}
+.btn-calendar:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(102,126,234,0.5); }
 
-/* Rojo cancelar universal — traslúcido */
 .btn-cancel {
     background: var(--red-bg);
     color: var(--red-1);
@@ -307,7 +236,6 @@ body {
     box-shadow: 0 6px 18px rgba(220, 38, 38, 0.25);
 }
 
-/* Compact (layout, no color) */
 .btn-compact {
     padding: 10px 16px;
     min-width: auto;
@@ -320,14 +248,12 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Calendario activo — naranja pulsante */
 .btn-calendar-active {
     background: var(--grad-orange) !important;
     box-shadow: 0 4px 14px rgba(245,158,11,0.5) !important;
     animation: pulse 2s infinite;
 }
 
-/* WhatsApp */
 .btn-whatsapp-card {
     display: flex;
     align-items: center;
@@ -345,19 +271,12 @@ body {
     box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     letter-spacing: 0.01em;
+    will-change: transform;
 }
 .btn-whatsapp-card i { font-size: 1.1rem; }
-.btn-whatsapp-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(37, 211, 102, 0.45);
-    filter: brightness(1.05);
-}
-.btn-whatsapp-card:active {
-    transform: translateY(0);
-    box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
-}
+.btn-whatsapp-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(37, 211, 102, 0.45); filter: brightness(1.05); }
+.btn-whatsapp-card:active { transform: translateY(0); box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3); }
 
-/* Ver todas */
 .btn-see-all {
     background: var(--white-18);
     color: white;
@@ -370,18 +289,10 @@ body {
     transition: all 0.25s ease;
     backdrop-filter: blur(4px);
 }
-.btn-see-all:hover {
-    background: var(--white-32);
-    border-color: rgba(255,255,255,0.7);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-}
+.btn-see-all:hover { background: var(--white-32); border-color: rgba(255,255,255,0.7); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
 
 /* ==================== BOTONES RETROCESO ==================== */
-/* Comparten la misma estética translúcida — solo difieren en tamaño/posición */
-.back-btn-fixed,
-.back-btn-inheader,
-.btn-back {
+.back-btn-fixed, .back-btn-inheader, .btn-back {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -394,20 +305,16 @@ body {
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: background 0.2s ease, transform 0.15s ease;
+    will-change: transform;
 }
-.back-btn-fixed:hover,
-.back-btn-inheader:hover { background: var(--white-32); transform: translateY(-1px); }
-.back-btn-fixed:active,
-.back-btn-inheader:active { transform: scale(0.95); }
+.back-btn-fixed:hover, .back-btn-inheader:hover { background: var(--white-32); transform: translateY(-1px); }
+.back-btn-fixed:active, .back-btn-inheader:active { transform: scale(0.95); }
 
-/* Tamaños individuales */
 .back-btn-fixed {
     position: fixed;
-    top: 18px;
-    left: 18px;
+    top: 18px; left: 18px;
     z-index: 1000;
-    width: 42px;
-    height: 42px;
+    width: 42px; height: 42px;
     font-size: 0.9rem;
     text-decoration: none;
     border: 1.5px solid var(--white-45);
@@ -419,25 +326,21 @@ body {
 
 .back-btn-inheader {
     flex-shrink: 0;
-    width: 38px;
-    height: 38px;
+    width: 38px; height: 38px;
     font-size: 0.85rem;
     margin-right: 8px;
 }
 
 .btn-back {
-    width: 38px;
-    height: 38px;
+    width: 38px; height: 38px;
     border-radius: 10px;
     border: 2px solid rgba(255,255,255,0.35);
     flex-shrink: 0;
 }
 .btn-back:hover { background: rgba(255,255,255,0.35); transform: translateX(-2px); }
 
-/* ==================== HEADERS PÚRPURA — unificados ==================== */
-/* signup-header-purple y form-header-purple eran idénticos salvo min-height */
-.signup-header-purple,
-.form-header-purple {
+/* ==================== HEADERS PÚRPURA ==================== */
+.signup-header-purple, .form-header-purple {
     background: var(--grad-purple);
     padding: 32px;
     color: #ffffff;
@@ -448,35 +351,21 @@ body {
 .signup-header-purple { min-height: 160px; }
 .form-header-purple   { min-height: 120px; }
 
-.signup-header-content,
-.form-header-content {
-    flex: 1;
-    text-align: center;
-}
+.signup-header-content, .form-header-content { flex: 1; text-align: center; }
 
-/* ==================== HEADER PRINCIPAL (top-header) ==================== */
+/* ==================== HEADER PRINCIPAL ==================== */
 header.top-header {
     background: var(--grad-indigo);
     box-shadow: 0 10px 30px rgba(102,126,234,0.3);
     position: relative;
     overflow: hidden;
 }
-header.top-header::after { display: none; }
 header.top-header > * { position: relative; z-index: 2; }
-header.top-header h1 {
-    color: white;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
+header.top-header h1 { color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 header.top-header p { color: rgba(255,255,255,0.85); }
-header.top-header .header-title-block h1 {
-    font-size: 1.375rem !important;
-}
+header.top-header .header-title-block h1 { font-size: 1.375rem !important; }
 
-.header-action-buttons {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
+.header-action-buttons { display: flex; gap: 12px; align-items: center; }
 .dashboard-section-title { color: white !important; }
 
 .header-title-block {
@@ -512,20 +401,14 @@ header.top-header .header-title-block h1 {
     position: absolute;
     top: -30%; left: -80%;
     width: 55%; height: 160%;
-    background: linear-gradient(
-        105deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.30) 45%,
-        rgba(255,255,255,0.50) 50%,
-        rgba(255,255,255,0.30) 55%,
-        rgba(255,255,255,0) 100%
-    );
+    background: linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.30) 45%, rgba(255,255,255,0.50) 50%, rgba(255,255,255,0.30) 55%, rgba(255,255,255,0) 100%);
     animation: cardShimmer 3.5s ease-in-out infinite;
     animation-delay: 0.8s;
     pointer-events: none;
     z-index: 5;
     transform: translateX(-120%) skewX(-15deg);
     opacity: 0;
+    will-change: transform, opacity;
 }
 .login-logo-wrap {
     width: 100%;
@@ -546,18 +429,10 @@ header.top-header .header-title-block h1 {
     position: relative;
     z-index: 6;
 }
-.login-text-wrap {
-    padding: 0 32px 28px;
-    position: relative;
-    z-index: 6;
-}
+.login-text-wrap { padding: 0 32px 28px; position: relative; z-index: 6; }
 
 /* ==================== LOGIN: FILA DE BOTONES ==================== */
-.login-btn-row {
-    display: flex;
-    gap: 10px;
-    align-items: stretch;
-}
+.login-btn-row { display: flex; gap: 10px; align-items: stretch; }
 .login-btn-main { flex: 1.4; }
 
 .login-btn-register {
@@ -591,11 +466,7 @@ header.top-header .header-title-block h1 {
     white-space: nowrap;
     box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
 }
-.login-btn-cancel:hover {
-    background: linear-gradient(135deg, var(--red-2) 0%, var(--red-3) 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
-}
+.login-btn-cancel:hover { background: linear-gradient(135deg, var(--red-2) 0%, var(--red-3) 100%); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35); }
 .login-btn-cancel:active { transform: translateY(0); }
 
 .login-forgot-link {
@@ -627,16 +498,10 @@ header.top-header .header-title-block h1 {
     background: rgba(34,197,94,0.1);
     border: 2px solid transparent;
     animation: guestGlow 2s ease-in-out infinite;
+    will-change: text-shadow;
 }
-.guest-access-link:hover {
-    background: rgba(34,197,94,0.2);
-    border-color: var(--green-1);
-    transform: scale(1.05);
-}
-.guest-access-link .hand-icon {
-    animation: pointingHand 1s ease-in-out infinite;
-    font-size: 18px;
-}
+.guest-access-link:hover { background: rgba(34,197,94,0.2); border-color: var(--green-1); transform: scale(1.05); }
+.guest-access-link .hand-icon { animation: pointingHand 1s ease-in-out infinite; font-size: 18px; }
 
 .guest-badge {
     display: inline-flex;
@@ -661,14 +526,7 @@ header.top-header .header-title-block h1 {
     justify-content: center;
     align-items: center;
 }
-
-.quick-action-hand {
-    font-size: 22px;
-    animation: pointingHand 1s ease-in-out 3;
-    flex-shrink: 0;
-    line-height: 1;
-    display: inline-block;
-}
+.quick-action-hand { font-size: 22px; animation: pointingHand 1s ease-in-out 3; flex-shrink: 0; line-height: 1; display: inline-block; }
 
 .quick-btn {
     padding: 9px 14px;
@@ -683,50 +541,17 @@ header.top-header .header-title-block h1 {
     gap: 6px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     white-space: nowrap;
+    will-change: transform;
 }
-.quick-btn .hand-point { display: none; }
+.quick-btn-red, .quick-btn-blue, .quick-btn-purple { color: #fff; }
+.quick-btn-red:hover, .quick-btn-blue:hover, .quick-btn-purple:hover { transform: translateY(-2px); }
 
-/* Los 3 botones quick comparten la misma estructura de hover */
-.quick-btn-red,
-.quick-btn-blue,
-.quick-btn-purple {
-    color: #fff;
-}
-.quick-btn-red:hover,
-.quick-btn-blue:hover,
-.quick-btn-purple:hover {
-    transform: translateY(-2px);
-}
-
-.quick-btn-red {
-    background: #c01e1e;
-    border: 1.5px solid rgba(255,100,100,0.4);
-    box-shadow: 0 3px 10px rgba(180,20,20,0.35);
-}
-.quick-btn-red:hover {
-    background: #a81818;
-    box-shadow: 0 6px 18px rgba(180,20,20,0.45);
-}
-
-.quick-btn-blue {
-    background: #1a52d4;
-    border: 1.5px solid rgba(100,150,255,0.4);
-    box-shadow: 0 3px 10px rgba(25,75,210,0.35);
-}
-.quick-btn-blue:hover {
-    background: #1542b8;
-    box-shadow: 0 6px 18px rgba(25,75,210,0.45);
-}
-
-.quick-btn-purple {
-    background: var(--purple-2);
-    border: 1.5px solid rgba(167,139,250,0.4);
-    box-shadow: 0 3px 10px rgba(109,40,217,0.35);
-}
-.quick-btn-purple:hover {
-    background: var(--purple-3);
-    box-shadow: 0 6px 18px rgba(109,40,217,0.45);
-}
+.quick-btn-red { background: #c01e1e; border: 1.5px solid rgba(255,100,100,0.4); box-shadow: 0 3px 10px rgba(180,20,20,0.35); }
+.quick-btn-red:hover { background: #a81818; box-shadow: 0 6px 18px rgba(180,20,20,0.45); }
+.quick-btn-blue { background: #1a52d4; border: 1.5px solid rgba(100,150,255,0.4); box-shadow: 0 3px 10px rgba(25,75,210,0.35); }
+.quick-btn-blue:hover { background: #1542b8; box-shadow: 0 6px 18px rgba(25,75,210,0.45); }
+.quick-btn-purple { background: var(--purple-2); border: 1.5px solid rgba(167,139,250,0.4); box-shadow: 0 3px 10px rgba(109,40,217,0.35); }
+.quick-btn-purple:hover { background: var(--purple-3); box-shadow: 0 6px 18px rgba(109,40,217,0.45); }
 
 /* ==================== MODALES ==================== */
 .modal-overlay {
@@ -740,7 +565,6 @@ header.top-header .header-title-block h1 {
     justify-content: center;
     padding: 20px;
 }
-
 .modal-window {
     background: #fff;
     border-radius: 12px;
@@ -750,8 +574,8 @@ header.top-header .header-title-block h1 {
     overflow: hidden;
     border: 1px solid rgba(0,0,0,0.1);
     animation: modalPop 0.25s cubic-bezier(0.25,0.46,0.45,0.94);
+    will-change: transform, opacity;
 }
-
 .modal-header {
     background: #fff;
     color: var(--gray-800);
@@ -761,67 +585,22 @@ header.top-header .header-title-block h1 {
     gap: 16px;
     border-bottom: 1px solid var(--gray-200);
 }
-.modal-header i {
-    font-size: 24px;
-    color: var(--indigo-1);
-    margin-top: 2px;
-}
-.modal-header .header-text h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--gray-800);
-    margin: 0 0 4px 0;
-}
-.modal-header .header-text p {
-    font-size: 14px;
-    color: var(--gray-500);
-    margin: 0;
-}
+.modal-header i { font-size: 24px; color: var(--indigo-1); margin-top: 2px; }
+.modal-header .header-text h3 { font-size: 16px; font-weight: 600; color: var(--gray-800); margin: 0 0 4px 0; }
+.modal-header .header-text p { font-size: 14px; color: var(--gray-500); margin: 0; }
 .modal-header .header-text { flex: 1; }
 
-/* Variantes de color por tipo — solo se sobreescribe fondo y borde */
-.modal-header-success,
-.modal-header-question {
-    background: rgba(34, 197, 94, 0.15);
-    border-bottom: 1px solid rgba(34, 197, 94, 0.25);
-}
-.modal-header-error {
-    background: rgba(239, 68, 68, 0.15);
-    border-bottom: 1px solid rgba(239, 68, 68, 0.25);
-}
-.modal-header-warning {
-    background: rgba(245, 158, 11, 0.15);
-    border-bottom: 1px solid rgba(245, 158, 11, 0.25);
-}
-.modal-header-info {
-    background: rgba(59, 130, 246, 0.15);
-    border-bottom: 1px solid rgba(59, 130, 246, 0.25);
-}
+.modal-header-success, .modal-header-question { background: rgba(34,197,94,0.15); border-bottom: 1px solid rgba(34,197,94,0.25); }
+.modal-header-error   { background: rgba(239,68,68,0.15);  border-bottom: 1px solid rgba(239,68,68,0.25); }
+.modal-header-warning { background: rgba(245,158,11,0.15); border-bottom: 1px solid rgba(245,158,11,0.25); }
+.modal-header-info    { background: rgba(59,130,246,0.15); border-bottom: 1px solid rgba(59,130,246,0.25); }
 
-.modal-body {
-    padding: 20px 24px;
-    line-height: 1.6;
-    color: var(--gray-700);
-    font-size: 14px;
-}
-
-.modal-footer {
-    padding: 16px 24px;
-    background: var(--gray-100);
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    border-top: 1px solid var(--gray-200);
-}
+.modal-body { padding: 20px 24px; line-height: 1.6; color: var(--gray-700); font-size: 14px; }
+.modal-footer { padding: 16px 24px; background: var(--gray-100); display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid var(--gray-200); }
 
 /* ==================== FORMULARIOS E INPUTS ==================== */
-.input-group {
-    position: relative;
-    margin-bottom: 20px;
-}
-.input-group input,
-.input-group textarea,
-.input-group select {
+.input-group { position: relative; margin-bottom: 20px; }
+.input-group input, .input-group textarea, .input-group select {
     width: 100%;
     padding: 14px 16px;
     border: 2px solid #e9ecef;
@@ -831,43 +610,18 @@ header.top-header .header-title-block h1 {
     font-family: inherit;
     background: linear-gradient(to bottom, #ffffff 0%, var(--gray-100) 100%);
 }
-.input-group input:focus,
-.input-group textarea:focus,
-.input-group select:focus {
+.input-group input:focus, .input-group textarea:focus, .input-group select:focus {
     outline: none;
     border-color: var(--indigo-1);
     box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
 }
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #495057;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.input-icon {
-    position: absolute;
-    right: 16px;
-    top: 42px;
-    cursor: pointer;
-    color: #6c757d;
-    transition: color 0.2s;
-    user-select: none;
-}
+.input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #495057; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+.input-icon { position: absolute; right: 16px; top: 42px; cursor: pointer; color: #6c757d; transition: color 0.2s; user-select: none; }
 .input-icon:hover { color: var(--indigo-1); }
-
 textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 
 /* ==================== REQUIREMENTS TEXTAREA ==================== */
-.req-hint {
-    font-size: 11px;
-    color: var(--gray-400);
-    font-weight: 400;
-    font-style: italic;
-    margin-left: 6px;
-}
+.req-hint { font-size: 11px; color: var(--gray-400); font-weight: 400; font-style: italic; margin-left: 6px; }
 .requirements-textarea-wrap { position: relative; }
 .requirements-input {
     width: 100%;
@@ -903,9 +657,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     transition: border-color 0.2s;
 }
 .requirements-input:focus + .req-lines-preview,
-.requirements-textarea-wrap:focus-within .req-lines-preview {
-    border-color: var(--indigo-1);
-}
+.requirements-textarea-wrap:focus-within .req-lines-preview { border-color: var(--indigo-1); }
 .req-pill {
     display: inline-flex;
     align-items: center;
@@ -919,42 +671,14 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     font-weight: 500;
     line-height: 1.5;
 }
-.req-pill::before {
-    content: '✓';
-    color: var(--indigo-1);
-    font-weight: 700;
-    font-size: 11px;
-}
-.req-empty-hint {
-    font-size: 12px;
-    color: var(--purple-xlight);
-    font-style: italic;
-    padding: 4px 6px;
-}
+.req-pill::before { content: '✓'; color: var(--indigo-1); font-weight: 700; font-size: 11px; }
+.req-empty-hint { font-size: 12px; color: var(--purple-xlight); font-style: italic; padding: 4px 6px; }
 
 /* ==================== FORMULARIO — LAYOUT DE BOTONES ==================== */
-.form-buttons-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding-top: 20px;
-}
-.form-main-buttons {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-}
-.form-main-buttons .btn-compact {
-    flex: 1;
-    min-width: 0;
-    padding: 10px 6px;
-    font-size: 13px;
-    white-space: nowrap;
-}
-.form-ai-button {
-    width: 100%;
-    justify-content: center;
-}
+.form-buttons-container { display: flex; flex-direction: column; gap: 12px; padding-top: 20px; }
+.form-main-buttons { display: flex; gap: 8px; width: 100%; }
+.form-main-buttons .btn-compact { flex: 1; min-width: 0; padding: 10px 6px; font-size: 13px; white-space: nowrap; }
+.form-ai-button { width: 100%; justify-content: center; }
 
 /* ==================== SUBIDA DE IMÁGENES ==================== */
 .image-upload-area {
@@ -967,25 +691,11 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     cursor: pointer;
     position: relative;
 }
-.image-upload-area:hover {
-    border-color: var(--indigo-1);
-    background: #f3f4f6;
-}
+.image-upload-area:hover { border-color: var(--indigo-1); background: #f3f4f6; }
 .image-upload-area.has-image { padding: 0; border: none; }
-.image-upload-area > div,
-.image-upload-area > div * { pointer-events: none; }
-.image-preview-container {
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-    border-radius: 12px;
-    position: relative;
-}
-.image-preview-container img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-}
+.image-upload-area > div, .image-upload-area > div * { pointer-events: none; }
+.image-preview-container { width: 100%; height: 200px; overflow: hidden; border-radius: 12px; position: relative; }
+.image-preview-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ==================== TARJETAS DE VACANTES ==================== */
 .vacancy-card {
@@ -993,128 +703,35 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1);
     border: 2px solid rgba(102,126,234,0.1);
     display: flex;
     flex-direction: column;
+    will-change: transform;
 }
-.vacancy-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 50px rgba(102,126,234,0.25);
-    border-color: rgba(102,126,234,0.3);
-}
-.vacancy-card .card-content {
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-.vacancy-card .card-info-rows,
-.vacancy-card .btn-whatsapp-card,
-.vacancy-card .flex.gap-2 { margin-top: auto; }
+.vacancy-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(102,126,234,0.25); border-color: rgba(102,126,234,0.3); }
+.vacancy-card .card-content { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+.vacancy-card .card-info-rows, .vacancy-card .btn-whatsapp-card, .vacancy-card .flex.gap-2 { margin-top: auto; }
 
-.card-description {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--gray-700);
-    line-height: 1.55;
-    margin-bottom: 0;
-}
-.req-block-title {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--gray-500);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 8px;
-}
-.card-info-rows {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-.card-info-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    font-size: 13px;
-    color: #4b5563;
-    line-height: 1.5;
-}
-.card-info-row i {
-    color: var(--indigo-1);
-    font-size: 12px;
-    margin-top: 2px;
-    flex-shrink: 0;
-    width: 14px;
-    text-align: center;
-}
-.card-info-row span {
-    flex: 1;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-    min-width: 0;
-}
-.card-company {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--gray-900);
-    margin-bottom: 6px;
-    line-height: 1.3;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-}
-.job-title {
-    word-break: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-    line-height: 1.4;
-}
+.card-description { font-size: 14px; font-weight: 700; color: var(--gray-700); line-height: 1.55; margin-bottom: 0; }
+.req-block-title { font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+.card-info-rows { display: flex; flex-direction: column; gap: 6px; }
+.card-info-row { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #4b5563; line-height: 1.5; }
+.card-info-row i { color: var(--indigo-1); font-size: 12px; margin-top: 2px; flex-shrink: 0; width: 14px; text-align: center; }
+.card-info-row span { flex: 1; word-break: break-word; overflow-wrap: break-word; white-space: normal; min-width: 0; }
+.card-company { font-size: 1.15rem; font-weight: 800; color: var(--gray-900); margin-bottom: 6px; line-height: 1.3; word-break: break-word; overflow-wrap: break-word; white-space: normal; }
+.job-title { word-break: break-word; overflow-wrap: break-word; white-space: normal; line-height: 1.4; }
 
 /* ==================== LISTA DE REQUISITOS EN CARDS ==================== */
-.requirements-block {
-    background: #f8f7ff;
-    border: 1px solid rgba(102,126,234,0.15);
-    border-radius: 10px;
-    padding: 10px 14px;
-}
+.requirements-block { background: #f8f7ff; border: 1px solid rgba(102,126,234,0.15); border-radius: 10px; padding: 10px 14px; }
 .requirements-list { list-style: none; padding: 0; margin: 0; }
-.requirements-list li {
-    font-size: 13px;
-    color: var(--gray-700);
-    padding: 3px 0 3px 18px;
-    position: relative;
-    line-height: 1.5;
-}
-.requirements-list li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--indigo-1);
-    font-weight: 700;
-    font-size: 12px;
-}
+.requirements-list li { font-size: 13px; color: var(--gray-700); padding: 3px 0 3px 18px; position: relative; line-height: 1.5; }
+.requirements-list li::before { content: '✓'; position: absolute; left: 0; color: var(--indigo-1); font-weight: 700; font-size: 12px; }
 
 /* ==================== PANTALLA DE CATEGORÍAS ==================== */
-.categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 10px;
-}
-.categories-screen-bg {
-    background: #fff;
-    min-height: 100vh;
-}
-.categories-screen-bg .cat-screen-title {
-    color: var(--purple-2);
-    text-shadow: none;
-    font-size: 1.375rem;
-    font-weight: 900;
-    text-align: center;
-    letter-spacing: 0.2px;
-}
+.categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+.categories-screen-bg { background: #fff; min-height: 100vh; }
+.categories-screen-bg .cat-screen-title { color: var(--purple-2); text-shadow: none; font-size: 1.375rem; font-weight: 900; text-align: center; letter-spacing: 0.2px; }
 
 /* ==================== CARDS DE CATEGORÍA V2 ==================== */
 .category-card-v2 {
@@ -1126,20 +743,16 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     border-radius: 14px;
     padding: 11px 16px;
     cursor: pointer;
-    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: left;
     position: relative;
     overflow: hidden;
     width: 100%;
-    box-shadow:
-        0 4px 14px rgba(0,0,0,0.28),
-        0 1px 3px rgba(0,0,0,0.18),
-        inset 0 1px 0 rgba(255,255,255,0.35),
-        inset 0 -1px 0 rgba(0,0,0,0.12);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.12);
+    will-change: transform;
 }
 .cat-all { padding: 13px 18px; box-shadow: 0 6px 20px rgba(124,58,237,0.45), inset 0 1px 0 rgba(255,255,255,0.3); }
 
-/* Brillo superior fijo */
 .category-card-v2::before {
     content: '';
     position: absolute;
@@ -1150,517 +763,186 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     pointer-events: none;
     z-index: 1;
 }
-/* Destello en hover */
 .category-card-v2::after {
     content: '';
     position: absolute;
     top: -30%; left: -80%;
     width: 55%; height: 160%;
-    background: linear-gradient(
-        105deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.32) 45%,
-        rgba(255,255,255,0.52) 50%,
-        rgba(255,255,255,0.32) 55%,
-        rgba(255,255,255,0) 100%
-    );
+    background: linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.32) 45%, rgba(255,255,255,0.52) 50%, rgba(255,255,255,0.32) 55%, rgba(255,255,255,0) 100%);
     transform: translateX(-120%) skewX(-15deg);
     transition: transform 0.55s ease, opacity 0.55s ease;
     opacity: 0;
     pointer-events: none;
     z-index: 3;
+    will-change: transform, opacity;
 }
-.category-card-v2:hover::after {
-    transform: translateX(280%) skewX(-15deg);
-    opacity: 1;
-}
+.category-card-v2:hover::after { transform: translateX(280%) skewX(-15deg); opacity: 1; }
 .category-card-v2 > * { position: relative; z-index: 4; }
-.category-card-v2:hover {
-    transform: translateY(-3px) scale(1.012);
-    box-shadow:
-        0 10px 28px rgba(0,0,0,0.32),
-        0 2px 6px rgba(0,0,0,0.18),
-        inset 0 1px 0 rgba(255,255,255,0.42),
-        inset 0 -1px 0 rgba(0,0,0,0.12);
-}
-.category-card-v2:active {
-    transform: translateY(0) scale(0.98);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.28);
-}
+.category-card-v2:hover { transform: translateY(-3px) scale(1.012); box-shadow: 0 10px 28px rgba(0,0,0,0.32), 0 2px 6px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.42), inset 0 -1px 0 rgba(0,0,0,0.12); }
+.category-card-v2:active { transform: translateY(0) scale(0.98); box-shadow: 0 2px 8px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.28); }
 
-.cat-v2-icon-wrap {
-    width: 42px; height: 42px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.22);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(255,255,255,0.3);
-}
+.cat-v2-icon-wrap { width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; flex-shrink: 0; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3); }
 .cat-v2-icon-wrap i { font-size: 18px; color: #ffffff; }
-
 .cat-v2-info { flex: 1; min-width: 0; text-align: center; }
-.cat-v2-name {
-    display: block;
-    font-weight: 700;
-    font-size: 17px;
-    color: #ffffff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-.cat-v2-count {
-    display: block;
-    font-size: 13px;
-    color: rgba(255,255,255,0.82);
-    margin-top: 2px;
-    font-weight: 500;
-}
-.cat-v2-arrow {
-    color: rgba(255,255,255,0.7);
-    font-size: 13px;
-    flex-shrink: 0;
-    transition: transform 0.2s ease;
-}
-.category-card-v2:hover .cat-v2-arrow {
-    transform: translateX(4px);
-    color: white;
-}
-
-/* ========= Compatibilidad — .category-card (versión legacy) ========= */
-.category-card {
-    display: flex; align-items: center; gap: 16px;
-    background: rgba(255,255,255,0.95); border: 2px solid transparent;
-    border-radius: 16px; padding: 18px 20px; cursor: pointer;
-    transition: all 0.25s ease; text-align: left;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08); position: relative; overflow: hidden;
-}
-.category-card::before {
-    content: ''; position: absolute; left:0; top:0; bottom:0; width:4px;
-    background: var(--cat-color, var(--indigo-1)); border-radius: 0 2px 2px 0;
-    transition: width 0.25s ease;
-}
-.category-card:hover { border-color: var(--cat-color, var(--indigo-1)); transform: translateY(-3px); background: white; }
-.category-card:hover::before { width: 6px; }
-
-.category-icon-wrap {
-    width: 48px; height: 48px; border-radius: 12px;
-    background: var(--cat-light, rgba(102,126,234,0.12));
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.category-icon-wrap i { font-size: 20px; color: var(--cat-color, var(--indigo-1)); }
-.category-card:hover .category-icon-wrap { background: var(--cat-color, var(--indigo-1)); }
-.category-card:hover .category-icon-wrap i { color: white; }
-
-.category-info { flex: 1; min-width: 0; text-align: center; }
-.category-name { display: block; font-weight: 700; font-size: 17px; color: var(--gray-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.category-count { display: block; font-size: 14px; color: var(--gray-500); margin-top: 2px; }
-.category-arrow { color: var(--gray-300); font-size: 13px; transition: all 0.2s ease; flex-shrink: 0; }
-.category-card:hover .category-arrow { color: var(--cat-color, var(--indigo-1)); transform: translateX(4px); }
+.cat-v2-name { display: block; font-weight: 700; font-size: 17px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.cat-v2-count { display: block; font-size: 13px; color: rgba(255,255,255,0.82); margin-top: 2px; font-weight: 500; }
+.cat-v2-arrow { color: rgba(255,255,255,0.7); font-size: 13px; flex-shrink: 0; transition: transform 0.2s ease; }
+.category-card-v2:hover .cat-v2-arrow { transform: translateX(4px); color: white; }
 
 /* ==================== LOADER ==================== */
-.loader {
-    border: 4px solid rgba(102,126,234,0.2);
-    border-top: 4px solid var(--indigo-1);
-    border-radius: 50%;
-    width: 50px; height: 50px;
-    animation: spin 0.8s linear infinite;
-    margin: 20px auto;
-}
+.loader { border: 4px solid rgba(102,126,234,0.2); border-top: 4px solid var(--indigo-1); border-radius: 50%; width: 50px; height: 50px; animation: spin 0.8s linear infinite; margin: 20px auto; will-change: transform; }
 
 /* ==================== CALENDARIO ==================== */
-.calendar-modal {
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 25px 80px rgba(0,0,0,0.3);
-    z-index: 10001;
-    padding: 24px;
-    max-width: 400px;
-    width: 90%;
-    animation: modalPop 0.3s ease-out;
-}
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 16px;
-    border-bottom: 2px solid var(--gray-200);
-}
+.calendar-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; box-shadow: 0 25px 80px rgba(0,0,0,0.3); z-index: 10001; padding: 24px; max-width: 400px; width: 90%; animation: modalPop 0.3s ease-out; }
+.calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid var(--gray-200); }
 .calendar-header h3 { font-size: 18px; font-weight: 700; color: var(--gray-800); }
 .calendar-nav { display: flex; gap: 12px; align-items: center; }
-.calendar-nav button {
-    background: #f3f4f6;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s;
-}
+.calendar-nav button { background: #f3f4f6; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
 .calendar-nav button:hover { background: var(--gray-200); }
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    margin-top: 16px;
-}
-.calendar-day {
-    text-align: center;
-    padding: 12px 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s;
-}
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 16px; }
+.calendar-day { text-align: center; padding: 12px 8px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; }
 .calendar-day.header { color: var(--gray-500); font-size: 12px; font-weight: 700; cursor: default; padding: 8px; }
 .calendar-day:not(.header):hover { background: #f3f4f6; }
 .calendar-day.selected { background: var(--indigo-1); color: white; }
 .calendar-day.today { border: 2px solid var(--indigo-1); }
 .calendar-day.disabled { color: var(--gray-300); cursor: not-allowed; }
 .calendar-day.disabled:hover { background: transparent; }
-.calendar-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 2px solid var(--gray-200);
-}
+.calendar-actions { display: flex; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 2px solid var(--gray-200); }
 .calendar-actions button { flex: 1; }
 
-/* ==================== CHAT IA (modo clásico) ==================== */
-.ai-chat-modal {
-    position: fixed;
-    bottom: 20px; left: 50%;
-    transform: translateX(-50%);
-    width: 400px; max-height: 600px;
-    z-index: 9999;
-    animation: slideUp 0.4s ease-out;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    border: 2px solid rgba(0,0,0,0.2);
-}
+/* ==================== CHAT IA ==================== */
+.ai-chat-modal { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 400px; max-height: 600px; z-index: 9999; animation: slideUp 0.4s ease-out; background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); border: 2px solid rgba(0,0,0,0.2); will-change: transform; }
 .ai-chat-modal.minimized { width: 280px; height: 60px; max-height: 60px; }
-.ai-chat-modal.minimized .ai-chat-messages,
-.ai-chat-modal.minimized .ai-chat-input { display: none; }
+.ai-chat-modal.minimized .ai-chat-messages, .ai-chat-modal.minimized .ai-chat-input { display: none; }
 .ai-chat-modal.minimized .ai-chat-header { border-radius: 16px; }
 
-.ai-chat-header {
-    background: var(--grad-dark);
-    color: var(--gold);
-    padding: 16px 20px;
-    border-radius: 16px 16px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: move;
-    font-weight: 700;
-    font-size: 18px;
-}
+.ai-chat-header { background: var(--grad-dark); color: var(--gold); padding: 16px 20px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center; cursor: move; font-weight: 700; font-size: 18px; }
 .ai-chat-header h3 { margin: 0; color: var(--gold); }
-.ai-chat-header .close-btn {
-    background: var(--white-10);
-    border: none;
-    color: var(--gold);
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-left: 12px;
-}
-.ai-chat-header .close-btn:hover {
-    background: rgba(255,215,0,0.2);
-    transform: rotate(90deg);
-}
+.ai-chat-header .close-btn { background: var(--white-10); border: none; color: var(--gold); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; margin-left: 12px; }
+.ai-chat-header .close-btn:hover { background: rgba(255,215,0,0.2); transform: rotate(90deg); }
 
-.ai-chat-messages {
-    background: linear-gradient(145deg, #0f172a 0%, #1f2937 100%);
-    padding: 20px;
-    max-height: 300px;
-    overflow-y: auto;
-    border-left: 2px solid var(--gold);
-    border-right: 2px solid var(--gold);
-}
-.ai-message {
-    margin-bottom: 16px;
-    padding: 12px 16px;
-    border-radius: 12px;
-    max-width: 90%;
-    word-wrap: break-word;
-    font-size: 14px;
-    line-height: 1.5;
-}
-.ai-message.user {
-    background: var(--grad-blue);
-    color: white;
-    margin-left: auto;
-    border-top-right-radius: 4px;
-}
-.ai-message.bot {
-    background: linear-gradient(135deg, #1f2937 0%, #334155 100%);
-    color: var(--gold);
-    border-top-left-radius: 4px;
-    border-left: 3px solid var(--gold);
-}
+.ai-chat-messages { background: linear-gradient(145deg, #0f172a 0%, #1f2937 100%); padding: 20px; max-height: 300px; overflow-y: auto; border-left: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+.ai-message { margin-bottom: 16px; padding: 12px 16px; border-radius: 12px; max-width: 90%; word-wrap: break-word; font-size: 14px; line-height: 1.5; }
+.ai-message.user { background: var(--grad-blue); color: white; margin-left: auto; border-top-right-radius: 4px; }
+.ai-message.bot { background: linear-gradient(135deg, #1f2937 0%, #334155 100%); color: var(--gold); border-top-left-radius: 4px; border-left: 3px solid var(--gold); }
 
-.ai-loading {
-    display: inline-block;
-    width: 20px; height: 20px;
-    border: 3px solid var(--gold-dim);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
+.ai-loading { display: inline-block; width: 20px; height: 20px; border: 3px solid var(--gold-dim); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; will-change: transform; }
 
-.ai-chat-input {
-    background: linear-gradient(135deg, #1f2937 0%, #0f172a 100%);
-    padding: 16px;
-    border-radius: 0 0 16px 16px;
-}
-.ai-chat-input textarea {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid var(--gold);
-    border-radius: 12px;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    resize: none;
-    font-family: inherit;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-.ai-chat-input textarea:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 15px rgba(255,215,0,0.5);
-}
+.ai-chat-input { background: linear-gradient(135deg, #1f2937 0%, #0f172a 100%); padding: 16px; border-radius: 0 0 16px 16px; }
+.ai-chat-input textarea { width: 100%; padding: 12px 16px; border: 2px solid var(--gold); border-radius: 12px; background: rgba(255,255,255,0.1); color: white; resize: none; font-family: inherit; font-size: 14px; transition: all 0.3s ease; }
+.ai-chat-input textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 15px rgba(255,215,0,0.5); }
 .ai-chat-input textarea::placeholder { color: rgba(255,255,255,0.5); }
 
-.ai-chat-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 12px;
-}
-.ai-chat-actions button {
-    flex: 1;
-    padding: 12px 16px;
-    border: none;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
+.ai-chat-actions { display: flex; gap: 12px; margin-top: 12px; }
+.ai-chat-actions button { flex: 1; padding: 12px 16px; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .ai-chat-actions button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.ai-chat-actions .btn-send {
-    background: linear-gradient(135deg, var(--blue-2) 0%, var(--blue-4) 100%);
-    color: white;
-}
-.ai-chat-actions .btn-send:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(37,99,235,0.4);
-}
-.ai-chat-actions .btn-start {
-    background: linear-gradient(135deg, var(--green-2) 0%, #15803d 100%);
-    color: white;
-    animation: pulse 2s infinite;
-}
-.ai-chat-actions .btn-start:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(22,163,74,0.4);
-}
-.ai-chat-actions .btn-close-chat {
-    background: var(--grad-red);
-    color: white;
-}
-.ai-chat-actions .btn-close-chat:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(220,38,38,0.4);
-}
+.ai-chat-actions .btn-send { background: linear-gradient(135deg, var(--blue-2) 0%, var(--blue-4) 100%); color: white; }
+.ai-chat-actions .btn-send:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,99,235,0.4); }
+.ai-chat-actions .btn-start { background: linear-gradient(135deg, var(--green-2) 0%, #15803d 100%); color: white; animation: pulse 2s infinite; }
+.ai-chat-actions .btn-start:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(22,163,74,0.4); }
+.ai-chat-actions .btn-close-chat { background: var(--grad-red); color: white; }
+.ai-chat-actions .btn-close-chat:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(220,38,38,0.4); }
 
-.ai-chat-input .file-upload {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-top: 12px;
-}
-.ai-chat-input .file-upload label {
-    background: rgba(255,215,0,0.2);
-    color: var(--gold);
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255,215,0,0.3);
-}
-.ai-chat-input .file-upload label:hover {
-    background: var(--gold-dim);
-    transform: translateY(-1px);
-}
+.ai-chat-input .file-upload { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+.ai-chat-input .file-upload label { background: rgba(255,215,0,0.2); color: var(--gold); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; border: 1px solid rgba(255,215,0,0.3); }
+.ai-chat-input .file-upload label:hover { background: var(--gold-dim); transform: translateY(-1px); }
 .ai-chat-input .file-upload input { display: none; }
-.ai-chat-input .file-preview {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.1);
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-top: 8px;
-    border: 1px solid rgba(255,215,0,0.2);
-}
-.ai-chat-input .file-preview img {
-    width: 40px; height: 40px;
-    object-fit: cover;
-    border-radius: 6px;
-}
-.ai-chat-input .file-preview .remove-file {
-    background: rgba(255,0,0,0.3);
-    color: white;
-    border: none;
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 12px;
-}
+.ai-chat-input .file-preview { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 8px; margin-top: 8px; border: 1px solid rgba(255,215,0,0.2); }
+.ai-chat-input .file-preview img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; }
+.ai-chat-input .file-preview .remove-file { background: rgba(255,0,0,0.3); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 12px; }
 
-/* ==================== SCROLLBAR PERSONALIZADO ==================== */
+/* ==================== SCROLLBAR ==================== */
 ::-webkit-scrollbar { width: 12px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb {
-    background: var(--grad-indigo);
-    border-radius: 6px;
-}
+::-webkit-scrollbar-thumb { background: var(--grad-indigo); border-radius: 6px; }
 
 /* ==================== UTILIDADES ==================== */
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* ==================== CONTADOR DE VISITAS (FIJO) ==================== */
+/* ==================== CONTADOR DE VISITAS ==================== */
 .visit-counter-bar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
     z-index: 8000;
     background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
-    border-top: 1px solid rgba(167, 139, 250, 0.35);
+    border-top: 1px solid rgba(167,139,250,0.35);
     padding: 8px 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    box-shadow: 0 -4px 20px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 -4px 20px rgba(79,70,229,0.3);
     backdrop-filter: blur(8px);
 }
-.visit-counter-icon {
-    font-size: 22px;
-    flex-shrink: 0;
+.visit-counter-icon { font-size: 22px; flex-shrink: 0; }
+.visit-counter-text { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; letter-spacing: 0.2px; }
+.visit-counter-number { font-size: 17px; font-weight: 900; color: #fbbf24; letter-spacing: 1px; text-shadow: 0 0 16px rgba(251,191,36,0.7), 0 0 30px rgba(251,191,36,0.3); font-variant-numeric: tabular-nums; min-width: 54px; text-align: center; display: inline-block; }
+.visit-counter-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(167,139,250,0.7); flex-shrink: 0; box-shadow: 0 0 6px rgba(167,139,250,0.5); }
+
+.quick-btn-wide { padding: 9px 28px; font-size: 14px; min-width: 140px; }
+
+/* ==================== FOOTER MARQUEE ==================== */
+.app-footer {
+    overflow: hidden;
+    white-space: nowrap;
+    margin-top: 32px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(109,40,217,0.12);
 }
-.visit-counter-text {
-    font-size: 13px;
-    color: rgba(255,255,255,0.85);
-    font-weight: 500;
-    letter-spacing: 0.2px;
-}
-.visit-counter-number {
-    font-size: 17px;
-    font-weight: 900;
-    color: #fbbf24;
-    letter-spacing: 1px;
-    text-shadow: 0 0 16px rgba(251,191,36,0.7), 0 0 30px rgba(251,191,36,0.3);
-    font-variant-numeric: tabular-nums;
-    min-width: 54px;
-    text-align: center;
+.app-footer-inner {
     display: inline-block;
-}
-.visit-counter-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: rgba(167, 139, 250, 0.7);
-    flex-shrink: 0;
-    box-shadow: 0 0 6px rgba(167,139,250,0.5);
-}
-/* Botones quick-btn-wide: más anchos cuando solo hay 2 */
-.quick-btn-wide {
-    padding: 9px 28px;
-    font-size: 14px;
-    min-width: 140px;
+    animation: marqueeScroll 18s linear infinite;
+    color: var(--gray-400);
+    font-size: 13px;
+    font-weight: 500;
+    will-change: transform;
 }
 
+/* ==================== USER SESSION BADGE ==================== */
+.user-session-badge { background: #f8f7ff; }
+.session-label { font-size: 11px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.session-email { font-size: 13px; color: var(--purple-1); font-weight: 600; }
     </style>
 </head>
 <body>
     <div id="app"></div>
     <div id="modal-root"></div>
 
-    <!-- Supabase SDK — debe ir antes de todos los scripts propios -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-// ============================================================
-//  SUPERINDEX.html — Empleos León GTO
-//  Archivo único unificado (endpoints + config + counter + auth + ui)
-//  Generado correctamente con encoding UTF-8
-// ============================================================
-
 // ==================== ENDPOINTS ====================
-// ==================== ENDPOINTS Y CONFIGURACIÓN CENTRALIZADA ====================
-// ARCHIVO: endpoints.js
-
 const ENDPOINTS = {
     SUPABASE_URL: 'https://mecrloufrzbfcihioeve.supabase.co',
     SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lY3Jsb3VmcnpiZmNpaGlvZXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NTM2OTgsImV4cCI6MjA4NjMyOTY5OH0.Gs36EkNHv5vG2CPdrK7XtCnWvX5NYkyPY9moTdezbVA',
     SUPABASE_REDIRECT_URL: 'https://compualextech24.github.io/empleosdeleongtoaxel/',
     AI_EXTRACT_VACANCY: '/functions/v1/extract-vacancy',
-    TABLES: {
-        VACANCIES: 'vacancies'
-    },
-    CHANNELS: {
-        VACANCIES: 'vacancies'
-    }
+    TABLES:   { VACANCIES: 'vacancies' },
+    CHANNELS: { VACANCIES: 'vacancies' }
 };
 
 const EndpointHelpers = {
-    getEdgeFunctionUrl: (functionPath) => {
-        return `${ENDPOINTS.SUPABASE_URL}${functionPath}`;
-    },
-    getAIExtractUrl: () => {
-        return `${ENDPOINTS.SUPABASE_URL}${ENDPOINTS.AI_EXTRACT_VACANCY}`;
-    }
+    getEdgeFunctionUrl: (fp) => `${ENDPOINTS.SUPABASE_URL}${fp}`,
+    getAIExtractUrl:    ()   => `${ENDPOINTS.SUPABASE_URL}${ENDPOINTS.AI_EXTRACT_VACANCY}`
 };
 
-window.ENDPOINTS = ENDPOINTS;
+window.ENDPOINTS       = ENDPOINTS;
 window.EndpointHelpers = EndpointHelpers;
 
-// ==================== CONFIGURACIÓN GLOBAL & ESTADO ====================
-// ==================== INICIALIZACIÓN DE MÓDULOS ====================
-
-// ==================== INICIALIZAR CLIENTE SUPABASE ====================
+// ==================== SUPABASE CLIENT ====================
 const { createClient } = supabase;
 const supabaseClient = createClient(ENDPOINTS.SUPABASE_URL, ENDPOINTS.SUPABASE_ANON_KEY);
 
-// ==================== ESTADO GLOBAL DE LA APLICACIÓN ====================
+// ==================== ESTADO GLOBAL ====================
 let state = {
     view: 'login',
     user: null,
     isGuest: false,
     vacancies: [],
     filteredVacancies: [],
+    selectedCategory: null,
     dateFilter: null,
     editingVacancy: null,
     showPassword: false,
@@ -1673,18 +955,10 @@ let state = {
     calendarMonth: new Date().getMonth(),
     calendarYear: new Date().getFullYear(),
     formData: {
-        email: '',
-        password: '',
-        confirmPassword: '',
-        company: '',
-        job_title: '',
-        description: '',
-        location: '',
-        contact_phone: '',
-        publication_date: '',
-        schedule: '',
-        work_days: '',
-        category: '',
+        email: '', password: '', confirmPassword: '',
+        company: '', job_title: '', description: '',
+        location: '', contact_phone: '', publication_date: '',
+        schedule: '', work_days: '', category: '',
         imageBase64: '',
         requirements: 'Disponibilidad y actitud de trabajar'
     },
@@ -1698,79 +972,92 @@ let state = {
     isLoggingOut: false
 };
 
+// ==================== FIX #1: cleanValue — elimina strings "NULL" / "null" / undefined ====================
+// Causa principal del bug visible en el screenshot: campos mostraban "NULL" literalmente
+const cleanValue = (val) => {
+    if (val === null || val === undefined) return '';
+    const s = String(val).trim();
+    if (s === 'NULL' || s === 'null' || s === 'undefined' || s === 'NaN') return '';
+    return s;
+};
+
 // ==================== UTILIDADES ====================
 const showLoading = () => {
     if (document.getElementById('loader-overlay')) return;
     state.loading = true;
-    state.isRendering = false; // ← desbloquear render si estaba atascado
     const loader = document.createElement('div');
     loader.id = 'loader-overlay';
     loader.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)';
     loader.innerHTML = '<div class="loader"></div>';
     document.body.appendChild(loader);
-    // Global safety: auto-hide after 15 seconds to prevent infinite spinner
-    setTimeout(() => {
-        if (document.getElementById('loader-overlay')) {
-            console.warn('⚠️ Safety timeout: cerrando spinner automáticamente');
-            hideLoading();
-        }
-    }, 15000);
 };
 
 const hideLoading = () => {
     state.loading = false;
-    // Remove ALL loader overlays (safety in case of duplicates)
     document.querySelectorAll('#loader-overlay').forEach(el => el.remove());
 };
 
 const escapeHtml = (text) => {
     if (!text) return '';
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-    };
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
     return String(text).replace(/[&<>"']/g, m => map[m]);
 };
 
-// ==================== MODAL ESTILO WINDOWS ====================
-// Tipos disponibles: success, error, warning, info, question (positivo/neutro), question-danger (destructivo → header rojo)
+// ==================== FIX #2: render() con debounce — elimina cascada de re-renders ====================
+// El problema original: el retry con setTimeout generaba renders encadenados que bloqueaban el hilo
+let _renderTimer = null;
+
+function render(immediate) {
+    if (immediate) {
+        _doRender();
+        return;
+    }
+    clearTimeout(_renderTimer);
+    _renderTimer = setTimeout(_doRender, 16); // 1 frame de debounce
+}
+
+function _doRender() {
+    // Guardia simple sin setTimeout de retry (evita cascadas)
+    if (state.isRendering) return;
+    state.isRendering = true;
+    try {
+        const app = document.getElementById('app');
+        if (!app) return;
+        let content = '';
+        switch (state.view) {
+            case 'login':      content = renderLogin();      break;
+            case 'signup':     content = renderSignup();     break;
+            case 'terms':      content = renderTerms();      break;
+            case 'categories': content = renderCategories(); break;
+            case 'dashboard':  content = renderDashboard();  break;
+            case 'form':       content = renderForm();       break;
+            default:           content = renderLogin();
+        }
+        app.innerHTML = content + renderCalendar();
+        attachEvents();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+        console.error('❌ Error en render:', err);
+    } finally {
+        state.isRendering = false;
+    }
+}
+
+// ==================== MODAL ====================
 const showModal = (type, title, message, onConfirm = null) => {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
 
-    const icons = {
-        success:         'fa-check-circle',
-        error:           'fa-exclamation-circle',
-        warning:         'fa-exclamation-triangle',
-        info:            'fa-info-circle',
-        question:        'fa-question-circle',
-        'question-danger': 'fa-exclamation-triangle'
-    };
-
-    const colors = {
-        success:         '#22c55e',
-        error:           '#ef4444',
-        warning:         '#f59e0b',
-        info:            '#3b82f6',
-        question:        '#22c55e',          // positivo → verde
-        'question-danger': '#ef4444'         // destructivo → rojo
-    };
-
-    // Clase CSS del header (question-danger usa la clase de error para el fondo rojo)
+    const icons   = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle', question: 'fa-question-circle', 'question-danger': 'fa-exclamation-triangle' };
+    const colors  = { success: '#22c55e', error: '#ef4444', warning: '#f59e0b', info: '#3b82f6', question: '#22c55e', 'question-danger': '#ef4444' };
     const headerClass = type === 'question-danger' ? 'modal-header-error' : `modal-header-${type}`;
-
     const isQuestion = type === 'question' || type === 'question-danger';
 
     modal.innerHTML = `
         <div class="modal-window">
             <div class="modal-header ${headerClass}">
                 <i class="fas ${icons[type]}" style="color:${colors[type]}"></i>
-                <div class="header-text">
-                    <h3>${escapeHtml(title)}</h3>
-                </div>
+                <div class="header-text"><h3>${escapeHtml(title)}</h3></div>
             </div>
             <div class="modal-body">${escapeHtml(message)}</div>
             <div class="modal-footer">
@@ -1779,55 +1066,33 @@ const showModal = (type, title, message, onConfirm = null) => {
                     : '<button class="btn btn-primary modal-ok">Aceptar</button>'
                 }
             </div>
-        </div>
-    `;
+        </div>`;
 
     document.getElementById('modal-root').appendChild(modal);
 
     if (isQuestion) {
-        modal.querySelector('.modal-cancel').onclick = () => modal.remove();
-        modal.querySelector('.modal-confirm').onclick = () => {
-            modal.remove();
-            if (onConfirm) onConfirm();
-        };
+        modal.querySelector('.modal-cancel').onclick  = () => modal.remove();
+        modal.querySelector('.modal-confirm').onclick = () => { modal.remove(); if (onConfirm) onConfirm(); };
     } else {
         modal.querySelector('.modal-ok').onclick = () => modal.remove();
         setTimeout(() => modal.remove(), 8000);
     }
-
-    modal.onclick = (e) => {
-        if (e.target === modal && !isQuestion) modal.remove();
-    };
+    modal.onclick = (e) => { if (e.target === modal && !isQuestion) modal.remove(); };
 };
 
 // ==================== CALENDARIO ====================
-function openCalendar() {
-    state.calendarOpen = true;
-    state.calendarMonth = new Date().getMonth();
-    state.calendarYear = new Date().getFullYear();
-    render();
-}
-
-function closeCalendar() {
-    state.calendarOpen = false;
-    render();
-}
+function openCalendar()  { state.calendarOpen = true; state.calendarMonth = new Date().getMonth(); state.calendarYear = new Date().getFullYear(); render(); }
+function closeCalendar() { state.calendarOpen = false; render(); }
 
 function changeMonth(delta) {
     state.calendarMonth += delta;
-    if (state.calendarMonth > 11) {
-        state.calendarMonth = 0;
-        state.calendarYear++;
-    } else if (state.calendarMonth < 0) {
-        state.calendarMonth = 11;
-        state.calendarYear--;
-    }
+    if (state.calendarMonth > 11) { state.calendarMonth = 0;  state.calendarYear++; }
+    else if (state.calendarMonth < 0)  { state.calendarMonth = 11; state.calendarYear--; }
     render();
 }
 
 function selectDate(year, month, day) {
-    const date = new Date(year, month, day);
-    state.dateFilter = date;
+    state.dateFilter = new Date(year, month, day);
     filterVacanciesByDate();
     closeCalendar();
     showModal('success', 'Filtro aplicado', `Mostrando vacantes del ${day}/${month + 1}/${year}`);
@@ -1842,30 +1107,25 @@ function clearDateFilter() {
 }
 
 function filterVacanciesByDate() {
-    if (!state.dateFilter) {
-        state.filteredVacancies = [...state.vacancies];
-        return;
-    }
+    if (!state.dateFilter) { state.filteredVacancies = [...state.vacancies]; return; }
     const filterDate = state.dateFilter.toLocaleDateString('es-MX');
     state.filteredVacancies = state.vacancies.filter(v => {
-        if (!v.publication_date) return false;
-        const vacDate = new Date(v.created_at).toLocaleDateString('es-MX');
-        return vacDate === filterDate;
+        if (!v.created_at) return false;
+        return new Date(v.created_at).toLocaleDateString('es-MX') === filterDate;
     });
     render();
 }
 
 function renderCalendar() {
     if (!state.calendarOpen) return '';
-    
     const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-    const firstDay = new Date(state.calendarYear, state.calendarMonth, 1).getDay();
+    const firstDay    = new Date(state.calendarYear, state.calendarMonth, 1).getDay();
     const daysInMonth = new Date(state.calendarYear, state.calendarMonth + 1, 0).getDate();
     const today = new Date();
     const isCurrentMonth = today.getMonth() === state.calendarMonth && today.getFullYear() === state.calendarYear;
-    
-    let calendarHTML = `
-        <div class="modal-overlay" onclick="if(event.target === this) closeCalendar()">
+
+    let html = `
+        <div class="modal-overlay" onclick="if(event.target===this)closeCalendar()">
             <div class="calendar-modal">
                 <div class="calendar-header">
                     <h3><i class="fas fa-calendar-alt mr-2"></i>${monthNames[state.calendarMonth]} ${state.calendarYear}</h3>
@@ -1875,86 +1135,56 @@ function renderCalendar() {
                     </div>
                 </div>
                 <div class="calendar-grid">
-                    <div class="calendar-day header">D</div>
-                    <div class="calendar-day header">L</div>
-                    <div class="calendar-day header">M</div>
-                    <div class="calendar-day header">M</div>
-                    <div class="calendar-day header">J</div>
-                    <div class="calendar-day header">V</div>
-                    <div class="calendar-day header">S</div>
-    `;
-    
-    for (let i = 0; i < firstDay; i++) {
-        calendarHTML += '<div class="calendar-day"></div>';
-    }
-    
+                    <div class="calendar-day header">D</div><div class="calendar-day header">L</div>
+                    <div class="calendar-day header">M</div><div class="calendar-day header">M</div>
+                    <div class="calendar-day header">J</div><div class="calendar-day header">V</div>
+                    <div class="calendar-day header">S</div>`;
+
+    for (let i = 0; i < firstDay; i++) html += '<div class="calendar-day"></div>';
     for (let day = 1; day <= daysInMonth; day++) {
-        const isToday = isCurrentMonth && day === today.getDate();
-        const isSelected = state.dateFilter &&
-            state.dateFilter.getDate() === day &&
-            state.dateFilter.getMonth() === state.calendarMonth &&
-            state.dateFilter.getFullYear() === state.calendarYear;
-        
-        calendarHTML += `<div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" onclick="selectDate(${state.calendarYear}, ${state.calendarMonth}, ${day})">${day}</div>`;
+        const isToday    = isCurrentMonth && day === today.getDate();
+        const isSelected = state.dateFilter && state.dateFilter.getDate() === day && state.dateFilter.getMonth() === state.calendarMonth && state.dateFilter.getFullYear() === state.calendarYear;
+        html += `<div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" onclick="selectDate(${state.calendarYear},${state.calendarMonth},${day})">${day}</div>`;
     }
-    
-    calendarHTML += `
-                </div>
+
+    html += `</div>
                 <div class="calendar-actions">
                     <button class="btn btn-cancel" onclick="clearDateFilter()"><i class="fas fa-times"></i> Limpiar</button>
                     <button class="btn btn-primary" onclick="closeCalendar()"><i class="fas fa-check"></i> Cerrar</button>
                 </div>
             </div>
-        </div>
-    `;
-    
-    return calendarHTML;
+        </div>`;
+    return html;
 }
 
-// ==================== RESETEO COMPLETO ====================
+window.openCalendar  = openCalendar;
+window.closeCalendar = closeCalendar;
+window.changeMonth   = changeMonth;
+window.selectDate    = selectDate;
+window.clearDateFilter = clearDateFilter;
+
+// ==================== RESET COMPLETO ====================
 function resetCompleteState() {
     console.log('🔄 Reseteando estado completo...');
-    state.user = null;
-    state.isGuest = false;
-    state.view = 'login';
-    state.vacancies = [];
-    state.filteredVacancies = [];
-    state.dateFilter = null;
+    state.user = null; state.isGuest = false; state.view = 'login';
+    state.vacancies = []; state.filteredVacancies = [];
+    state.dateFilter = null; state.selectedCategory = null;
     state.editingVacancy = null;
-    state.showPassword = false;
-    state.showConfirmPassword = false;
-    state.menuOpen = false;
-    state.acceptedTerms = false;
-    state.loading = false;
-    state.isRendering = false; // CRITICAL: always unlock render cycle
-    state.isLoggingOut = false;
+    state.showPassword = false; state.showConfirmPassword = false;
+    state.menuOpen = false; state.acceptedTerms = false;
+    state.loading = false; state.isRendering = false; state.isLoggingOut = false;
+    clearTimeout(_renderTimer); _renderTimer = null;
     resetAuthForm();
     resetJobForm();
     clearAIData();
 }
 
-// ==================== EXPONER FUNCIONES GLOBALES PARA CALENDARIO ====================
-window.openCalendar = openCalendar;
-window.closeCalendar = closeCalendar;
-window.changeMonth = changeMonth;
-window.selectDate = selectDate;
-window.clearDateFilter = clearDateFilter;
-
 // ==================== CONTADOR DE VISITAS ====================
-// ==================== CONTADOR DE VISITAS — Empleos León GTO ====================
-// Estrategia robusta:
-//   • Usa UPDATE directo (más compatible con RLS que upsert)
-//   • Si falla Supabase, muestra valor desde localStorage como fallback
-//   • No cuenta la misma visita más de 1 vez por día por dispositivo
-//   • Base: 2000 visitas
-// ================================================================================
-
 const COUNTER_TABLE  = 'visit_counter';
 const COUNTER_ROW_ID = 1;
 const COUNTER_BASE   = 2000;
 const SESSION_KEY    = 'emp_leon_visited';
 
-// ---- Inyectar el widget fijo al fondo ----
 function injectCounterBar() {
     if (document.getElementById('visit-counter-bar')) return;
     const bar = document.createElement('div');
@@ -1965,68 +1195,42 @@ function injectCounterBar() {
         <span class="visit-counter-text">Tu comunidad ha alcanzado</span>
         <span class="visit-counter-dot"></span>
         <span class="visit-counter-number" id="visit-count-display">...</span>
-        <span class="visit-counter-text">usuarios</span>
-    `;
+        <span class="visit-counter-text">usuarios</span>`;
     document.body.appendChild(bar);
     document.body.style.paddingBottom = '46px';
 }
 
-// ---- ¿Ya se contó hoy? ----
 function alreadyCountedToday() {
-    try {
-        const raw = localStorage.getItem(SESSION_KEY);
-        if (!raw) return false;
-        const { date } = JSON.parse(raw);
-        return date === new Date().toISOString().slice(0, 10);
-    } catch { return false; }
+    try { const r = localStorage.getItem(SESSION_KEY); if (!r) return false; const { date } = JSON.parse(r); return date === new Date().toISOString().slice(0,10); }
+    catch { return false; }
 }
-
 function markVisitedToday() {
-    try {
-        localStorage.setItem(SESSION_KEY, JSON.stringify({
-            date: new Date().toISOString().slice(0, 10)
-        }));
-    } catch {}
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify({ date: new Date().toISOString().slice(0,10) })); } catch {}
 }
 
-// ---- Leer contador ----
 async function getCount() {
     try {
-        const { data, error } = await supabaseClient
-            .from(COUNTER_TABLE)
-            .select('count')
-            .eq('id', COUNTER_ROW_ID)
-            .single();
+        const { data, error } = await supabaseClient.from(COUNTER_TABLE).select('count').eq('id', COUNTER_ROW_ID).single();
         if (error) throw error;
         return Number(data.count) || COUNTER_BASE;
-    } catch (e) {
-        console.warn('Counter read error:', e.message);
-        try {
-            const cached = localStorage.getItem('emp_leon_count');
-            if (cached) return Number(cached);
-        } catch {}
+    } catch {
+        try { const c = localStorage.getItem('emp_leon_count'); if (c) return Number(c); } catch {}
         return COUNTER_BASE;
     }
 }
 
-// ---- Incrementar con UPDATE directo ----
 async function incrementCount(current) {
     const next = current + 1;
     try {
-        const { error } = await supabaseClient
-            .from(COUNTER_TABLE)
-            .update({ count: next })
-            .eq('id', COUNTER_ROW_ID);
+        const { error } = await supabaseClient.from(COUNTER_TABLE).update({ count: next }).eq('id', COUNTER_ROW_ID);
         if (error) throw error;
         return next;
-    } catch (e) {
-        console.warn('Counter update error:', e.message);
+    } catch {
         try { localStorage.setItem('emp_leon_count', String(next)); } catch {}
         return next;
     }
 }
 
-// ---- Animación tick-up ----
 function animateCount(from, to, ms) {
     ms = ms || 1400;
     const el = document.getElementById('visit-count-display');
@@ -2041,49 +1245,37 @@ function animateCount(from, to, ms) {
     requestAnimationFrame(frame);
 }
 
-// ---- Punto de entrada ----
 async function initVisitCounter() {
     injectCounterBar();
     const current = await getCount();
     try { localStorage.setItem('emp_leon_count', String(current)); } catch {}
     let display = current;
-    if (!alreadyCountedToday()) {
-        display = await incrementCount(current);
-        markVisitedToday();
-    }
+    if (!alreadyCountedToday()) { display = await incrementCount(current); markVisitedToday(); }
     animateCount(Math.max(COUNTER_BASE, display - 25), display);
 }
 
 function waitAndStart() {
     if (typeof supabaseClient !== 'undefined' && supabaseClient) {
-        initVisitCounter().catch(function(e) { console.warn('Counter init error:', e); });
-    } else {
-        setTimeout(waitAndStart, 200);
-    }
+        initVisitCounter().catch(e => console.warn('Counter init error:', e));
+    } else { setTimeout(waitAndStart, 200); }
 }
-
 window.addEventListener('DOMContentLoaded', waitAndStart);
 
-// ==================== AUTENTICACIÓN & VACANTES ====================
 // ==================== AUTENTICACIÓN ====================
 async function handleLogin(e) {
     e.preventDefault();
     if (state.loading) return;
-    const email = state.formData.email?.trim();
+    const email    = state.formData.email?.trim();
     const password = state.formData.password;
-    if (!email || !password) {
-        showModal('error', 'Error', 'Correo y contraseña son requeridos');
-        return;
-    }
+    if (!email || !password) { showModal('error', 'Error', 'Correo y contraseña son requeridos'); return; }
     showLoading();
     try {
         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        if (!data || !data.user) throw new Error('No se recibió información del usuario');
-        console.log('✅ Login exitoso');
-        // hideLoading() will be called by onAuthStateChange → SIGNED_IN
-        // but we add a safety fallback here in case the event is delayed
-        setTimeout(() => hideLoading(), 3000);
+        if (!data?.user) throw new Error('No se recibió información del usuario');
+        // FIX #3: hideLoading se llama en onAuthStateChange SIGNED_IN, pero agregamos
+        // un fallback de 5s para red lenta. Eliminamos el 3s original que era muy corto.
+        setTimeout(() => hideLoading(), 5000);
     } catch (error) {
         console.error('❌ Error login:', error);
         showModal('error', 'Credenciales incorrectas', 'Correo o contraseña incorrectos. Por favor valida tu información.');
@@ -2094,14 +1286,8 @@ async function handleLogin(e) {
 async function handleSignup(e) {
     e.preventDefault();
     if (state.loading) return;
-    if (state.formData.password !== state.formData.confirmPassword) {
-        showModal('error', 'Error', 'Las contraseñas no coinciden');
-        return;
-    }
-    if (state.formData.password.length < 6) {
-        showModal('error', 'Error', 'La contraseña debe tener al menos 6 caracteres');
-        return;
-    }
+    if (state.formData.password !== state.formData.confirmPassword) { showModal('error', 'Error', 'Las contraseñas no coinciden'); return; }
+    if (state.formData.password.length < 6) { showModal('error', 'Error', 'La contraseña debe tener al menos 6 caracteres'); return; }
     showLoading();
     try {
         const { data, error } = await supabaseClient.auth.signUp({
@@ -2109,32 +1295,21 @@ async function handleSignup(e) {
             password: state.formData.password,
             options: { emailRedirectTo: ENDPOINTS.SUPABASE_REDIRECT_URL }
         });
-        
-        // Detectar correo duplicado — Supabase puede lanzar error explícito
         if (error) {
-            if (error.message && (
-                error.message.includes('already registered') ||
-                error.message.includes('User already registered') ||
-                error.message.includes('duplicate') ||
-                error.status === 422
-            )) {
+            if (error.message?.includes('already registered') || error.message?.includes('duplicate') || error.status === 422) {
                 hideLoading();
                 showModal('error', 'Correo ya registrado', `El correo ${state.formData.email.trim().toLowerCase()} ya tiene una cuenta. Por favor inicia sesión o usa otro correo.`);
                 return;
             }
             throw error;
         }
-
-        // FIX: Supabase en modo "confirm email" devuelve identities:[] en vez de error
         if (data?.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
             hideLoading();
             showModal('error', 'Correo ya registrado', `El correo ${state.formData.email.trim().toLowerCase()} ya tiene una cuenta registrada. Por favor inicia sesión o usa otro correo.`);
             return;
         }
-        
-        // FIX #3: Modal claro explicando que se envió correo de confirmación
         hideLoading();
-        showModal('info', '📧 Revisa tu correo', `Se envió un enlace de confirmación a:\n${state.formData.email.trim().toLowerCase()}\n\nHaz clic en ese enlace para activar tu cuenta y luego inicia sesión normalmente. Si no lo ves, revisa tu carpeta de Spam.`);
+        showModal('info', '📧 Revisa tu correo', `Se envió un enlace de confirmación a:\n${state.formData.email.trim().toLowerCase()}\n\nHaz clic en ese enlace para activar tu cuenta y luego inicia sesión normalmente.`);
         state.view = 'login';
         resetAuthForm();
         render();
@@ -2145,7 +1320,6 @@ async function handleSignup(e) {
     }
 }
 
-// ==================== RESTABLECER CONTRASEÑA ====================
 function handleForgotPassword() {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
@@ -2153,28 +1327,17 @@ function handleForgotPassword() {
         <div class="modal-window">
             <div class="modal-header modal-header-info">
                 <i class="fas fa-lock" style="color:#667eea;font-size:24px"></i>
-                <div class="header-text">
-                    <h3>Restablecer contraseña</h3>
-                </div>
+                <div class="header-text"><h3>Restablecer contraseña</h3></div>
             </div>
             <div class="modal-body">
-                <p style="color:#4b5563;font-size:14px;margin-bottom:16px;line-height:1.6;">
-                    Ingresa el correo electrónico con el que te registraste y te enviaremos un enlace para crear una nueva contraseña.
-                </p>
+                <p style="color:#4b5563;font-size:14px;margin-bottom:16px;line-height:1.6;">Ingresa el correo electrónico con el que te registraste.</p>
                 <div style="position:relative;">
-                    <input
-                        type="email"
-                        id="reset-email-input"
-                        placeholder="tu@email.com"
-                        style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;transition:border-color 0.2s;"
-                        onfocus="this.style.borderColor='#667eea'"
-                        onblur="this.style.borderColor='#e5e7eb'"
-                    >
+                    <input type="email" id="reset-email-input" placeholder="tu@email.com"
+                        style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;"
+                        onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e5e7eb'">
                     <i class="fas fa-envelope" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:14px;pointer-events:none;"></i>
                 </div>
-                <p id="reset-error-msg" style="display:none;color:#ef4444;font-size:12px;margin-top:8px;">
-                    <i class="fas fa-exclamation-circle"></i> Por favor ingresa un correo válido.
-                </p>
+                <p id="reset-error-msg" style="display:none;color:#ef4444;font-size:12px;margin-top:8px;"><i class="fas fa-exclamation-circle"></i> Por favor ingresa un correo válido.</p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-cancel modal-cancel-reset">Cancelar</button>
@@ -2182,10 +1345,9 @@ function handleForgotPassword() {
                     <i class="fas fa-paper-plane"></i> Enviar enlace
                 </button>
             </div>
-        </div>
-    `;
+        </div>`;
     document.getElementById('modal-root').appendChild(modal);
-    setTimeout(() => { const i = document.getElementById('reset-email-input'); if (i) i.focus(); }, 100);
+    setTimeout(() => document.getElementById('reset-email-input')?.focus(), 100);
 
     modal.querySelector('.modal-cancel-reset').onclick = () => modal.remove();
     modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
@@ -2195,8 +1357,7 @@ function handleForgotPassword() {
         const emailInput = document.getElementById('reset-email-input');
         const errorMsg   = document.getElementById('reset-error-msg');
         const email = emailInput?.value?.trim().toLowerCase();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !emailRegex.test(email)) {
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             if (errorMsg) errorMsg.style.display = 'block';
             if (emailInput) emailInput.style.borderColor = '#ef4444';
             return;
@@ -2204,27 +1365,19 @@ function handleForgotPassword() {
         modal.remove();
         showLoading();
         try {
-            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                redirectTo: ENDPOINTS.SUPABASE_REDIRECT_URL
-            });
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: ENDPOINTS.SUPABASE_REDIRECT_URL });
             if (error) throw error;
             hideLoading();
-            showModal('success', '¡Correo enviado! 📧',
-                `Se envió un enlace para restablecer tu contraseña a:\n${email}\n\nRevisa tu bandeja de entrada y también la carpeta de Spam. El enlace expira en 1 hora.`);
+            showModal('success', '¡Correo enviado! 📧', `Se envió un enlace para restablecer tu contraseña a:\n${email}\n\nRevisa tu bandeja de entrada y también Spam.`);
         } catch (err) {
             console.error('❌ Error reset password:', err);
             hideLoading();
-            showModal('error', 'Error', 'No se pudo enviar el correo. Verifica que la dirección sea correcta e intenta de nuevo.');
+            showModal('error', 'Error', 'No se pudo enviar el correo. Verifica que la dirección sea correcta.');
         }
     };
-
-    // Enviar con Enter
-    document.getElementById('reset-email-input')?.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') sendBtn.click();
-    });
+    document.getElementById('reset-email-input')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendBtn.click(); });
 }
 
-// ==================== MODAL NUEVA CONTRASEÑA (después del link de recovery) ====================
 function showNewPasswordModal() {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
@@ -2232,34 +1385,20 @@ function showNewPasswordModal() {
         <div class="modal-window">
             <div class="modal-header modal-header-info">
                 <i class="fas fa-key" style="color:#667eea;font-size:24px"></i>
-                <div class="header-text">
-                    <h3>Crear nueva contraseña</h3>
-                </div>
+                <div class="header-text"><h3>Crear nueva contraseña</h3></div>
             </div>
             <div class="modal-body">
-                <p style="color:#4b5563;font-size:14px;margin-bottom:16px;line-height:1.6;">
-                    Ingresa tu nueva contraseña (mínimo 6 caracteres).
-                </p>
+                <p style="color:#4b5563;font-size:14px;margin-bottom:16px;line-height:1.6;">Ingresa tu nueva contraseña (mínimo 6 caracteres).</p>
                 <div style="position:relative;margin-bottom:14px;">
-                    <input
-                        type="password"
-                        id="new-password-input"
-                        placeholder="Nueva contraseña"
-                        style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;transition:border-color 0.2s;"
-                        onfocus="this.style.borderColor='#667eea'"
-                        onblur="this.style.borderColor='#e5e7eb'"
-                    >
+                    <input type="password" id="new-password-input" placeholder="Nueva contraseña"
+                        style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;"
+                        onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e5e7eb'">
                     <i class="fas fa-lock" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:14px;pointer-events:none;"></i>
                 </div>
                 <div style="position:relative;">
-                    <input
-                        type="password"
-                        id="new-password-confirm"
-                        placeholder="Confirmar nueva contraseña"
-                        style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;transition:border-color 0.2s;"
-                        onfocus="this.style.borderColor='#667eea'"
-                        onblur="this.style.borderColor='#e5e7eb'"
-                    >
+                    <input type="password" id="new-password-confirm" placeholder="Confirmar nueva contraseña"
+                        style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;"
+                        onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e5e7eb'">
                     <i class="fas fa-lock" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:14px;pointer-events:none;"></i>
                 </div>
                 <p id="new-pwd-error-msg" style="display:none;color:#ef4444;font-size:12px;margin-top:8px;">
@@ -2268,103 +1407,57 @@ function showNewPasswordModal() {
             </div>
             <div class="modal-footer">
                 <button class="btn btn-cancel modal-cancel-new-pwd">Cancelar</button>
-                <button class="btn btn-save modal-confirm-new-pwd">
-                    <i class="fas fa-check"></i> Aceptar
-                </button>
+                <button class="btn btn-save modal-confirm-new-pwd"><i class="fas fa-check"></i> Aceptar</button>
             </div>
-        </div>
-    `;
+        </div>`;
     document.getElementById('modal-root').appendChild(modal);
-    setTimeout(() => { const i = document.getElementById('new-password-input'); if (i) i.focus(); }, 100);
+    setTimeout(() => document.getElementById('new-password-input')?.focus(), 100);
 
-    // Cancelar → volver a login sin hacer nada
-    modal.querySelector('.modal-cancel-new-pwd').onclick = () => {
-        modal.remove();
-        resetCompleteState();
-        render();
-        showModal('info', 'Cambio cancelado', 'No se actualizó tu contraseña. Vuelve a login.');
-    };
+    modal.querySelector('.modal-cancel-new-pwd').onclick = () => { modal.remove(); resetCompleteState(); render(); showModal('info', 'Cambio cancelado', 'No se actualizó tu contraseña.'); };
 
-    // Aceptar → actualizar contraseña
     const confirmBtn = modal.querySelector('.modal-confirm-new-pwd');
     confirmBtn.onclick = async () => {
-        const pwdInput = document.getElementById('new-password-input');
-        const confirmInput = document.getElementById('new-password-confirm');
-        const errorMsg = document.getElementById('new-pwd-error-msg');
-        const errorText = document.getElementById('new-pwd-error-text');
-
+        const pwdInput   = document.getElementById('new-password-input');
+        const confirmInp = document.getElementById('new-password-confirm');
+        const errorMsg   = document.getElementById('new-pwd-error-msg');
+        const errorText  = document.getElementById('new-pwd-error-text');
         const pwd = pwdInput?.value?.trim();
-        const conf = confirmInput?.value?.trim();
-
-        // Validaciones
-        if (!pwd || pwd.length < 6) {
-            errorText.textContent = 'La contraseña debe tener al menos 6 caracteres.';
-            errorMsg.style.display = 'block';
-            pwdInput.style.borderColor = '#ef4444';
-            return;
-        }
-        if (pwd !== conf) {
-            errorText.textContent = 'Las contraseñas no coinciden.';
-            errorMsg.style.display = 'block';
-            confirmInput.style.borderColor = '#ef4444';
-            return;
-        }
-
+        const conf = confirmInp?.value?.trim();
+        if (!pwd || pwd.length < 6) { errorText.textContent = 'La contraseña debe tener al menos 6 caracteres.'; errorMsg.style.display = 'block'; pwdInput.style.borderColor = '#ef4444'; return; }
+        if (pwd !== conf) { errorText.textContent = 'Las contraseñas no coinciden.'; errorMsg.style.display = 'block'; confirmInp.style.borderColor = '#ef4444'; return; }
         modal.remove();
         showLoading();
         try {
-            // Actualizar contraseña en Supabase
             const { error } = await supabaseClient.auth.updateUser({ password: pwd });
             if (error) throw error;
-
             hideLoading();
-            // Resetear estado y volver a login
             resetCompleteState();
             render();
-            showModal('success', '¡Contraseña actualizada! 🎉', 'Tu contraseña ha sido cambiada exitosamente. Ahora puedes iniciar sesión con tu nueva contraseña.');
+            showModal('success', '¡Contraseña actualizada! 🎉', 'Tu contraseña ha sido cambiada exitosamente. Ahora puedes iniciar sesión.');
         } catch (err) {
             hideLoading();
             console.error('❌ Error actualizando contraseña:', err);
-            showModal('error', 'Error', 'No se pudo actualizar la contraseña. Intenta de nuevo o contacta soporte.');
+            showModal('error', 'Error', 'No se pudo actualizar la contraseña. Intenta de nuevo.');
             resetCompleteState();
             render();
         }
     };
-
-    // Enter en segundo input → confirmar
-    document.getElementById('new-password-confirm')?.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') confirmBtn.click();
-    });
+    document.getElementById('new-password-confirm')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') confirmBtn.click(); });
 }
 
 async function handleLogout() {
-    if (state.isLoggingOut) {
-        console.log('⏸️ Ya hay un logout en proceso');
-        return;
-    }
-    // FIX #1: header rojo para acción destructiva
-    // FIX #4: reset de estado ANTES de signOut para evitar spinner bloqueante
+    if (state.isLoggingOut) return;
     showModal('question-danger', 'Cerrar sesión', '¿Estás seguro de que deseas cerrar sesión?', async () => {
         console.log('🚪 Cerrando sesión...');
         state.isLoggingOut = true;
-
-        // FIX #4: Primero reseteamos el estado y renderizamos login,
-        // luego llamamos signOut en background para no quedar atascados si falla
         resetCompleteState();
-        render();
-
-        try {
-            await supabaseClient.auth.signOut();
-            console.log('✅ Sesión cerrada exitosamente');
-        } catch (error) {
-            console.error('❌ Error logout (no crítico, ya se reseteó el estado):', error);
-            // El estado ya fue reseteado, la UI ya muestra el login, no bloqueamos al usuario
-        }
+        render(true);
+        try { await supabaseClient.auth.signOut(); console.log('✅ Sesión cerrada'); }
+        catch (error) { console.error('❌ Error logout (no crítico):', error); }
     });
 }
 
 async function handleDeleteAccount() {
-    // FIX #1: header rojo para acción destructiva
     showModal('question-danger', 'Eliminar cuenta', '¿ELIMINAR tu cuenta y TODAS tus vacantes? Esta acción no se puede deshacer.', async () => {
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
@@ -2372,9 +1465,7 @@ async function handleDeleteAccount() {
             <div class="modal-window">
                 <div class="modal-header modal-header-error">
                     <i class="fas fa-exclamation-triangle" style="color:#ef4444"></i>
-                    <div class="header-text">
-                        <h3>Confirmación final</h3>
-                    </div>
+                    <div class="header-text"><h3>Confirmación final</h3></div>
                 </div>
                 <div class="modal-body">
                     <p style="margin-bottom:12px">Escribe <strong>ELIMINAR</strong> para confirmar:</p>
@@ -2384,39 +1475,24 @@ async function handleDeleteAccount() {
                     <button class="btn btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancelar</button>
                     <button class="btn btn-primary" style="background:#ef4444" id="confirm-delete-btn">Eliminar</button>
                 </div>
-            </div>
-        `;
+            </div>`;
         document.getElementById('modal-root').appendChild(modal);
-        
         document.getElementById('confirm-delete-btn').onclick = async () => {
-            const input = document.getElementById('delete-confirm-input').value;
-            if (input !== 'ELIMINAR') {
-                showModal('error', 'Error', 'Debes escribir ELIMINAR para confirmar');
-                return;
-            }
+            if (document.getElementById('delete-confirm-input').value !== 'ELIMINAR') { showModal('error', 'Error', 'Debes escribir ELIMINAR para confirmar'); return; }
             modal.remove();
             showLoading();
             try {
-                const { data: userVacancies } = await supabaseClient
-                    .from(ENDPOINTS.TABLES.VACANCIES)
-                    .select('id')
-                    .eq('user_id', state.user.id);
+                const { data: userVacancies } = await supabaseClient.from(ENDPOINTS.TABLES.VACANCIES).select('id').eq('user_id', state.user.id);
                 if (userVacancies?.length > 0) {
-                    for (const v of userVacancies) {
-                        await supabaseClient.from(ENDPOINTS.TABLES.VACANCIES).delete().eq('id', v.id);
-                    }
+                    for (const v of userVacancies) await supabaseClient.from(ENDPOINTS.TABLES.VACANCIES).delete().eq('id', v.id);
                 }
-                if (state.user?.id) {
-                    localStorage.removeItem('terms_accepted_' + state.user.id);
-                }
+                if (state.user?.id) localStorage.removeItem('terms_accepted_' + state.user.id);
                 showModal('success', '¡Eliminado!', 'Tus vacantes han sido eliminadas');
                 setTimeout(() => handleLogout(), 2000);
             } catch (error) {
                 console.error('❌ Error delete:', error);
                 showModal('error', 'Error', 'No se pudo eliminar la cuenta');
-            } finally {
-                hideLoading();
-            }
+            } finally { hideLoading(); }
         };
     });
 }
@@ -2428,7 +1504,8 @@ async function handleGuestAccess() {
         state.isGuest = true;
         state.view = 'categories';
         await loadVacancies();
-        console.log('✅ Acceso invitado exitoso. Vacantes cargadas:', state.vacancies.length);
+        console.log('✅ Acceso invitado. Vacantes:', state.vacancies.length);
+        hideLoading();
         render();
         showModal('info', '¡Bienvenido!', 'Estás navegando como invitado. Podrás ver todas las vacantes pero no publicar.');
     } catch (error) {
@@ -2436,20 +1513,14 @@ async function handleGuestAccess() {
         showModal('error', 'Error', 'No se pudo cargar las vacantes');
         state.isGuest = false;
         state.view = 'login';
-        render();
-    } finally {
         hideLoading();
+        render();
     }
 }
 
 function handleAcceptTerms() {
-    if (!state.acceptedTerms) {
-        showModal('warning', 'Términos requeridos', 'Debes aceptar los términos');
-        return;
-    }
-    if (state.user) {
-        localStorage.setItem('terms_accepted_' + state.user.id, 'true');
-    }
+    if (!state.acceptedTerms) { showModal('warning', 'Términos requeridos', 'Debes aceptar los términos'); return; }
+    if (state.user) localStorage.setItem('terms_accepted_' + state.user.id, 'true');
     state.view = 'categories';
     render();
 }
@@ -2458,45 +1529,25 @@ function handleAcceptTerms() {
 async function loadVacancies() {
     console.log('📥 Cargando vacantes...');
     try {
-        const { data, error } = await supabaseClient
-            .from(ENDPOINTS.TABLES.VACANCIES)
-            .select('*')
-            .order('created_at', { ascending: false });
+        const { data, error } = await supabaseClient.from(ENDPOINTS.TABLES.VACANCIES).select('*').order('created_at', { ascending: false });
         if (error) throw error;
         state.vacancies = data || [];
         state.filteredVacancies = [...state.vacancies];
-        if (state.dateFilter) {
-            filterVacanciesByDate();
-        }
+        if (state.dateFilter) filterVacanciesByDate();
         console.log('✅ Vacantes cargadas:', state.vacancies.length);
     } catch (error) {
         console.error('❌ Error loading vacancies:', error);
-        state.vacancies = [];
-        state.filteredVacancies = [];
+        state.vacancies = []; state.filteredVacancies = [];
     }
 }
 
 async function handleImageUpload(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    // Validar tipo
-    if (!file.type.startsWith('image/')) {
-        showModal('error', 'Tipo inválido', 'Solo se permiten imágenes (JPG, PNG, WEBP).');
-        e.target.value = '';
-        return;
-    }
-
-    // Límite generoso — comprimimos de todas formas
-    if (file.size > 10 * 1024 * 1024) {
-        showModal('error', 'Archivo muy grande', 'La imagen no debe superar 10MB.');
-        e.target.value = '';
-        return;
-    }
-
+    if (!file.type.startsWith('image/')) { showModal('error', 'Tipo inválido', 'Solo se permiten imágenes (JPG, PNG, WEBP).'); e.target.value = ''; return; }
+    if (file.size > 10 * 1024 * 1024) { showModal('error', 'Archivo muy grande', 'La imagen no debe superar 10MB.'); e.target.value = ''; return; }
     try {
         showLoading();
-        // Comprimir con Canvas: máximo 800px de ancho/alto, calidad 0.75
         const compressedBase64 = await compressImage(file, 800, 0.75);
         state.formData.imageBase64 = compressedBase64;
         hideLoading();
@@ -2509,7 +1560,6 @@ async function handleImageUpload(e) {
     }
 }
 
-// ==================== COMPRESOR DE IMAGEN (Canvas) ====================
 function compressImage(file, maxSize, quality) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -2519,28 +1569,16 @@ function compressImage(file, maxSize, quality) {
             img.onerror = () => reject(new Error('Error cargando imagen'));
             img.onload = () => {
                 try {
-                    // Calcular nuevas dimensiones manteniendo aspecto
-                    let w = img.width;
-                    let h = img.height;
+                    let w = img.width, h = img.height;
                     if (w > maxSize || h > maxSize) {
-                        if (w >= h) {
-                            h = Math.round((h * maxSize) / w);
-                            w = maxSize;
-                        } else {
-                            w = Math.round((w * maxSize) / h);
-                            h = maxSize;
-                        }
+                        if (w >= h) { h = Math.round((h * maxSize) / w); w = maxSize; }
+                        else { w = Math.round((w * maxSize) / h); h = maxSize; }
                     }
                     const canvas = document.createElement('canvas');
-                    canvas.width  = w;
-                    canvas.height = h;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, w, h);
-                    const base64 = canvas.toDataURL('image/jpeg', quality);
-                    resolve(base64);
-                } catch (err) {
-                    reject(err);
-                }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                } catch (err) { reject(err); }
             };
             img.src = ev.target.result;
         };
@@ -2550,51 +1588,32 @@ function compressImage(file, maxSize, quality) {
 
 async function handleSaveVacancy(e) {
     e.preventDefault();
-    // Bloquear doble envío
     if (state.loading) return;
+    if (!state.user?.id) { showModal('error', 'Sesión requerida', 'Inicia sesión para publicar'); return; }
 
-    if (!state.user?.id) {
-        showModal('error', 'Sesión requerida', 'Inicia sesión para publicar');
-        return;
-    }
-
-    // Si no subió imagen propia usar la predeterminada
     if (!state.formData.imageBase64) {
         state.formData.imageBase64 = 'https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/SINFOTO.jpg';
     }
 
-    // ── Validar campos obligatorios ──
     const missingFields = [];
     if (!state.formData.company?.trim())          missingFields.push('• Nombre de la empresa');
     if (!state.formData.description?.trim())      missingFields.push('• Descripción breve');
     if (!state.formData.publication_date?.trim()) missingFields.push('• Fecha de publicación');
     if (!state.formData.category?.trim())         missingFields.push('• Categoría');
+    if (missingFields.length > 0) { showModal('warning', 'Campos requeridos', `Por favor completa los siguientes campos:\n${missingFields.join('\n')}`); return; }
 
-    if (missingFields.length > 0) {
-        showModal('warning', 'Campos requeridos',
-            `Por favor completa los siguientes campos antes de publicar:\n${missingFields.join('\n')}`);
-        return;
-    }
-
-    // ── Validar formato de fecha DD/MM/AAAA ──
     const dateVal = state.formData.publication_date.trim();
-    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (!dateRegex.test(dateVal)) {
-        showModal('warning', 'Formato de fecha incorrecto',
-            'La fecha debe tener el formato DD/MM/AAAA (ej: 25/07/2025)');
-        return;
-    }
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateVal)) { showModal('warning', 'Formato de fecha incorrecto', 'La fecha debe tener el formato DD/MM/AAAA (ej: 25/07/2025)'); return; }
 
-    // Marcar como cargando ANTES de la operación asíncrona para bloquear re-envíos
     state.loading = true;
     showLoading();
 
-    // Activar timeout de seguridad: si en 20 seg no termina, forzar limpieza
+    // FIX #4: Safety timer único y confiable
     const safetyTimer = setTimeout(() => {
         if (state.loading) {
-            console.warn('⚠️ Timeout de seguridad activado — limpiando spinner');
+            console.warn('⚠️ Timeout de seguridad activado');
             hideLoading();
-            state.isRendering = false;
+            state.loading = false;
             showModal('error', 'Tiempo agotado', 'La operación tardó demasiado. Verifica tu conexión e intenta de nuevo.');
         }
     }, 20000);
@@ -2602,29 +1621,24 @@ async function handleSaveVacancy(e) {
     try {
         const vacancyData = {
             user_id:          state.user.id,
-            company:          state.formData.company?.trim().toUpperCase() || 'SIN INFORMACIÓN',
-            job_title:        state.formData.job_title?.trim() || 'SIN INFORMACIÓN',
-            description:      state.formData.description?.trim() || 'SIN INFORMACIÓN',
-            requirements:     state.formData.requirements?.trim() || null,
-            location:         state.formData.location?.trim() || null,
-            contact_phone:    state.formData.contact_phone?.trim() || null,
+            company:          (state.formData.company?.trim() || 'SIN INFORMACIÓN').toUpperCase(),
+            job_title:        state.formData.job_title?.trim()        || 'SIN INFORMACIÓN',
+            description:      state.formData.description?.trim()      || 'SIN INFORMACIÓN',
+            requirements:     state.formData.requirements?.trim()     || null,
+            location:         state.formData.location?.trim()         || null,
+            contact_phone:    state.formData.contact_phone?.trim()    || null,
             publication_date: state.formData.publication_date?.trim() || null,
-            schedule:         state.formData.schedule?.trim() || null,
-            work_days:        state.formData.work_days?.trim() || null,
-            category:         state.formData.category?.trim() || null,
+            schedule:         state.formData.schedule?.trim()         || null,
+            work_days:        state.formData.work_days?.trim()        || null,
+            category:         state.formData.category?.trim()         || null,
             image_base64:     state.formData.imageBase64
         };
 
         let result;
         if (state.editingVacancy) {
-            result = await supabaseClient
-                .from(ENDPOINTS.TABLES.VACANCIES)
-                .update(vacancyData)
-                .eq('id', state.editingVacancy.id);
+            result = await supabaseClient.from(ENDPOINTS.TABLES.VACANCIES).update(vacancyData).eq('id', state.editingVacancy.id);
         } else {
-            result = await supabaseClient
-                .from(ENDPOINTS.TABLES.VACANCIES)
-                .insert([vacancyData]);
+            result = await supabaseClient.from(ENDPOINTS.TABLES.VACANCIES).insert([vacancyData]);
         }
         if (result.error) throw result.error;
 
@@ -2632,16 +1646,12 @@ async function handleSaveVacancy(e) {
         state.editingVacancy = null;
         resetJobForm();
         clearAIData();
-
-        // Cargar vacantes actualizado ANTES de cambiar vista para evitar race con realtime
         await loadVacancies();
-
         clearTimeout(safetyTimer);
         hideLoading();
         state.view = 'dashboard';
         render();
         showModal('success', '¡Éxito!', wasEditing ? 'Vacante actualizada ✅' : 'Vacante publicada ✅');
-
     } catch (error) {
         clearTimeout(safetyTimer);
         console.error('❌ Error saving:', error);
@@ -2650,11 +1660,6 @@ async function handleSaveVacancy(e) {
     } finally {
         state.loading = false;
     }
-}
-
-// Alias vacío para compatibilidad por si algo lo llama externamente
-async function proceedSaveVacancy() {
-    console.warn('proceedSaveVacancy() llamado directamente — usar handleSaveVacancy()');
 }
 
 async function handleDeleteVacancy(vacancyId) {
@@ -2671,31 +1676,29 @@ async function handleDeleteVacancy(vacancyId) {
         } catch (error) {
             console.error('❌ Error delete vacancy:', error);
             showModal('error', 'Error', 'No se pudo eliminar');
-        } finally {
-            hideLoading();
-        }
+        } finally { hideLoading(); }
     });
 }
 
+// ==================== FIX #5: handleEditVacancy usa cleanValue para eliminar strings "NULL" ====================
 function handleEditVacancy(vacancyId) {
     const vacancy = state.vacancies.find(v => v.id === vacancyId);
     if (!vacancy) return;
     state.editingVacancy = vacancy;
     state.formData = {
-        company: vacancy.company || '',
-        job_title: vacancy.job_title || '',
-        description: vacancy.description || '',
-        requirements: vacancy.requirements || 'Disponibilidad y actitud de trabajar',
-        location: vacancy.location || '',
-        contact_phone: vacancy.contact_phone || '',
-        publication_date: vacancy.publication_date || '',
-        schedule: vacancy.schedule || '',
-        work_days: vacancy.work_days || '',
-        category: vacancy.category || '',
-        imageBase64: vacancy.image_base64 || '',
-        email: '',
-        password: '',
-        confirmPassword: ''
+        company:          cleanValue(vacancy.company),
+        job_title:        cleanValue(vacancy.job_title),
+        description:      cleanValue(vacancy.description),
+        // Si requirements está vacío, usar valor por defecto
+        requirements:     cleanValue(vacancy.requirements) || 'Disponibilidad y actitud de trabajar',
+        location:         cleanValue(vacancy.location),
+        contact_phone:    cleanValue(vacancy.contact_phone),
+        publication_date: cleanValue(vacancy.publication_date),
+        schedule:         cleanValue(vacancy.schedule),
+        work_days:        cleanValue(vacancy.work_days),
+        category:         cleanValue(vacancy.category),
+        imageBase64:      cleanValue(vacancy.image_base64),
+        email: '', password: '', confirmPassword: ''
     };
     clearAIData();
     state.view = 'form';
@@ -2703,23 +1706,54 @@ function handleEditVacancy(vacancyId) {
 }
 
 // ==================== IA ====================
+const AI_ADMIN_EMAILS = ['compualextech24@gmail.com', 'flavioalejandrov24@gmail.com'];
+function isAIAdmin() { return state.user?.email ? AI_ADMIN_EMAILS.includes(state.user.email.toLowerCase().trim()) : false; }
+
+function showAIAccessDeniedModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-window">
+            <div class="modal-header modal-header-info">
+                <i class="fas fa-robot" style="color:#3b82f6;font-size:28px"></i>
+                <div class="header-text"><h3>Función de Autofill con IA</h3></div>
+            </div>
+            <div class="modal-body">
+                <h4 style="font-weight:700;font-size:15px;margin-bottom:10px;">¿Qué es el Autofill IA?</h4>
+                <p style="color:#4b5563;font-size:14px;line-height:1.7;margin-bottom:14px;">
+                    Esta función te permite subir una <strong>imagen</strong> o escribir el texto de una oferta de empleo,
+                    y la inteligencia artificial extrae automáticamente todos los datos para llenar el formulario.
+                </p>
+                <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;">
+                    <i class="fas fa-shield-alt" style="color:#0284c7;margin-top:2px;flex-shrink:0;"></i>
+                    <p style="color:#0c4a6e;font-size:13px;line-height:1.6;margin:0;">
+                        Actualmente esta función está disponible <strong>solo para administradores</strong> del portal.
+                        Si deseas acceso o quieres una app similar para tu negocio, contáctanos.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary modal-ok" style="width:100%"><i class="fas fa-check mr-1"></i> Entendido</button>
+            </div>
+        </div>`;
+    document.getElementById('modal-root').appendChild(modal);
+    modal.querySelector('.modal-ok').onclick = () => modal.remove();
+    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+}
+
+// ==================== FIX #6: sendAIMessage — actualiza el chat con DOM directo, no full re-render ====================
 async function sendAIMessage() {
-    // Double-check admin access
-    if (!isAIAdmin()) {
-        showAIAccessDeniedModal();
-        return;
-    }
+    if (!isAIAdmin()) { showAIAccessDeniedModal(); return; }
     const input = document.getElementById('ai-chat-input');
     const message = input?.value.trim();
-    if (!message && !state.aiImage) {
-        showModal('info', 'Mensaje vacío', 'Escribe algo o sube una imagen');
-        return;
-    }
-    if (message) {
-        state.aiMessages.push({ role: 'user', content: message });
-    }
+    if (!message && !state.aiImage) { showModal('info', 'Mensaje vacío', 'Escribe algo o sube una imagen'); return; }
+
+    if (message) state.aiMessages.push({ role: 'user', content: message });
+
+    // Actualización parcial del chat sin full re-render
+    _updateAIChatMessages(true);
     state.aiLoading = true;
-    render();
+
     try {
         const requestData = { text: message || '' };
         if (state.aiImage) {
@@ -2733,34 +1767,22 @@ async function sendAIMessage() {
         }
         const response = await fetch(EndpointHelpers.getAIExtractUrl(), {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${ENDPOINTS.SUPABASE_ANON_KEY}`
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${ENDPOINTS.SUPABASE_ANON_KEY}` },
             body: JSON.stringify(requestData)
         });
-        if (!response.ok) {
-            throw new Error(`Error ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Error ${response.status}`);
         const data = await response.json();
-        state.aiMessages.push({
-            role: 'bot',
-            content: data.message || 'Datos procesados. Presiona START para llenar el formulario. ✅'
-        });
-        if (data.formData) {
-            state.aiExtractedData = data.formData;
-        }
+        state.aiMessages.push({ role: 'bot', content: data.message || 'Datos procesados. Presiona START para llenar el formulario. ✅' });
+        if (data.formData) state.aiExtractedData = data.formData;
     } catch (error) {
         console.error('❌ Error IA:', error);
-        state.aiMessages.push({
-            role: 'bot',
-            content: `Error: ${error.message}. Intenta nuevamente. 🔄`
-        });
+        state.aiMessages.push({ role: 'bot', content: `Error: ${error.message}. Intenta nuevamente. 🔄` });
     } finally {
         state.aiLoading = false;
         if (input) input.value = '';
         state.aiImage = null;
         state.aiImagePreview = null;
+        // Solo re-renderizar si el chat sigue abierto (actualiza botón START y limpia preview)
         render();
         setTimeout(() => {
             const msgs = document.querySelector('.ai-chat-messages');
@@ -2769,88 +1791,27 @@ async function sendAIMessage() {
     }
 }
 
-// ==================== ADMINS AUTORIZADOS PARA IA ====================
-const AI_ADMIN_EMAILS = [
-    'compualextech24@gmail.com',
-    'flavioalejandrov24@gmail.com'
-];
-
-function isAIAdmin() {
-    if (!state.user?.email) return false;
-    return AI_ADMIN_EMAILS.includes(state.user.email.toLowerCase().trim());
-}
-
-function showAIAccessDeniedModal() {
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
-        <div class="modal-window ai-access-modal">
-            <div class="modal-header modal-header-info">
-                <i class="fas fa-robot" style="color:#3b82f6;font-size:28px"></i>
-                <div class="header-text">
-                    <h3>Función de Autofill con IA</h3>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div class="ai-access-body">
-                    <div class="ai-access-icon-wrap">
-                        <i class="fas fa-lock-open"></i>
-                    </div>
-                    <h4 class="ai-access-title">¿Qué es el Autofill IA?</h4>
-                    <p class="ai-access-desc">
-                        Esta función te permite subir una <strong>imagen</strong> o escribir el
-                        <strong>texto de una oferta de empleo</strong>, y la inteligencia artificial
-                        extrae automáticamente todos los datos para llenar el formulario sin que
-                        tengas que capturar campo por campo.
-                    </p>
-                    <div class="ai-access-divider"></div>
-                    <div class="ai-access-notice">
-                        <i class="fas fa-shield-alt"></i>
-                        <p>
-                            Actualmente esta función está disponible <strong>solo para administradores</strong>
-                            del portal. Si deseas acceso o quieres una aplicación similar para tu negocio,
-                            contáctanos:
-                        </p>
-                    </div>
-                    <div class="ai-access-contact">
-                        <i class="fas fa-envelope"></i>
-                        <span class="ai-contact-email">Correo de contacto próximamente</span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary modal-ok" style="width:100%">
-                    <i class="fas fa-check mr-1"></i> Entendido
-                </button>
-            </div>
-        </div>
-    `;
-    document.getElementById('modal-root').appendChild(modal);
-    modal.querySelector('.modal-ok').onclick = () => modal.remove();
-    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+// Actualiza solo los mensajes del chat sin re-render completo
+function _updateAIChatMessages(showSpinner) {
+    const container = document.querySelector('.ai-chat-messages');
+    if (!container) return;
+    container.innerHTML = state.aiMessages.map(m => `
+        <div class="ai-message ${m.role}">${escapeHtml(m.content)}</div>`).join('') +
+        (showSpinner ? '<div class="ai-message bot"><span class="ai-loading"></span> Procesando...</div>' : '');
+    container.scrollTop = container.scrollHeight;
 }
 
 function toggleAIChat() {
-    // Check admin access first
-    if (!isAIAdmin()) {
-        showAIAccessDeniedModal();
-        return;
-    }
+    if (!isAIAdmin()) { showAIAccessDeniedModal(); return; }
     state.aiChatOpen = !state.aiChatOpen;
     if (state.aiChatOpen && state.aiMessages.length === 0) {
-        state.aiMessages = [{
-            role: 'bot',
-            content: '¡Hola! Envíame una imagen o describe la vacante y te ayudo a llenar el formulario. 📋✨'
-        }];
+        state.aiMessages = [{ role: 'bot', content: '¡Hola! Envíame una imagen o describe la vacante y te ayudo a llenar el formulario. 📋✨' }];
     }
     render();
 }
 
 function startAutofill() {
-    if (!state.aiExtractedData) {
-        showModal('info', 'Sin datos', 'Primero envía información para procesar');
-        return;
-    }
+    if (!state.aiExtractedData) { showModal('info', 'Sin datos', 'Primero envía información para procesar'); return; }
     const data = state.aiExtractedData;
     if (data.company)           state.formData.company           = data.company;
     if (data.job_title)         state.formData.job_title         = data.job_title;
@@ -2872,43 +1833,23 @@ function startAutofill() {
 function handleAIImageUpload(event) {
     const file = event.target.files?.[0];
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-        showModal('error', 'Archivo Grande', 'Máximo 10MB');
-        event.target.value = '';
-        return;
-    }
+    if (file.size > 10 * 1024 * 1024) { showModal('error', 'Archivo Grande', 'Máximo 10MB'); event.target.value = ''; return; }
     state.aiImage = file;
     const reader = new FileReader();
-    reader.onload = (e) => {
-        state.aiImagePreview = e.target.result;
-        render();
-    };
+    reader.onload = (e) => { state.aiImagePreview = e.target.result; render(); };
     reader.readAsDataURL(file);
 }
 
-function removeAIImage() {
-    state.aiImage = null;
-    state.aiImagePreview = null;
-    render();
-}
+function removeAIImage() { state.aiImage = null; state.aiImagePreview = null; render(); }
 
 function clearAIData() {
-    state.aiChatOpen = false;
-    state.aiMessages = [];
-    state.aiLoading = false;
-    state.aiImage = null;
-    state.aiImagePreview = null;
-    state.aiExtractedData = null;
-    state.chatMinimized = false;
+    state.aiChatOpen = false; state.aiMessages = []; state.aiLoading = false;
+    state.aiImage = null; state.aiImagePreview = null; state.aiExtractedData = null; state.chatMinimized = false;
 }
 
 // ==================== FORMULARIO ====================
 function cleanForm() {
-    showModal('question', 'Limpiar formulario', '¿Limpiar todos los campos?', () => {
-        resetJobForm();
-        clearAIData();
-        render();
-    });
+    showModal('question', 'Limpiar formulario', '¿Limpiar todos los campos?', () => { resetJobForm(); clearAIData(); render(); });
 }
 
 function cancelForm() {
@@ -2921,51 +1862,34 @@ function cancelForm() {
     });
 }
 
-function resetAuthForm() {
-    state.formData.email = '';
-    state.formData.password = '';
-    state.formData.confirmPassword = '';
-}
+function resetAuthForm() { state.formData.email = ''; state.formData.password = ''; state.formData.confirmPassword = ''; }
 
 function resetJobForm() {
-    state.formData.company = '';
-    state.formData.job_title = '';
-    state.formData.description = '';
+    state.formData.company = ''; state.formData.job_title = ''; state.formData.description = '';
     state.formData.requirements = 'Disponibilidad y actitud de trabajar';
-    state.formData.location = '';
-    state.formData.contact_phone = '';
-    state.formData.publication_date = '';
-    state.formData.schedule = '';
-    state.formData.work_days = '';
-    state.formData.category = '';
-    state.formData.imageBase64 = '';
+    state.formData.location = ''; state.formData.contact_phone = '';
+    state.formData.publication_date = ''; state.formData.schedule = '';
+    state.formData.work_days = ''; state.formData.category = ''; state.formData.imageBase64 = '';
 }
 
-// ==================== UI / RENDER ====================
-// ==================== RENDER - VISTAS ====================
+// ==================== RENDER — VISTAS ====================
 function renderLogin() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
-
-        <!-- Botón FIJO de retroceso al ecosistema (no se mueve con el scroll) -->
-        <a href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
-           class="back-btn-fixed"
-           title="Volver al inicio">
+        <a href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/" class="back-btn-fixed" title="Volver al inicio">
             <i class="fas fa-arrow-left"></i>
         </a>
-
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
             <div class="login-header-wrapper">
                 <div class="login-logo-wrap">
                     <img src="https://raw.githubusercontent.com/Compualextech24/empleosdeleongtoaxel/main/logosempleosleonaxel.png"
-                         alt="Empleos León GTO"
-                         class="login-logo-img"
+                         alt="Empleos León GTO" class="login-logo-img"
                          onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
                     <div style="display:none;padding:32px 0 8px;" class="text-6xl">💼</div>
                 </div>
                 <div class="login-text-wrap">
                     <h1 class="text-3xl font-black mb-2">Empleos León GTO</h1>
-                    <p style="color:rgba(233,213,255,0.9); font-size:0.875rem; font-weight:600; letter-spacing:0.05em;">Axellabs Created</p>
+                    <p style="color:rgba(233,213,255,0.9);font-size:0.875rem;font-weight:600;letter-spacing:0.05em;">Axellabs Created</p>
                 </div>
             </div>
             <form id="login-form" class="p-8 space-y-6">
@@ -2976,11 +1900,8 @@ function renderLogin() {
                 <div class="input-group">
                     <label>Contraseña</label>
                     <input type="${state.showPassword ? 'text' : 'password'}" id="password" required placeholder="••••••••" value="${escapeHtml(state.formData.password)}">
-                    <span class="input-icon" id="toggle-pwd">
-                        <i class="fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}"></i>
-                    </span>
+                    <span class="input-icon" id="toggle-pwd"><i class="fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}"></i></span>
                 </div>
-                <!-- Fila: Iniciar Sesión + Registrarse -->
                 <div class="login-btn-row">
                     <button type="submit" class="btn btn-primary login-btn-main" ${state.loading ? 'disabled' : ''}>
                         ${state.loading ? '<i class="fas fa-spinner fa-spin"></i> Iniciando...' : '<i class="fas fa-sign-in-alt"></i> Iniciar Sesión'}
@@ -3010,7 +1931,6 @@ function renderSignup() {
     return `
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-md w-full fade-in">
-            <!-- Header púrpura con flecha centrada verticalmente a la izquierda -->
             <div class="signup-header-purple">
                 <button type="button" id="signup-back-btn" class="back-btn-inheader" title="Volver al login">
                     <i class="fas fa-arrow-left"></i>
@@ -3029,18 +1949,13 @@ function renderSignup() {
                 <div class="input-group">
                     <label>Contraseña</label>
                     <input type="${state.showPassword ? 'text' : 'password'}" id="password" required placeholder="Mínimo 6 caracteres" value="${escapeHtml(state.formData.password)}">
-                    <span class="input-icon" id="toggle-pwd">
-                        <i class="fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}"></i>
-                    </span>
+                    <span class="input-icon" id="toggle-pwd"><i class="fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}"></i></span>
                 </div>
                 <div class="input-group">
                     <label>Confirmar Contraseña</label>
                     <input type="${state.showConfirmPassword ? 'text' : 'password'}" id="confirm-password" required placeholder="Repite tu contraseña" value="${escapeHtml(state.formData.confirmPassword)}">
-                    <span class="input-icon" id="toggle-confirm-pwd">
-                        <i class="fas ${state.showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}"></i>
-                    </span>
+                    <span class="input-icon" id="toggle-confirm-pwd"><i class="fas ${state.showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}"></i></span>
                 </div>
-                <!-- Fila: Crear + Cancelar -->
                 <div class="login-btn-row">
                     <button type="submit" class="btn btn-primary login-btn-main" ${state.loading ? 'disabled' : ''}>
                         ${state.loading ? '<i class="fas fa-spinner fa-spin"></i> Creando...' : '<i class="fas fa-user-plus"></i> Crear'}
@@ -3068,53 +1983,32 @@ function renderTerms() {
             </div>
             <div class="p-8 space-y-6 max-h-96 overflow-y-auto">
                 <div class="space-y-5 text-gray-700 text-sm leading-relaxed">
-
                     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-xl">
                         <p class="font-bold text-yellow-800 mb-1"><i class="fas fa-exclamation-triangle mr-1"></i> Aviso de Responsabilidad</p>
-                        <p class="text-yellow-700">
-                            <strong>Empleos León GTO</strong> es una plataforma comunitaria de acceso libre, creada con el propósito de apoyar a las personas de León, Guanajuato, en la búsqueda y difusión de oportunidades de empleo. <strong>No somos una agencia de empleo ni cobramos por ningún servicio.</strong>
-                        </p>
+                        <p class="text-yellow-700"><strong>Empleos León GTO</strong> es una plataforma comunitaria de acceso libre. <strong>No somos una agencia de empleo ni cobramos por ningún servicio.</strong></p>
                     </div>
-
                     <h3 class="font-bold text-base text-gray-800">1. Carácter informativo del portal</h3>
-                    <p>
-                        Las vacantes publicadas en esta plataforma son aportadas directamente por los usuarios, empresas o particulares, de forma voluntaria y sin mediación de esta aplicación. El portal actúa únicamente como un tablón de avisos digital comunitario. <strong>No verificamos, validamos ni garantizamos la veracidad, autenticidad o vigencia de ninguna oferta publicada.</strong>
-                    </p>
-
-                    <h3 class="font-bold text-base text-gray-800">2. Recomendaciones de seguridad antes de presentarte</h3>
-                    <p>Antes de acudir a cualquier entrevista o proceso de selección, te recomendamos ampliamente:</p>
+                    <p>Las vacantes son aportadas directamente por los usuarios de forma voluntaria. El portal actúa como un tablón de avisos digital. <strong>No verificamos ni garantizamos la veracidad de ninguna oferta publicada.</strong></p>
+                    <h3 class="font-bold text-base text-gray-800">2. Recomendaciones de seguridad</h3>
+                    <p>Antes de acudir a cualquier entrevista, te recomendamos:</p>
                     <ul class="list-disc pl-5 space-y-1 text-gray-600">
-                        <li>Verificar la existencia y reputación de la empresa por medios oficiales (Google Maps, redes sociales, IMSS, SAT).</li>
-                        <li>Confirmar la dirección de la empresa antes de presentarte.</li>
-                        <li>Desconfiar de ofertas que soliciten <strong>depósitos de dinero, pagos por "trámites", compra de uniformes o materiales</strong> antes de contratarte.</li>
-                        <li>No entregar documentos originales sin haberlos verificado previamente.</li>
-                        <li>Informar a un familiar o persona de confianza sobre la cita antes de asistir.</li>
-                        <li>Denunciar ante la Profeco o la Secretaría del Trabajo cualquier práctica irregular.</li>
+                        <li>Verificar la existencia y reputación de la empresa (Google Maps, redes sociales, IMSS, SAT).</li>
+                        <li>Confirmar la dirección antes de presentarte.</li>
+                        <li>Desconfiar de ofertas que soliciten <strong>depósitos de dinero o pagos previos</strong>.</li>
+                        <li>No entregar documentos originales sin verificar previamente.</li>
+                        <li>Informar a un familiar sobre la cita antes de asistir.</li>
                     </ul>
-
-                    <h3 class="font-bold text-base text-gray-800">3. Responsabilidad del usuario publicador</h3>
-                    <p>
-                        Toda persona que publique una vacante en esta plataforma es <strong>legalmente responsable</strong> de la veracidad y legalidad de la información proporcionada. Queda estrictamente prohibido publicar ofertas falsas, engañosas, con fines de estafa, tráfico de personas o cualquier actividad ilícita. El incumplimiento podrá ser reportado a las autoridades competentes.
-                    </p>
-
+                    <h3 class="font-bold text-base text-gray-800">3. Responsabilidad del publicador</h3>
+                    <p>Quien publica una vacante es <strong>legalmente responsable</strong> de su veracidad y legalidad. Queda prohibido publicar ofertas falsas, engañosas o con fines ilícitos.</p>
                     <h3 class="font-bold text-base text-gray-800">4. Exención de responsabilidad</h3>
-                    <p>
-                        <strong>Empleos León GTO</strong> y sus administradores no se hacen responsables por pérdidas económicas, daños personales, fraudes u cualquier perjuicio derivado del uso de la información publicada en esta plataforma. El uso del portal implica la aceptación total de este aviso.
-                    </p>
-
+                    <p><strong>Empleos León GTO</strong> y sus administradores no se hacen responsables por pérdidas o daños derivados del uso de la información publicada.</p>
                     <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                        <p class="text-blue-800 text-xs">
-                            <i class="fas fa-info-circle mr-1"></i>
-                            Si detectas una publicación sospechosa o fraudulenta, por favor repórtala a los administradores del portal. Tu seguridad es lo más importante.
-                        </p>
+                        <p class="text-blue-800 text-xs"><i class="fas fa-info-circle mr-1"></i> Si detectas una publicación sospechosa, repórtala a los administradores del portal.</p>
                     </div>
-
                 </div>
                 <div class="flex items-center gap-3 bg-purple-50 p-4 rounded-xl border border-purple-200">
                     <input type="checkbox" id="accept-terms" ${state.acceptedTerms ? 'checked' : ''} class="w-5 h-5 accent-purple-600">
-                    <label for="accept-terms" class="text-sm font-semibold cursor-pointer text-gray-700">
-                        He leído y entiendo el aviso de responsabilidad. Acepto los términos de uso de esta plataforma.
-                    </label>
+                    <label for="accept-terms" class="text-sm font-semibold cursor-pointer text-gray-700">He leído y acepto los términos de uso de esta plataforma.</label>
                 </div>
             </div>
             <div class="p-8 pt-0">
@@ -3126,28 +2020,23 @@ function renderTerms() {
     </div>`;
 }
 
-// ==================== PANTALLA DE CATEGORÍAS ====================
 function renderCategories() {
-    // "Todas" va primero con color púrpura degradado blanco
-    // Fábricas y Calzado → color naranja oscuro (no usado antes)
-    // El resto respeta los colores ya asignados, ahora aplicados al fondo completo
     const CATEGORIES = [
-        { name: 'Todas',                     icon: 'fa-th-list',          color: '#7c3aed', color2: '#a78bfa', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Fábricas y Calzado',        icon: 'fa-industry',         color: '#b45309', color2: '#d97706', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Tiendas y Ventas',          icon: 'fa-shopping-cart',    color: '#be185d', color2: '#ec4899', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Hospitales y Salud',        icon: 'fa-heartbeat',        color: '#b91c1c', color2: '#ef4444', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Hoteles y Restaurantes',    icon: 'fa-utensils',         color: '#c2410c', color2: '#f97316', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Bodegas y Transporte',      icon: 'fa-truck',            color: '#a16207', color2: '#eab308', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Oficinas y Administración', icon: 'fa-building',         color: '#1d4ed8', color2: '#3b82f6', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Obra y Construcción',       icon: 'fa-hard-hat',         color: '#57534e', color2: '#78716c', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Escuelas y Clases',         icon: 'fa-graduation-cap',   color: '#065f46', color2: '#10b981', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Sistemas y Computación',    icon: 'fa-laptop-code',      color: '#0e7490', color2: '#06b6d4', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Leyes y Consultas',         icon: 'fa-balance-scale',    color: '#4338ca', color2: '#6366f1', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Bancos y Contabilidad',     icon: 'fa-coins',            color: '#3f6212', color2: '#84cc16', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Mantenimiento y Limpieza',  icon: 'fa-broom',            color: '#0f766e', color2: '#14b8a6', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
-        { name: 'Otros',                     icon: 'fa-ellipsis-h',       color: '#0369a1', color2: '#38bdf8', textColor: '#ffffff', iconBg: 'rgba(255,255,255,0.25)' },
+        { name: 'Todas',                     icon: 'fa-th-list',        color: '#7c3aed', color2: '#a78bfa' },
+        { name: 'Fábricas y Calzado',        icon: 'fa-industry',       color: '#b45309', color2: '#d97706' },
+        { name: 'Tiendas y Ventas',          icon: 'fa-shopping-cart',  color: '#be185d', color2: '#ec4899' },
+        { name: 'Hospitales y Salud',        icon: 'fa-heartbeat',      color: '#b91c1c', color2: '#ef4444' },
+        { name: 'Hoteles y Restaurantes',    icon: 'fa-utensils',       color: '#c2410c', color2: '#f97316' },
+        { name: 'Bodegas y Transporte',      icon: 'fa-truck',          color: '#a16207', color2: '#eab308' },
+        { name: 'Oficinas y Administración', icon: 'fa-building',       color: '#1d4ed8', color2: '#3b82f6' },
+        { name: 'Obra y Construcción',       icon: 'fa-hard-hat',       color: '#57534e', color2: '#78716c' },
+        { name: 'Escuelas y Clases',         icon: 'fa-graduation-cap', color: '#065f46', color2: '#10b981' },
+        { name: 'Sistemas y Computación',    icon: 'fa-laptop-code',    color: '#0e7490', color2: '#06b6d4' },
+        { name: 'Leyes y Consultas',         icon: 'fa-balance-scale',  color: '#4338ca', color2: '#6366f1' },
+        { name: 'Bancos y Contabilidad',     icon: 'fa-coins',          color: '#3f6212', color2: '#84cc16' },
+        { name: 'Mantenimiento y Limpieza',  icon: 'fa-broom',          color: '#0f766e', color2: '#14b8a6' },
+        { name: 'Otros',                     icon: 'fa-ellipsis-h',     color: '#0369a1', color2: '#38bdf8' },
     ];
-
     const totalVacancies = state.vacancies.length;
 
     return `
@@ -3155,11 +2044,9 @@ function renderCategories() {
         <header class="bg-white shadow-lg sticky top-0 z-50 top-header">
             <div class="max-w-7xl mx-auto px-4 py-4">
                 <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="header-title-block">
-                            <h1 class="text-2xl font-black">Empleos León GTO</h1>
-                            <p class="text-sm">${totalVacancies} vacante${totalVacancies !== 1 ? 's' : ''} disponible${totalVacancies !== 1 ? 's' : ''}</p>
-                        </div>
+                    <div class="header-title-block">
+                        <h1 class="text-2xl font-black">Empleos León GTO</h1>
+                        <p class="text-sm">${totalVacancies} vacante${totalVacancies !== 1 ? 's' : ''} disponible${totalVacancies !== 1 ? 's' : ''}</p>
                     </div>
                     <div class="flex items-center gap-2">
                         ${state.isGuest ? `
@@ -3169,17 +2056,13 @@ function renderCategories() {
                             <button id="new-vacancy" class="btn btn-new-vacancy" style="padding:7px 11px;font-size:12px;"><i class="fas fa-plus"></i><span class="btn-nueva-text"> Nueva</span></button>
                             <button id="user-menu" class="btn btn-secondary" style="padding:7px 10px;font-size:12px;width:36px;height:36px;"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
-                                <div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-50" style="top:70px;right:16px;position:fixed">
+                                <div style="position:fixed;top:70px;right:16px;z-index:9999" class="w-56 bg-white rounded-xl shadow-2xl py-2">
                                     <div class="px-4 py-2 border-b user-session-badge">
                                         <p class="session-label">Sesión activa</p>
                                         <p class="session-email truncate" title="${escapeHtml(state.user.email)}">${escapeHtml(state.user.email)}</p>
                                     </div>
-                                    <button id="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
-                                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                                    </button>
-                                    <button id="delete-account" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 flex items-center gap-2">
-                                        <i class="fas fa-trash"></i> Eliminar Cuenta
-                                    </button>
+                                    <button id="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+                                    <button id="delete-account" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 flex items-center gap-2"><i class="fas fa-trash"></i> Eliminar Cuenta</button>
                                 </div>
                             ` : ''}
                         ` : `
@@ -3189,25 +2072,17 @@ function renderCategories() {
                 </div>
             </div>
         </header>
-
-        <!-- Barra de acceso rápido — manita + 2 botones -->
         <div class="quick-action-bar">
             <span class="quick-action-hand">👉</span>
-            <button id="quick-terms-btn" class="quick-btn quick-btn-red quick-btn-wide">
-                <i class="fas fa-file-alt"></i> Términos
-            </button>
-            <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue quick-btn-wide">
-                <i class="fas fa-plus"></i> Publicar Vacante
-            </button>
+            <button id="quick-terms-btn" class="quick-btn quick-btn-red quick-btn-wide"><i class="fas fa-file-alt"></i> Términos</button>
+            <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue quick-btn-wide"><i class="fas fa-plus"></i> Publicar Vacante</button>
         </div>
-
         <main class="max-w-5xl mx-auto px-4 pt-6 pb-10" style="background:#fff;">
             <div class="text-center mb-5 fade-in">
                 <h2 class="cat-screen-title">Selecciona una opción</h2>
             </div>
-
             <div class="categories-grid fade-in">
-                ${CATEGORIES.map((cat) => {
+                ${CATEGORIES.map(cat => {
                     const isAll = cat.name === 'Todas';
                     const count = isAll ? totalVacancies : state.vacancies.filter(v => v.category === cat.name).length;
                     const countLabel = isAll ? `${count} vacante${count !== 1 ? 's' : ''} totales` : `${count} vacante${count !== 1 ? 's' : ''}`;
@@ -3216,7 +2091,7 @@ function renderCategories() {
                         data-category="${isAll ? '' : escapeHtml(cat.name)}"
                         data-is-all="${isAll}"
                         style="--cat-c1:${cat.color};--cat-c2:${cat.color2}">
-                        <div class="cat-v2-icon-wrap" style="background:${cat.iconBg}">
+                        <div class="cat-v2-icon-wrap">
                             <i class="fas ${cat.icon}"></i>
                         </div>
                         <div class="cat-v2-info">
@@ -3227,8 +2102,6 @@ function renderCategories() {
                     </button>`;
                 }).join('')}
             </div>
-
-            <!-- Firma con marquee continuo -->
             <div class="app-footer fade-in">
                 <span class="app-footer-inner">✨ Created by <strong>Axellabstech</strong> &nbsp;|&nbsp; Empleos León GTO &nbsp;|&nbsp; ✨ Created by <strong>Axellabstech</strong> &nbsp;|&nbsp; Empleos León GTO</span>
             </div>
@@ -3237,32 +2110,26 @@ function renderCategories() {
 }
 
 function renderDashboard() {
-    // Filter by selected category if set
     const baseVacancies = state.selectedCategory
         ? state.vacancies.filter(v => v.category === state.selectedCategory)
         : state.vacancies;
     const displayVacancies = state.dateFilter
         ? (() => {
             const filterDate = state.dateFilter.toLocaleDateString('es-MX');
-            return baseVacancies.filter(v => {
-                if (!v.created_at) return false;
-                return new Date(v.created_at).toLocaleDateString('es-MX') === filterDate;
-            });
+            return baseVacancies.filter(v => v.created_at && new Date(v.created_at).toLocaleDateString('es-MX') === filterDate);
           })()
         : baseVacancies;
 
-    const userVacancies = state.user ? displayVacancies.filter(v => v.user_id === state.user.id) : [];
+    const userVacancies  = state.user ? displayVacancies.filter(v => v.user_id === state.user.id) : [];
     const otherVacancies = state.user ? displayVacancies.filter(v => v.user_id !== state.user.id) : displayVacancies;
-    
+
     return `
     <div class="min-h-screen">
         <header class="bg-white shadow-lg sticky top-0 z-50 top-header">
             <div class="max-w-7xl mx-auto px-4 py-4">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-3">
-                        <button id="back-categories" class="btn-back" title="Volver a categorías">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
+                        <button id="back-categories" class="btn-back" title="Volver a categorías"><i class="fas fa-chevron-left"></i></button>
                         <div class="header-title-block">
                             <h1 class="text-xl font-black">${state.selectedCategory ? escapeHtml(state.selectedCategory) : 'Todas las Vacantes'}</h1>
                             <p class="text-sm">${displayVacancies.length} vacante${displayVacancies.length !== 1 ? 's' : ''} ${state.dateFilter ? 'filtradas' : 'disponibles'}</p>
@@ -3274,7 +2141,7 @@ function renderDashboard() {
                             <button id="go-login" class="btn btn-outline" style="padding:7px 10px;font-size:12px;">Sesión</button>
                         ` : state.user ? `
                             <button id="new-vacancy" class="btn btn-new-vacancy" style="padding:7px 11px;font-size:12px;"><i class="fas fa-plus"></i><span class="btn-nueva-text"> Nueva</span></button>
-                            <button id="calendar-btn" class="btn btn-calendar ${state.dateFilter ? 'btn-calendar-active' : ''}" style="padding:7px 10px;font-size:12px;" title="${state.dateFilter ? 'Filtro activo' : 'Filtrar por fecha'}"><i class="fas fa-calendar-alt"></i>${state.dateFilter ? ' ●' : ''}</button>
+                            <button id="calendar-btn" class="btn btn-calendar ${state.dateFilter ? 'btn-calendar-active' : ''}" style="padding:7px 10px;font-size:12px;"><i class="fas fa-calendar-alt"></i>${state.dateFilter ? ' ●' : ''}</button>
                             <button id="user-menu" class="btn btn-secondary" style="padding:7px 10px;font-size:12px;width:36px;height:36px;"><i class="fas fa-user"></i></button>
                             ${state.menuOpen ? `
                                 <div style="position:fixed;top:70px;right:16px;z-index:9999" class="w-56 bg-white rounded-xl shadow-2xl py-2">
@@ -3282,17 +2149,11 @@ function renderDashboard() {
                                         <p class="session-label">Sesión activa</p>
                                         <p class="session-email truncate" title="${escapeHtml(state.user.email)}">${escapeHtml(state.user.email)}</p>
                                     </div>
-                                    <button id="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2">
-                                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                                    </button>
-                                    <button id="delete-account" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 flex items-center gap-2">
-                                        <i class="fas fa-trash"></i> Eliminar Cuenta
-                                    </button>
+                                    <button id="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+                                    <button id="delete-account" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 flex items-center gap-2"><i class="fas fa-trash"></i> Eliminar Cuenta</button>
                                 </div>
                             ` : ''}
-                        ` : `
-                            <button id="go-login" class="btn btn-outline" style="padding:7px 10px;font-size:12px;">Iniciar Sesión</button>
-                        `}
+                        ` : `<button id="go-login" class="btn btn-outline" style="padding:7px 10px;font-size:12px;">Iniciar Sesión</button>`}
                     </div>
                 </div>
             </div>
@@ -3336,7 +2197,6 @@ function renderDashboard() {
                     </div>
                 `}
             </section>
-            <!-- Firma con marquee continuo -->
             <div class="app-footer fade-in">
                 <span class="app-footer-inner">✨ Created by <strong>Axellabstech</strong> &nbsp;|&nbsp; Empleos León GTO &nbsp;|&nbsp; ✨ Created by <strong>Axellabstech</strong> &nbsp;|&nbsp; Empleos León GTO</span>
             </div>
@@ -3344,41 +2204,47 @@ function renderDashboard() {
     </div>`;
 }
 
+// ==================== FIX #7: renderVacancyCard filtra strings "NULL" en descripción y campos ====================
 function renderVacancyCard(vacancy, isOwner) {
     const reqLines = vacancy.requirements
-        ? vacancy.requirements.split('\n').map(l => l.trim()).filter(l => l.length > 0)
+        ? vacancy.requirements.split('\n').map(l => l.trim()).filter(l => l.length > 0 && l !== 'NULL' && l !== 'null')
         : [];
 
-    // Only show description if it has real content (not NULL)
-    const hasDesc = vacancy.description && vacancy.description !== 'NULL' && vacancy.description.trim().length > 0;
+    // FIX: Filtramos explícitamente "NULL" y "null" strings de la BD
+    const desc = cleanValue(vacancy.description);
+    const hasDesc = desc.length > 0;
     const hasReqs = reqLines.length > 0 && !(reqLines.length === 1 && reqLines[0] === 'Sin requisitos especificados');
+
+    const loc   = cleanValue(vacancy.location);
+    const phone = cleanValue(vacancy.contact_phone);
+    const date  = cleanValue(vacancy.publication_date);
+    const days  = cleanValue(vacancy.work_days);
+    const sched = cleanValue(vacancy.schedule);
 
     return `
     <div class="vacancy-card">
         <div class="h-48 bg-gray-200 overflow-hidden">
             ${vacancy.image_base64
-                ? `<img src="${vacancy.image_base64}" alt="${escapeHtml(vacancy.company)}" class="w-full h-full object-cover">`
+                ? `<img src="${vacancy.image_base64}" alt="${escapeHtml(vacancy.company)}" class="w-full h-full object-cover" loading="lazy">`
                 : '<div class="w-full h-full flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>'}
         </div>
         <div class="p-6 card-content">
-            <h3 class="card-company">${escapeHtml(vacancy.company)}</h3>
-            <p class="job-title text-purple-600 mb-3">${escapeHtml(vacancy.job_title)}</p>
+            <h3 class="card-company">${escapeHtml(cleanValue(vacancy.company))}</h3>
+            <p class="job-title text-purple-600 mb-3">${escapeHtml(cleanValue(vacancy.job_title))}</p>
             ${vacancy.category ? `<span class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-3">${escapeHtml(vacancy.category)}</span>` : ''}
-            ${hasDesc ? `<p class="card-description mb-3">${escapeHtml(vacancy.description)}</p>` : ''}
+            ${hasDesc ? `<p class="card-description mb-3">${escapeHtml(desc)}</p>` : ''}
             ${hasReqs ? `
                 <div class="requirements-block mb-4">
                     <p class="req-block-title"><i class="fas fa-clipboard-list mr-1"></i>Requisitos</p>
-                    <ul class="requirements-list">
-                        ${reqLines.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
-                    </ul>
+                    <ul class="requirements-list">${reqLines.map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>
                 </div>
             ` : ''}
             <div class="card-info-rows mb-4">
-                ${vacancy.location      ? `<div class="card-info-row"><i class="fas fa-map-marker-alt"></i><span>${escapeHtml(vacancy.location)}</span></div>` : ''}
-                ${vacancy.contact_phone ? `<div class="card-info-row"><i class="fas fa-phone"></i><span>${escapeHtml(vacancy.contact_phone)}</span></div>` : ''}
-                ${vacancy.publication_date ? `<div class="card-info-row"><i class="fas fa-calendar"></i><span>${escapeHtml(vacancy.publication_date)}</span></div>` : ''}
-                ${vacancy.work_days     ? `<div class="card-info-row"><i class="fas fa-clock"></i><span>${escapeHtml(vacancy.work_days)}</span></div>` : ''}
-                ${vacancy.schedule      ? `<div class="card-info-row"><i class="fas fa-business-time"></i><span>${escapeHtml(vacancy.schedule)}</span></div>` : ''}
+                ${loc   ? `<div class="card-info-row"><i class="fas fa-map-marker-alt"></i><span>${escapeHtml(loc)}</span></div>` : ''}
+                ${phone ? `<div class="card-info-row"><i class="fas fa-phone"></i><span>${escapeHtml(phone)}</span></div>` : ''}
+                ${date  ? `<div class="card-info-row"><i class="fas fa-calendar"></i><span>${escapeHtml(date)}</span></div>` : ''}
+                ${days  ? `<div class="card-info-row"><i class="fas fa-clock"></i><span>${escapeHtml(days)}</span></div>` : ''}
+                ${sched ? `<div class="card-info-row"><i class="fas fa-business-time"></i><span>${escapeHtml(sched)}</span></div>` : ''}
             </div>
             ${isOwner ? `
                 <div class="flex gap-2">
@@ -3386,13 +2252,11 @@ function renderVacancyCard(vacancy, isOwner) {
                     <button data-delete="${vacancy.id}" class="btn btn-cancel flex-1"><i class="fas fa-trash"></i> Eliminar</button>
                 </div>
             ` : `
-                ${vacancy.contact_phone ? (() => {
-                    const rawPhone = vacancy.contact_phone.replace(/[\s\-\(\)\.]/g, '');
-                    const phone = rawPhone.startsWith('+') ? rawPhone : `+52${rawPhone}`;
+                ${phone ? (() => {
+                    const rawPhone = phone.replace(/[\s\-\(\)\.]/g, '');
+                    const phoneNum = rawPhone.startsWith('+') ? rawPhone : `+52${rawPhone}`;
                     const msg = encodeURIComponent('Hola, que tal 👋 vi el anuncio de una vacante, de la cual estoy interesado(a) a través de la página *ECOSISTEMA LEÓN*, ¿podría brindarme más detalles por favor?');
-                    return `<a href="https://wa.me/${phone}?text=${msg}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-card">
-                        <i class="fab fa-whatsapp"></i> Contactar WhatsApp
-                    </a>`;
+                    return `<a href="https://wa.me/${phoneNum}?text=${msg}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-card"><i class="fab fa-whatsapp"></i> Contactar WhatsApp</a>`;
                 })() : ''}
             `}
         </div>
@@ -3404,18 +2268,14 @@ function renderForm() {
     <div class="min-h-screen py-8">
         <div class="max-w-3xl mx-auto px-4">
             <div class="bg-white rounded-3xl shadow-2xl overflow-hidden fade-in">
-                <!-- Header púrpura con flecha centrada verticalmente -->
                 <div class="form-header-purple">
-                    <button type="button" id="form-back-btn" class="back-btn-inheader" title="Volver a categorías">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
+                    <button type="button" id="form-back-btn" class="back-btn-inheader" title="Volver"><i class="fas fa-arrow-left"></i></button>
                     <div class="form-header-content">
                         <h2 class="text-3xl font-black mb-2">${state.editingVacancy ? 'Editar' : 'Nueva'} Vacante</h2>
                         <p class="text-purple-200">Completa la información</p>
                     </div>
                 </div>
                 <form id="vacancy-form" class="p-8 space-y-6">
-                    <!-- ── IMAGEN ── -->
                     <div class="input-group">
                         <label>Imagen</label>
                         <div class="image-upload-area has-image" id="image-upload-area">
@@ -3428,7 +2288,6 @@ function renderForm() {
                         </p>
                         <input type="file" accept="image/*" id="img" style="display:none">
                     </div>
-                    <!-- ── EMPRESA (obligatorio, mayúsculas) ── -->
                     <div class="input-group">
                         <label>Empresa <span style="color:#ef4444">*</span></label>
                         <input type="text" id="company" placeholder="EJ: CALZADO LEÓN" value="${escapeHtml(state.formData.company)}" style="text-transform:uppercase;" autocomplete="off">
@@ -3444,16 +2303,12 @@ function renderForm() {
                     <div class="input-group">
                         <label>Requisitos <span class="req-hint">— uno por línea, Enter para agregar más</span></label>
                         <div class="requirements-textarea-wrap">
-                            <textarea id="requirements" rows="5" maxlength="500" class="requirements-input" placeholder="Disponibilidad y actitud de trabajar&#10;Acta de nacimiento&#10;INE&#10;CURP&#10;Carta de no antecedentes penales">${escapeHtml(state.formData.requirements)}</textarea>
+                            <textarea id="requirements" rows="5" maxlength="500" class="requirements-input"
+                                placeholder="Disponibilidad y actitud de trabajar&#10;Acta de nacimiento&#10;INE&#10;CURP&#10;Carta de no antecedentes penales">${escapeHtml(state.formData.requirements)}</textarea>
                             <div class="req-lines-preview" id="req-preview" aria-hidden="true">
                                 ${state.formData.requirements
-                                    ? state.formData.requirements.split('\n')
-                                        .map(l => l.trim())
-                                        .filter(l => l.length > 0)
-                                        .map(l => `<span class="req-pill">${escapeHtml(l)}</span>`)
-                                        .join('')
-                                    : '<span class="req-empty-hint">Los requisitos aparecerán aquí</span>'
-                                }
+                                    ? state.formData.requirements.split('\n').map(l => l.trim()).filter(l => l.length > 0).map(l => `<span class="req-pill">${escapeHtml(l)}</span>`).join('')
+                                    : '<span class="req-empty-hint">Los requisitos aparecerán aquí</span>'}
                             </div>
                         </div>
                     </div>
@@ -3465,19 +2320,19 @@ function renderForm() {
                         <label>Categoría <span style="color:#ef4444">*</span></label>
                         <select id="category">
                             <option value="">-- Selecciona una categoría --</option>
-                            <option value="Fábricas y Calzado"      ${state.formData.category === 'Fábricas y Calzado'      ? 'selected' : ''}>🏭 Fábricas y Calzado</option>
-                            <option value="Tiendas y Ventas"        ${state.formData.category === 'Tiendas y Ventas'        ? 'selected' : ''}>🛒 Tiendas y Ventas</option>
-                            <option value="Hospitales y Salud"      ${state.formData.category === 'Hospitales y Salud'      ? 'selected' : ''}>🏥 Hospitales y Salud</option>
-                            <option value="Hoteles y Restaurantes"  ${state.formData.category === 'Hoteles y Restaurantes'  ? 'selected' : ''}>🍽️ Hoteles y Restaurantes</option>
-                            <option value="Bodegas y Transporte"    ${state.formData.category === 'Bodegas y Transporte'    ? 'selected' : ''}>🚚 Bodegas y Transporte</option>
+                            <option value="Fábricas y Calzado"        ${state.formData.category === 'Fábricas y Calzado'        ? 'selected' : ''}>🏭 Fábricas y Calzado</option>
+                            <option value="Tiendas y Ventas"          ${state.formData.category === 'Tiendas y Ventas'          ? 'selected' : ''}>🛒 Tiendas y Ventas</option>
+                            <option value="Hospitales y Salud"        ${state.formData.category === 'Hospitales y Salud'        ? 'selected' : ''}>🏥 Hospitales y Salud</option>
+                            <option value="Hoteles y Restaurantes"    ${state.formData.category === 'Hoteles y Restaurantes'    ? 'selected' : ''}>🍽️ Hoteles y Restaurantes</option>
+                            <option value="Bodegas y Transporte"      ${state.formData.category === 'Bodegas y Transporte'      ? 'selected' : ''}>🚚 Bodegas y Transporte</option>
                             <option value="Oficinas y Administración" ${state.formData.category === 'Oficinas y Administración' ? 'selected' : ''}>🏢 Oficinas y Administración</option>
-                            <option value="Obra y Construcción"     ${state.formData.category === 'Obra y Construcción'     ? 'selected' : ''}>🏗️ Obra y Construcción</option>
-                            <option value="Escuelas y Clases"       ${state.formData.category === 'Escuelas y Clases'       ? 'selected' : ''}>📚 Escuelas y Clases</option>
-                            <option value="Sistemas y Computación"  ${state.formData.category === 'Sistemas y Computación'  ? 'selected' : ''}>💻 Sistemas y Computación</option>
-                            <option value="Leyes y Consultas"       ${state.formData.category === 'Leyes y Consultas'       ? 'selected' : ''}>⚖️ Leyes y Consultas</option>
-                            <option value="Bancos y Contabilidad"   ${state.formData.category === 'Bancos y Contabilidad'   ? 'selected' : ''}>🏦 Bancos y Contabilidad</option>
-                            <option value="Mantenimiento y Limpieza" ${state.formData.category === 'Mantenimiento y Limpieza' ? 'selected' : ''}>🧹 Mantenimiento y Limpieza</option>
-                            <option value="Otros"                   ${state.formData.category === 'Otros'                   ? 'selected' : ''}>🔹 Otros</option>
+                            <option value="Obra y Construcción"       ${state.formData.category === 'Obra y Construcción'       ? 'selected' : ''}>🏗️ Obra y Construcción</option>
+                            <option value="Escuelas y Clases"         ${state.formData.category === 'Escuelas y Clases'         ? 'selected' : ''}>📚 Escuelas y Clases</option>
+                            <option value="Sistemas y Computación"    ${state.formData.category === 'Sistemas y Computación'    ? 'selected' : ''}>💻 Sistemas y Computación</option>
+                            <option value="Leyes y Consultas"         ${state.formData.category === 'Leyes y Consultas'         ? 'selected' : ''}>⚖️ Leyes y Consultas</option>
+                            <option value="Bancos y Contabilidad"     ${state.formData.category === 'Bancos y Contabilidad'     ? 'selected' : ''}>🏦 Bancos y Contabilidad</option>
+                            <option value="Mantenimiento y Limpieza"  ${state.formData.category === 'Mantenimiento y Limpieza'  ? 'selected' : ''}>🧹 Mantenimiento y Limpieza</option>
+                            <option value="Otros"                     ${state.formData.category === 'Otros'                     ? 'selected' : ''}>🔹 Otros</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -3487,8 +2342,9 @@ function renderForm() {
                         </div>
                         <div class="input-group">
                             <label>Fecha publicación <span style="color:#ef4444">*</span></label>
-                            <input type="text" id="publication_date" placeholder="DD/MM/AAAA" maxlength="10" value="${escapeHtml(state.formData.publication_date)}" style="letter-spacing:0.05em;" autocomplete="off">
-                            <small style="color:#6b7280;font-size:11px;margin-top:4px;display:block;">Formato obligatorio: DD/MM/AAAA · Ej: 25/07/2025</small>
+                            <input type="text" id="publication_date" placeholder="DD/MM/AAAA" maxlength="10"
+                                value="${escapeHtml(state.formData.publication_date)}" style="letter-spacing:0.05em;" autocomplete="off">
+                            <small style="color:#6b7280;font-size:11px;margin-top:4px;display:block;">Formato: DD/MM/AAAA · Ej: 25/07/2025</small>
                         </div>
                     </div>
                     <div class="input-group">
@@ -3500,19 +2356,13 @@ function renderForm() {
                         <textarea id="schedule" rows="2" maxlength="100" placeholder="09:00 - 18:00">${escapeHtml(state.formData.schedule)}</textarea>
                     </div>
                     <div class="form-buttons-container">
-                        <!-- Fila 1: Cancelar, Limpiar y Publicar en una sola línea -->
                         <div class="form-main-buttons">
-                            <button type="button" id="cancel-btn" class="btn-compact btn-cancel">
-                                <i class="fas fa-times"></i> Cancelar
-                            </button>
-                            <button type="button" id="clean-btn" class="btn-compact btn-clean">
-                                <i class="fas fa-eraser"></i> Limpiar
-                            </button>
+                            <button type="button" id="cancel-btn" class="btn-compact btn-cancel"><i class="fas fa-times"></i> Cancelar</button>
+                            <button type="button" id="clean-btn" class="btn-compact btn-clean"><i class="fas fa-eraser"></i> Limpiar</button>
                             <button type="submit" class="btn-compact btn-save" ${state.loading ? 'disabled' : ''}>
                                 ${state.loading ? '<i class="fas fa-spinner fa-spin"></i> Guardando...' : (state.editingVacancy ? '<i class="fas fa-edit"></i> Actualizar' : '<i class="fas fa-save"></i> Publicar')}
                             </button>
                         </div>
-                        <!-- Fila 2: Botón IA ocupa toda la fila (función premium/admin) -->
                         <button type="button" id="ai-btn" class="btn-compact btn-autofill form-ai-button">
                             <i class="fas fa-robot"></i> IA — Autofill (Solo Administradores)
                         </button>
@@ -3535,19 +2385,12 @@ function renderAIChat() {
             </div>
         </div>
         <div class="ai-chat-messages">
-            ${state.aiMessages.map(m => `
-                <div class="ai-message ${m.role}">
-                    ${escapeHtml(m.content)}
-                </div>
-            `).join('')}
+            ${state.aiMessages.map(m => `<div class="ai-message ${m.role}">${escapeHtml(m.content)}</div>`).join('')}
             ${state.aiLoading ? '<div class="ai-message bot"><span class="ai-loading"></span> Procesando...</div>' : ''}
         </div>
         <div class="ai-chat-input">
             <div class="file-upload">
-                <label>
-                    <i class="fas fa-paperclip mr-1"></i> Imagen
-                    <input type="file" accept="image/*" id="ai-img">
-                </label>
+                <label><i class="fas fa-paperclip mr-1"></i> Imagen<input type="file" accept="image/*" id="ai-img"></label>
                 ${state.aiImagePreview ? `
                     <div class="file-preview">
                         <img src="${state.aiImagePreview}" alt="Preview">
@@ -3557,82 +2400,31 @@ function renderAIChat() {
             </div>
             <textarea id="ai-chat-input" placeholder="Describe la vacante..." rows="3"></textarea>
             <div class="ai-chat-actions">
-                <button id="send-ai" class="btn-send" ${state.aiLoading ? 'disabled' : ''}>
-                    <i class="fas fa-paper-plane"></i> Enviar
-                </button>
-                <button id="start-ai" class="btn-start" ${!state.aiExtractedData || state.aiLoading ? 'disabled' : ''}>
-                    <i class="fas fa-play"></i> START
-                </button>
-                <button id="close-ai-2" class="btn-close-chat">
-                    <i class="fas fa-times"></i> Cerrar
-                </button>
+                <button id="send-ai" class="btn-send" ${state.aiLoading ? 'disabled' : ''}><i class="fas fa-paper-plane"></i> Enviar</button>
+                <button id="start-ai" class="btn-start" ${!state.aiExtractedData || state.aiLoading ? 'disabled' : ''}><i class="fas fa-play"></i> START</button>
+                <button id="close-ai-2" class="btn-close-chat"><i class="fas fa-times"></i> Cerrar</button>
             </div>
         </div>
     </div>`;
 }
 
-
-// ==================== RENDER PRINCIPAL ====================
-function render() {
-    // Safety: if a previous render got stuck, auto-release after 500ms
-    if (state.isRendering) {
-        console.log('⏸️ Render en progreso, reintentando...');
-        setTimeout(() => { state.isRendering = false; render(); }, 500);
-        return;
-    }
-    state.isRendering = true;
-    try {
-        const app = document.getElementById('app');
-        if (!app) { state.isRendering = false; return; }
-        let content = '';
-        switch (state.view) {
-            case 'login':      content = renderLogin();      break;
-            case 'signup':     content = renderSignup();     break;
-            case 'terms':      content = renderTerms();      break;
-            case 'categories': content = renderCategories(); break;
-            case 'dashboard':  content = renderDashboard();  break;
-            case 'form':       content = renderForm();       break;
-            default:           content = renderLogin();
-        }
-        app.innerHTML = content + renderCalendar();
-        attachEvents();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch(err) {
-        console.error('❌ Error en render:', err);
-    } finally {
-        state.isRendering = false;
-    }
-}
-
 // ==================== EVENTOS ====================
 function attachEvents() {
-    // Axelbot — FAB y botón rápido (presentes en login y categorías)
-
-
-
     // Login
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.onsubmit = handleLogin;
-        document.getElementById('email').oninput = (e) => state.formData.email = e.target.value;
-        document.getElementById('password').oninput = (e) => state.formData.password = e.target.value;
-        // FIX #7: Toggle sin re-render - manipulamos el DOM directamente
+        document.getElementById('email').oninput     = (e) => state.formData.email    = e.target.value;
+        document.getElementById('password').oninput  = (e) => state.formData.password = e.target.value;
         document.getElementById('toggle-pwd')?.addEventListener('click', () => {
-            const pwdInput = document.getElementById('password');
+            const inp  = document.getElementById('password');
             const icon = document.querySelector('#toggle-pwd i');
-            if (!pwdInput) return;
+            if (!inp) return;
             state.showPassword = !state.showPassword;
-            pwdInput.type = state.showPassword ? 'text' : 'password';
-            if (icon) {
-                icon.className = `fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}`;
-            }
+            inp.type = state.showPassword ? 'text' : 'password';
+            if (icon) icon.className = `fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}`;
         });
-        document.getElementById('go-signup')?.addEventListener('click', () => {
-            state.view = 'signup';
-            resetAuthForm();
-            render();
-        });
-        // Botón Restablecer contraseña
+        document.getElementById('go-signup')?.addEventListener('click', () => { state.view = 'signup'; resetAuthForm(); render(); });
         document.getElementById('forgot-password-btn')?.addEventListener('click', handleForgotPassword);
         document.getElementById('guest-btn')?.addEventListener('click', handleGuestAccess);
     }
@@ -3641,78 +2433,49 @@ function attachEvents() {
     const signupForm = document.getElementById('signup-form');
     if (signupForm) {
         signupForm.onsubmit = handleSignup;
-        document.getElementById('email').oninput = (e) => state.formData.email = e.target.value;
-        document.getElementById('password').oninput = (e) => state.formData.password = e.target.value;
+        document.getElementById('email').oninput            = (e) => state.formData.email           = e.target.value;
+        document.getElementById('password').oninput         = (e) => state.formData.password        = e.target.value;
         document.getElementById('confirm-password').oninput = (e) => state.formData.confirmPassword = e.target.value;
-        // FIX #7: Toggle sin re-render para signup
         document.getElementById('toggle-pwd')?.addEventListener('click', () => {
-            const pwdInput = document.getElementById('password');
+            const inp = document.getElementById('password');
             const icon = document.querySelector('#toggle-pwd i');
-            if (!pwdInput) return;
+            if (!inp) return;
             state.showPassword = !state.showPassword;
-            pwdInput.type = state.showPassword ? 'text' : 'password';
+            inp.type = state.showPassword ? 'text' : 'password';
             if (icon) icon.className = `fas ${state.showPassword ? 'fa-eye-slash' : 'fa-eye'}`;
         });
         document.getElementById('toggle-confirm-pwd')?.addEventListener('click', () => {
-            const confirmInput = document.getElementById('confirm-password');
+            const inp = document.getElementById('confirm-password');
             const icon = document.querySelector('#toggle-confirm-pwd i');
-            if (!confirmInput) return;
+            if (!inp) return;
             state.showConfirmPassword = !state.showConfirmPassword;
-            confirmInput.type = state.showConfirmPassword ? 'text' : 'password';
+            inp.type = state.showConfirmPassword ? 'text' : 'password';
             if (icon) icon.className = `fas ${state.showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`;
         });
-        document.getElementById('go-login')?.addEventListener('click', () => {
-            state.view = 'login';
-            render();
-        });
-        // Flecha retroceso en header del signup → login
-        document.getElementById('signup-back-btn')?.addEventListener('click', () => {
-            state.view = 'login';
-            resetAuthForm();
-            render();
-        });
-        // Botón Cancelar en signup → login
-        document.getElementById('signup-cancel-btn')?.addEventListener('click', () => {
-            state.view = 'login';
-            resetAuthForm();
-            render();
-        });
+        document.getElementById('go-login')?.addEventListener('click', () => { state.view = 'login'; render(); });
+        document.getElementById('signup-back-btn')?.addEventListener('click', () => { state.view = 'login'; resetAuthForm(); render(); });
+        document.getElementById('signup-cancel-btn')?.addEventListener('click', () => { state.view = 'login'; resetAuthForm(); render(); });
     }
 
-    // Terms - FIX #7: checkbox sin re-render, solo habilita/deshabilita el botón
+    // Terms
     document.getElementById('accept-terms')?.addEventListener('change', (e) => {
         state.acceptedTerms = e.target.checked;
-        const acceptBtn = document.getElementById('accept-btn');
-        if (acceptBtn) {
-            acceptBtn.disabled = !state.acceptedTerms;
-        }
+        const btn = document.getElementById('accept-btn');
+        if (btn) btn.disabled = !state.acceptedTerms;
     });
     document.getElementById('accept-btn')?.addEventListener('click', handleAcceptTerms);
 
-    // Dashboard
-    document.getElementById('new-vacancy')?.addEventListener('click', () => {
-        state.view = 'form';
-        resetJobForm();
-        clearAIData();
-        render();
-    });
+    // Dashboard / categories comunes
+    document.getElementById('new-vacancy')?.addEventListener('click', () => { state.view = 'form'; resetJobForm(); clearAIData(); render(); });
     document.getElementById('calendar-btn')?.addEventListener('click', openCalendar);
-    document.getElementById('user-menu')?.addEventListener('click', () => {
-        state.menuOpen = !state.menuOpen;
-        render();
-    });
+    document.getElementById('user-menu')?.addEventListener('click', () => { state.menuOpen = !state.menuOpen; render(); });
     document.getElementById('logout')?.addEventListener('click', handleLogout);
     document.getElementById('delete-account')?.addEventListener('click', handleDeleteAccount);
-    document.getElementById('go-login')?.addEventListener('click', () => {
-        state.view = 'login';
-        render();
-    });
-    document.getElementById('go-signup-from-empty')?.addEventListener('click', () => {
-        state.view = 'signup';
-        render();
-    });
+    document.getElementById('go-login')?.addEventListener('click', () => { state.view = 'login'; render(); });
+    document.getElementById('go-signup-from-empty')?.addEventListener('click', () => { state.view = 'signup'; render(); });
+    document.getElementById('back-categories')?.addEventListener('click', () => { state.view = 'categories'; state.dateFilter = null; render(); });
 
-    // Categories screen
+    // Categorías
     document.querySelectorAll('[data-category], [data-is-all]').forEach(btn => {
         btn.addEventListener('click', () => {
             const isAll = btn.dataset.isAll === 'true';
@@ -3723,163 +2486,88 @@ function attachEvents() {
         });
     });
 
-    // Botones de acción rápida en pantalla de categorías
-    document.getElementById('quick-terms-btn')?.addEventListener('click', () => {
-        // Llevar a la vista de términos (ya existe en la app)
-        state.view = 'terms';
-        render();
-    });
-
+    document.getElementById('quick-terms-btn')?.addEventListener('click', () => { state.view = 'terms'; render(); });
     document.getElementById('quick-vacancy-btn')?.addEventListener('click', () => {
-        if (state.user) {
-            // Usuario logueado → ir directo al formulario
-            state.view = 'form';
-            resetJobForm();
-            clearAIData();
-            render();
-        } else {
-            // Invitado o sin sesión → mostrar modal explicativo con opción de registro
-            showModal(
-                'question',
-                'Necesitas una cuenta',
-                'Para publicar vacantes debes iniciar sesión o crear una cuenta gratuita. ¿Deseas registrarte ahora?',
-                () => {
-                    state.view = 'signup';
-                    render();
-                }
-            );
-        }
+        if (state.user) { state.view = 'form'; resetJobForm(); clearAIData(); render(); }
+        else { showModal('question', 'Necesitas una cuenta', 'Para publicar vacantes debes iniciar sesión o crear una cuenta gratuita. ¿Deseas registrarte ahora?', () => { state.view = 'signup'; render(); }); }
     });
 
-    // Back to categories button
-    document.getElementById('back-categories')?.addEventListener('click', () => {
-        state.view = 'categories';
-        state.dateFilter = null;
-        render();
-    });
-
-    // Vacancy cards
-    document.querySelectorAll('[data-edit]').forEach(btn => {
-        btn.addEventListener('click', () => handleEditVacancy(btn.dataset.edit));
-    });
-    document.querySelectorAll('[data-delete]').forEach(btn => {
-        btn.addEventListener('click', () => handleDeleteVacancy(btn.dataset.delete));
-    });
+    // Cards
+    document.querySelectorAll('[data-edit]').forEach(btn   => btn.addEventListener('click', () => handleEditVacancy(btn.dataset.edit)));
+    document.querySelectorAll('[data-delete]').forEach(btn => btn.addEventListener('click', () => handleDeleteVacancy(btn.dataset.delete)));
 
     // Form
     const vacancyForm = document.getElementById('vacancy-form');
     if (vacancyForm) {
         vacancyForm.onsubmit = handleSaveVacancy;
 
-        // Clicking the image area OR the blue hint text triggers the hidden file input
         const imageArea = document.querySelector('.image-upload-area');
         const imgInput  = document.getElementById('img');
         const imgHint   = document.getElementById('img-upload-hint');
-        if (imageArea && imgInput) {
-            imageArea.addEventListener('click', () => imgInput.click());
-            imgInput.addEventListener('change', handleImageUpload);
-        }
-        if (imgHint && imgInput) {
-            imgHint.addEventListener('click', () => imgInput.click());
-        }
+        if (imageArea && imgInput) { imageArea.addEventListener('click', () => imgInput.click()); imgInput.addEventListener('change', handleImageUpload); }
+        if (imgHint  && imgInput)  { imgHint.addEventListener('click', () => imgInput.click()); }
 
-        // Auto-inicializar ubicación si está vacía
-        if (!state.formData.location) {
-            state.formData.location = 'León, gto';
-        }
+        if (!state.formData.location) state.formData.location = 'León, gto';
 
-        // Empresa → forzar mayúsculas en tiempo real
-        document.getElementById('company').oninput = (e) => {
-            const upper = e.target.value.toUpperCase();
-            e.target.value = upper;
-            state.formData.company = upper;
-        };
-        document.getElementById('job_title').oninput = (e) => state.formData.job_title = e.target.value;
-        document.getElementById('description').oninput = (e) => state.formData.description = e.target.value;
+        document.getElementById('company').oninput = (e) => { const u = e.target.value.toUpperCase(); e.target.value = u; state.formData.company = u; };
+        document.getElementById('job_title').oninput    = (e) => state.formData.job_title    = e.target.value;
+        document.getElementById('description').oninput  = (e) => state.formData.description  = e.target.value;
+        document.getElementById('location').oninput     = (e) => state.formData.location     = e.target.value;
+        document.getElementById('category').onchange    = (e) => state.formData.category     = e.target.value;
+        document.getElementById('contact_phone').oninput = (e) => state.formData.contact_phone = e.target.value;
+        document.getElementById('work_days').oninput    = (e) => state.formData.work_days    = e.target.value;
+        document.getElementById('schedule').oninput     = (e) => state.formData.schedule     = e.target.value;
+
         document.getElementById('requirements').oninput = (e) => {
             state.formData.requirements = e.target.value;
-            // Update live preview
             const preview = document.getElementById('req-preview');
             if (preview) {
                 const lines = e.target.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-                if (lines.length > 0) {
-                    preview.innerHTML = lines.map(l => `<span class="req-pill">${escapeHtml(l)}</span>`).join('');
-                } else {
-                    preview.innerHTML = '<span class="req-empty-hint">Los requisitos aparecerán aquí</span>';
-                }
+                preview.innerHTML = lines.length > 0
+                    ? lines.map(l => `<span class="req-pill">${escapeHtml(l)}</span>`).join('')
+                    : '<span class="req-empty-hint">Los requisitos aparecerán aquí</span>';
             }
         };
-        document.getElementById('location').oninput = (e) => state.formData.location = e.target.value;
-        document.getElementById('category').onchange = (e) => state.formData.category = e.target.value;
-        document.getElementById('contact_phone').oninput = (e) => state.formData.contact_phone = e.target.value;
-        // Fecha: auto-insertar "/" para formato DD/MM/AAAA
+
+        // Auto-formato fecha DD/MM/AAAA
         const dateInput = document.getElementById('publication_date');
         if (dateInput) {
             dateInput.addEventListener('input', (e) => {
-                let v = e.target.value.replace(/\D/g, '');       // solo dígitos
+                let v = e.target.value.replace(/\D/g, '');
                 if (v.length > 8) v = v.slice(0, 8);
                 if (v.length >= 5)      v = v.slice(0,2) + '/' + v.slice(2,4) + '/' + v.slice(4);
                 else if (v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
                 e.target.value = v;
                 state.formData.publication_date = v;
             });
-            // Evitar borrar la "/" con backspace dejando confusión
             dateInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace') {
                     const val = dateInput.value;
-                    if (val.endsWith('/')) {
-                        e.preventDefault();
-                        dateInput.value = val.slice(0, -1);
-                        state.formData.publication_date = dateInput.value;
-                    }
+                    if (val.endsWith('/')) { e.preventDefault(); dateInput.value = val.slice(0, -1); state.formData.publication_date = dateInput.value; }
                 }
             });
         }
-        document.getElementById('work_days').oninput = (e) => state.formData.work_days = e.target.value;
-        document.getElementById('schedule').oninput = (e) => state.formData.schedule = e.target.value;
+
         document.getElementById('cancel-btn')?.addEventListener('click', cancelForm);
-        // Flecha retroceso en header de Nueva Vacante → categorías
-        document.getElementById('form-back-btn')?.addEventListener('click', () => {
-            state.view = 'categories';
-            state.editingVacancy = null;
-            resetJobForm();
-            clearAIData();
-            render();
-        });
+        document.getElementById('form-back-btn')?.addEventListener('click', () => { state.view = 'categories'; state.editingVacancy = null; resetJobForm(); clearAIData(); render(); });
         document.getElementById('clean-btn')?.addEventListener('click', cleanForm);
         document.getElementById('ai-btn')?.addEventListener('click', toggleAIChat);
     }
 
     // AI Chat
-    document.getElementById('ai-chat-input')?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendAIMessage();
-        }
-    });
+    document.getElementById('ai-chat-input')?.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAIMessage(); } });
     document.getElementById('send-ai')?.addEventListener('click', sendAIMessage);
     document.getElementById('start-ai')?.addEventListener('click', startAutofill);
-    document.getElementById('close-ai')?.addEventListener('click', () => {
-        state.aiChatOpen = false;
-        clearAIData();
-        render();
-    });
-    document.getElementById('close-ai-2')?.addEventListener('click', () => {
-        state.aiChatOpen = false;
-        clearAIData();
-        render();
-    });
-    document.getElementById('minimize-ai')?.addEventListener('click', () => {
-        state.chatMinimized = !state.chatMinimized;
-        render();
-    });
+    document.getElementById('close-ai')?.addEventListener('click',   () => { state.aiChatOpen = false; clearAIData(); render(); });
+    document.getElementById('close-ai-2')?.addEventListener('click', () => { state.aiChatOpen = false; clearAIData(); render(); });
+    document.getElementById('minimize-ai')?.addEventListener('click', () => { state.chatMinimized = !state.chatMinimized; render(); });
     document.getElementById('ai-img')?.addEventListener('change', handleAIImageUpload);
     document.getElementById('remove-ai-img')?.addEventListener('click', removeAIImage);
 }
 
 // ==================== INICIALIZACIÓN ====================
 async function init() {
-    console.log('🚀 Inicializando...');
+    console.log('🚀 Inicializando Empleos León GTO...');
     try {
         const { data } = await supabaseClient.auth.getSession();
         if (data?.session?.user) {
@@ -3889,20 +2577,20 @@ async function init() {
             state.view = accepted ? 'categories' : 'terms';
             await loadVacancies();
         }
+
         supabaseClient.auth.onAuthStateChange(async (event, session) => {
             console.log('🔐 Auth event:', event);
 
-            // Always hide any loading spinner on auth events (except INITIAL_SESSION)
-            if (event !== 'INITIAL_SESSION') {
-                hideLoading();
-                state.isRendering = false; // ← CRITICAL: unblock render lock
-            }
-
-            // PASSWORD_RECOVERY → show new password modal
             if (event === 'PASSWORD_RECOVERY') {
                 console.log('🔑 PASSWORD_RECOVERY - mostrando modal');
                 showNewPasswordModal();
                 return;
+            }
+
+            // FIX: Siempre ocultar spinner en eventos auth (excepto INITIAL_SESSION)
+            if (event !== 'INITIAL_SESSION') {
+                hideLoading();
+                state.isRendering = false;
             }
 
             if (state.isLoggingOut && event === 'SIGNED_OUT') {
@@ -3911,7 +2599,7 @@ async function init() {
                 return;
             }
             if (event === 'SIGNED_OUT' && !state.user) {
-                console.log('⏭️ SIGNED_OUT ignorado - ya procesado');
+                console.log('⏭️ SIGNED_OUT ignorado');
                 return;
             }
 
@@ -3923,7 +2611,7 @@ async function init() {
                 state.view = accepted ? 'categories' : 'terms';
                 await loadVacancies();
                 hideLoading();
-                render();
+                render(true); // render inmediato post-auth
                 if (event === 'EMAIL_CONFIRMED') {
                     showModal('success', '✅ Correo confirmado', '¡Tu cuenta fue verificada! Has iniciado sesión correctamente.');
                 } else if (event === 'SIGNED_IN') {
@@ -3932,9 +2620,11 @@ async function init() {
             } else if (event === 'SIGNED_OUT' && state.user && !state.isLoggingOut) {
                 console.log('🔄 SIGNED_OUT inesperado - reseteando estado');
                 resetCompleteState();
-                render();
+                render(true);
             }
         });
+
+        // Realtime: solo recarga datos sin re-render agresivo
         supabaseClient
             .channel(ENDPOINTS.CHANNELS.VACANCIES)
             .on('postgres_changes', { event: '*', schema: 'public', table: ENDPOINTS.TABLES.VACANCIES }, async () => {
@@ -3942,15 +2632,15 @@ async function init() {
                 if (state.view === 'dashboard' || state.view === 'categories') render();
             })
             .subscribe();
-        render();
-        console.log('✅ Listo');
+
+        render(true);
+        console.log('✅ App lista');
     } catch (error) {
         console.error('❌ Error init:', error);
-        render();
+        render(true);
     }
 }
 
-// ==================== AUTO-INICIO ====================
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
