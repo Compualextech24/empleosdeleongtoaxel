@@ -883,6 +883,42 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 
 .quick-btn-wide { padding: 9px 28px; font-size: 14px; min-width: 140px; }
 
+/* ==================== BOTÓN DESCARGAR CARD ==================== */
+.btn-download-card {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #4b5563;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    will-change: transform;
+}
+.btn-download-card:hover {
+    background: rgba(255, 255, 255, 0.88);
+    transform: scale(1.1);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+    color: #6d28d9;
+}
+.btn-download-card:active { transform: scale(0.95); }
+.btn-download-card.downloading {
+    background: rgba(109,40,217,0.18);
+    color: #7c3aed;
+    pointer-events: none;
+}
+
 /* ==================== FOOTER MARQUEE ==================== */
 .app-footer {
     overflow: hidden;
@@ -911,6 +947,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     <div id="modal-root"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
 // ==================== ENDPOINTS ====================
@@ -1872,6 +1909,85 @@ function resetJobForm() {
     state.formData.work_days = ''; state.formData.category = ''; state.formData.imageBase64 = '';
 }
 
+// ==================== DESCARGA DE CARD COMO IMAGEN ====================
+async function downloadCard(btn, vacancyId) {
+    const card = btn.closest('.vacancy-card');
+    if (!card) return;
+
+    btn.classList.add('downloading');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+    try {
+        const canvas = await html2canvas(card, {
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#ffffff',
+            scale: 2,
+            logging: false,
+            ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore')
+        });
+
+        const vacancy  = state.vacancies.find(v => v.id === vacancyId);
+        const empresa  = vacancy?.company ? vacancy.company.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase() : 'vacante';
+        const filename = `vacante_${empresa}_empleos_leon.png`;
+        const dataUrl  = canvas.toDataURL('image/png');
+
+        // ── Detectar Android / móvil ──────────────────────────────────────
+        // En Android el atributo download de <a> es ignorado por muchos browsers.
+        // Solución: abrir la imagen en pestaña nueva → el usuario hace
+        // "mantener presionado → Guardar imagen" (gesto nativo de Android).
+        const isAndroid = /android/i.test(navigator.userAgent);
+        const isMobile  = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
+
+        if (isAndroid || isMobile) {
+            // Abrir imagen en pestaña nueva
+            const newTab = window.open();
+            if (newTab) {
+                newTab.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta name="viewport" content="width=device-width,initial-scale=1">
+                        <title>${filename}</title>
+                        <style>
+                            * { margin:0; padding:0; box-sizing:border-box; }
+                            body { background:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; gap:16px; padding:16px; }
+                            img  { max-width:100%; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+                            p    { color:rgba(255,255,255,0.75); font-family:sans-serif; font-size:14px; text-align:center; line-height:1.6; }
+                            strong { color:#a78bfa; }
+                        </style>
+                    </head>
+                    <body>
+                        <img src="${dataUrl}" alt="${filename}">
+                        <p>📱 <strong>Mantén presionada la imagen</strong><br>y elige "Guardar imagen" para descargarla</p>
+                    </body>
+                    </html>
+                `);
+                newTab.document.close();
+            } else {
+                // Si el navegador bloqueó el popup, fallback a descarga directa
+                const link    = document.createElement('a');
+                link.download = filename;
+                link.href     = dataUrl;
+                link.click();
+            }
+        } else {
+            // Escritorio: descarga directa normal
+            const link    = document.createElement('a');
+            link.download = filename;
+            link.href     = dataUrl;
+            link.click();
+        }
+
+    } catch (err) {
+        console.error('❌ Error al descargar card:', err);
+        showModal('error', 'Error', 'No se pudo generar la imagen. Intenta de nuevo.');
+    } finally {
+        btn.classList.remove('downloading');
+        btn.innerHTML = '<i class="fas fa-download"></i>';
+    }
+}
+
 // ==================== RENDER — VISTAS ====================
 function renderLogin() {
     return `
@@ -2222,7 +2338,10 @@ function renderVacancyCard(vacancy, isOwner) {
     const sched = cleanValue(vacancy.schedule);
 
     return `
-    <div class="vacancy-card">
+    <div class="vacancy-card" style="position:relative;">
+        <button class="btn-download-card" onclick="downloadCard(this,'${vacancy.id}')" title="Descargar como imagen" data-html2canvas-ignore>
+            <i class="fas fa-download"></i>
+        </button>
         <div class="h-48 bg-gray-200 overflow-hidden">
             ${vacancy.image_base64
                 ? `<img src="${vacancy.image_base64}" alt="${escapeHtml(vacancy.company)}" class="w-full h-full object-cover" loading="lazy">`
@@ -2247,7 +2366,7 @@ function renderVacancyCard(vacancy, isOwner) {
                 ${sched ? `<div class="card-info-row"><i class="fas fa-business-time"></i><span>${escapeHtml(sched)}</span></div>` : ''}
             </div>
             ${isOwner ? `
-                <div class="flex gap-2">
+                <div class="flex gap-2" data-html2canvas-ignore>
                     <button data-edit="${vacancy.id}" class="btn btn-edit flex-1"><i class="fas fa-edit"></i> Editar</button>
                     <button data-delete="${vacancy.id}" class="btn btn-cancel flex-1"><i class="fas fa-trash"></i> Eliminar</button>
                 </div>
@@ -2256,7 +2375,7 @@ function renderVacancyCard(vacancy, isOwner) {
                     const rawPhone = phone.replace(/[\s\-\(\)\.]/g, '');
                     const phoneNum = rawPhone.startsWith('+') ? rawPhone : `+52${rawPhone}`;
                     const msg = encodeURIComponent('Hola, que tal 👋 vi el anuncio de una vacante, de la cual estoy interesado(a) a través de la página *ECOSISTEMA LEÓN*, ¿podría brindarme más detalles por favor?');
-                    return `<a href="https://wa.me/${phoneNum}?text=${msg}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-card"><i class="fab fa-whatsapp"></i> Contactar WhatsApp</a>`;
+                    return `<a href="https://wa.me/${phoneNum}?text=${msg}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-card" data-html2canvas-ignore><i class="fab fa-whatsapp"></i> Contactar WhatsApp</a>`;
                 })() : ''}
             `}
         </div>
