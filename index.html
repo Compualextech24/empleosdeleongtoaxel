@@ -51,7 +51,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 @keyframes marqueeScroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
 @keyframes cardShimmer{0%{left:-100%;opacity:0}10%{opacity:1}60%{left:160%;opacity:1}65%{opacity:0}100%{left:160%;opacity:0}}
 .fade-in{animation:fadeIn .5s ease-out forwards}
-/* BOTONES */
 .btn{padding:10px 24px;border-radius:6px;font-weight:600;cursor:pointer;transition:all .2s ease;border:none;font-size:14px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-primary{background:var(--indigo-1);color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.1)}
@@ -77,7 +76,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .btn-calendar-active{background:var(--grad-orange)!important;box-shadow:0 4px 14px rgba(245,158,11,.5)!important;animation:pulse 2s infinite}
 .btn-whatsapp-card{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;padding:12px 20px;background:linear-gradient(135deg,#25d366,#80e8a8);color:#fff;font-size:.9rem;font-weight:700;text-decoration:none;border-radius:12px;box-shadow:0 4px 14px rgba(37,211,102,.35);transition:transform .2s,box-shadow .2s,filter .2s;letter-spacing:.01em}
 .btn-whatsapp-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(37,211,102,.45);filter:brightness(1.05)}
-/* BOTONES RETROCESO */
 .back-btn-fixed,.back-btn-inheader,.btn-back{display:inline-flex;align-items:center;justify-content:center;background:var(--white-18);color:#fff;border:1.5px solid var(--white-40);border-radius:50%;backdrop-filter:blur(8px);box-shadow:0 3px 12px rgba(0,0,0,.15);cursor:pointer;transition:background .2s,transform .15s}
 .back-btn-fixed:hover,.back-btn-inheader:hover{background:var(--white-32);transform:translateY(-1px)}
 .back-btn-fixed{position:fixed;top:18px;left:18px;z-index:1000;width:42px;height:42px;font-size:.9rem;text-decoration:none;border:1.5px solid var(--white-45);background:var(--white-22);box-shadow:0 4px 16px rgba(0,0,0,.15)}
@@ -85,7 +83,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .back-btn-inheader{flex-shrink:0;width:38px;height:38px;font-size:.85rem;margin-right:8px}
 .btn-back{width:38px;height:38px;border-radius:10px;border:2px solid rgba(255,255,255,.35);flex-shrink:0}
 .btn-back:hover{background:rgba(255,255,255,.35);transform:translateX(-2px)}
-/* HEADERS */
 .signup-header-purple,.form-header-purple{background:var(--grad-purple);padding:32px;color:#fff;display:flex;align-items:center;position:relative}
 .signup-header-purple{min-height:160px}
 .form-header-purple{min-height:120px}
@@ -98,7 +95,6 @@ header.top-header .header-title-block h1{font-size:1.375rem!important}
 .dashboard-section-title{color:#fff!important}
 .header-title-block{display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;min-width:0}
 .header-title-block h1{white-space:normal;word-break:break-word;overflow-wrap:break-word;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.25}
-/* LOGIN */
 .login-header-wrapper{padding:0;background:linear-gradient(135deg,#9333ea,var(--purple-1) 50%,var(--purple-2));text-align:center;color:#fff;position:relative;overflow:hidden}
 .login-header-wrapper::after{content:'';position:absolute;top:-30%;left:-80%;width:55%;height:160%;background:linear-gradient(105deg,rgba(255,255,255,0),rgba(255,255,255,.30) 45%,rgba(255,255,255,.50) 50%,rgba(255,255,255,.30) 55%,rgba(255,255,255,0));animation:cardShimmer 3.5s ease-in-out infinite;animation-delay:.8s;pointer-events:none;z-index:5;transform:translateX(-120%) skewX(-15deg);opacity:0}
 .login-logo-wrap{width:100%;overflow:hidden;height:clamp(160px,28vw,240px);position:relative;display:flex;align-items:center;justify-content:center}
@@ -116,7 +112,6 @@ header.top-header .header-title-block h1{font-size:1.375rem!important}
 .guest-access-link:hover{background:rgba(34,197,94,.2);border-color:var(--green-1);transform:scale(1.05)}
 .guest-access-link .hand-icon{animation:pointingHand 1s ease-in-out infinite;font-size:18px}
 .guest-badge{display:inline-flex;align-items:center;gap:6px;background:var(--grad-green);color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;box-shadow:0 2px 8px rgba(34,197,94,.3)}
-/* QUICK ACTION */
 .quick-action-bar{display:flex;gap:12px;padding:12px 16px;background:rgba(0,0,0,.12);border-bottom:1px solid rgba(255,255,255,.12);justify-content:center;align-items:center}
 .quick-action-hand{font-size:22px;animation:pointingHand 1s ease-in-out 3;flex-shrink:0;line-height:1;display:inline-block}
 .quick-btn{padding:9px 14px;border-radius:14px;font-weight:700;font-size:13px;cursor:pointer;border:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:transform .2s,box-shadow .2s;white-space:nowrap}
@@ -129,7 +124,6 @@ header.top-header .header-title-block h1{font-size:1.375rem!important}
 .quick-btn-purple{background:var(--purple-2);border:1.5px solid rgba(167,139,250,.4);box-shadow:0 3px 10px rgba(109,40,217,.35)}
 .quick-btn-purple:hover{background:var(--purple-3)}
 .quick-btn-wide{padding:9px 28px;font-size:14px;min-width:140px}
-/* MODALES */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px}
 .modal-window{background:#fff;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-width:440px;width:100%;overflow:hidden;border:1px solid rgba(0,0,0,.1);animation:modalPop .25s cubic-bezier(.25,.46,.45,.94)}
 .modal-header{background:#fff;color:var(--gray-800);padding:20px 24px 16px;display:flex;align-items:flex-start;gap:16px;border-bottom:1px solid var(--gray-200)}
@@ -143,7 +137,6 @@ header.top-header .header-title-block h1{font-size:1.375rem!important}
 .modal-header-info{background:rgba(59,130,246,.15);border-bottom:1px solid rgba(59,130,246,.25)}
 .modal-body{padding:20px 24px;line-height:1.6;color:var(--gray-700);font-size:14px}
 .modal-footer{padding:16px 24px;background:var(--gray-100);display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--gray-200)}
-/* INPUTS */
 .input-group{position:relative;margin-bottom:20px}
 .input-group input,.input-group textarea,.input-group select{width:100%;padding:14px 16px;border:2px solid #e9ecef;border-radius:10px;font-size:14px;transition:all .2s;font-family:inherit;background:linear-gradient(to bottom,#fff,var(--gray-100))}
 .input-group input:focus,.input-group textarea:focus,.input-group select:focus{outline:none;border-color:var(--indigo-1);box-shadow:0 0 0 4px rgba(102,126,234,.1)}
@@ -170,14 +163,11 @@ textarea{box-shadow:0 2px 6px rgba(0,0,0,.1)}
 .image-upload-area>div,.image-upload-area>div *{pointer-events:none}
 .image-preview-container{width:100%;height:200px;overflow:hidden;border-radius:12px;position:relative}
 .image-preview-container img{width:100%;height:100%;object-fit:cover;display:block}
-/* === TARJETAS DE VACANTES === */
 .vacancy-card{background:linear-gradient(145deg,#fff,var(--gray-100));border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.1);transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s cubic-bezier(.4,0,.2,1);border:2px solid rgba(102,126,234,.1);display:flex;flex-direction:column}
 .vacancy-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(102,126,234,.25);border-color:rgba(102,126,234,.3)}
-/* FIX imagen proporcional */
 .card-img-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--gray-200);position:relative}
 .card-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .card-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--gray-400);font-size:2rem}
-/* FIX: padding top reducido — imagen queda más cerca del nombre de empresa */
 .vacancy-card .card-content{padding:10px 20px 20px;display:flex;flex-direction:column;flex:1}
 .card-description{font-size:14px;font-weight:700;color:var(--gray-700);line-height:1.55;margin-bottom:0}
 .req-block-title{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
@@ -187,25 +177,21 @@ textarea{box-shadow:0 2px 6px rgba(0,0,0,.1)}
 .card-info-row span{flex:1;word-break:break-word;overflow-wrap:break-word;white-space:normal;min-width:0}
 .card-company{font-size:1.15rem;font-weight:800;color:var(--gray-900);margin-bottom:4px;line-height:1.3;word-break:break-word;overflow-wrap:break-word}
 .job-title{word-break:break-word;overflow-wrap:break-word;white-space:normal;line-height:1.4}
-/* FIX UBICACIÓN: 2 líneas separadas */
 .card-location-block{display:flex;align-items:flex-start;gap:6px;font-size:12.5px;color:var(--gray-600);margin-bottom:8px;line-height:1.5}
 .card-location-block i{color:var(--indigo-1);font-size:11px;margin-top:3px;flex-shrink:0;width:13px;text-align:center}
 .card-location-text{flex:1;min-width:0}
 .card-location-street{display:block;font-weight:600;word-break:break-word}
 .card-location-colonia{display:block;color:var(--gray-500);font-size:12px;word-break:break-word}
-/* META (teléfono + fecha): sin truncar */
 .card-title-meta-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
 .card-title-meta-row .job-title{flex:1;min-width:0;margin-bottom:0}
 .job-title-prefix{font-weight:900;color:var(--gray-800);font-size:.78rem;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:1px}
 .card-meta-inline{display:flex;flex-direction:column;gap:4px;flex-shrink:0;align-items:flex-end;max-width:46%}
 .card-meta-item{display:inline-flex;align-items:flex-start;gap:5px;font-size:11.5px;color:var(--gray-600);word-break:break-word;text-align:right}
 .card-meta-item i{color:var(--indigo-1);font-size:10px;flex-shrink:0;width:12px;text-align:center;margin-top:2px}
-/* REQUISITOS */
 .requirements-block{background:#f8f7ff;border:1px solid rgba(102,126,234,.15);border-radius:10px;padding:10px 14px}
 .requirements-list{list-style:none;padding:0;margin:0}
 .requirements-list li{font-size:13px;color:var(--gray-700);padding:3px 0 3px 18px;position:relative;line-height:1.5}
 .requirements-list li::before{content:'✓';position:absolute;left:0;color:var(--indigo-1);font-weight:700;font-size:12px}
-/* CATEGORÍAS */
 .categories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
 .categories-screen-bg{background:#fff;min-height:100vh}
 .categories-screen-bg .cat-screen-title{color:var(--purple-2);text-shadow:none;font-size:1.375rem;font-weight:900;text-align:center}
@@ -225,7 +211,6 @@ textarea{box-shadow:0 2px 6px rgba(0,0,0,.1)}
 .cat-v2-arrow{color:rgba(255,255,255,.7);font-size:13px;flex-shrink:0;transition:transform .2s}
 .category-card-v2:hover .cat-v2-arrow{transform:translateX(4px);color:#fff}
 .loader{border:4px solid rgba(102,126,234,.2);border-top:4px solid var(--indigo-1);border-radius:50%;width:50px;height:50px;animation:spin .8s linear infinite;margin:20px auto}
-/* CALENDARIO */
 .calendar-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;box-shadow:0 25px 80px rgba(0,0,0,.3);z-index:10001;padding:24px;max-width:400px;width:90%;animation:modalPop .3s ease-out}
 .calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--gray-200)}
 .calendar-header h3{font-size:18px;font-weight:700;color:var(--gray-800)}
@@ -242,7 +227,6 @@ textarea{box-shadow:0 2px 6px rgba(0,0,0,.1)}
 .calendar-day.disabled:hover{background:transparent}
 .calendar-actions{display:flex;gap:12px;margin-top:20px;padding-top:16px;border-top:2px solid var(--gray-200)}
 .calendar-actions button{flex:1}
-/* IA CHAT */
 .ai-chat-modal{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:400px;max-height:600px;z-index:9999;animation:slideUp .4s ease-out;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);border:2px solid rgba(0,0,0,.2)}
 .ai-chat-modal.minimized{width:280px;height:60px;max-height:60px}
 .ai-chat-modal.minimized .ai-chat-messages,.ai-chat-modal.minimized .ai-chat-input{display:none}
@@ -281,20 +265,16 @@ textarea{box-shadow:0 2px 6px rgba(0,0,0,.1)}
 ::-webkit-scrollbar-thumb{background:var(--grad-indigo);border-radius:6px}
 .line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* CONTADOR */
 .visit-counter-bar{position:fixed;bottom:0;left:0;right:0;z-index:8000;background:linear-gradient(135deg,#1e1b4b,#312e81 50%,#4c1d95);border-top:1px solid rgba(167,139,250,.35);padding:8px 16px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 -4px 20px rgba(79,70,229,.3);backdrop-filter:blur(8px)}
 .visit-counter-icon{font-size:22px;flex-shrink:0}
 .visit-counter-text{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;letter-spacing:.2px}
 .visit-counter-number{font-size:17px;font-weight:900;color:#fbbf24;letter-spacing:1px;text-shadow:0 0 16px rgba(251,191,36,.7),0 0 30px rgba(251,191,36,.3);font-variant-numeric:tabular-nums;min-width:54px;text-align:center;display:inline-block}
 .visit-counter-dot{width:5px;height:5px;border-radius:50%;background:rgba(167,139,250,.7);flex-shrink:0}
-/* BOTÓN DESCARGA */
 .btn-download-card{position:absolute;top:12px;right:12px;z-index:10;width:36px;height:36px;border-radius:50%;border:none;background:rgba(56,189,248,.55);backdrop-filter:blur(6px);color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(14,165,233,.35);transition:background .2s,transform .15s,box-shadow .2s}
 .btn-download-card:hover{background:rgba(14,165,233,.80);transform:scale(1.1)}
 .btn-download-card:active{transform:scale(.95)}
 .btn-download-card.downloading{background:rgba(14,165,233,.35);pointer-events:none}
-/* BADGE CATEGORÍA */
 .card-category-badge{position:absolute;top:12px;left:12px;z-index:10;display:inline-flex;align-items:center;gap:5px;background:rgba(109,40,217,.72);backdrop-filter:blur(6px);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;box-shadow:0 2px 8px rgba(109,40,217,.4);letter-spacing:.3px;white-space:nowrap;max-width:calc(100% - 64px);overflow:hidden;text-overflow:ellipsis;pointer-events:none}
-/* FOOTER */
 .app-footer{overflow:hidden;white-space:nowrap;margin-top:32px;padding:10px 0;border-top:1px solid rgba(109,40,217,.12)}
 .app-footer-inner{display:inline-block;animation:marqueeScroll 18s linear infinite;color:var(--gray-400);font-size:13px;font-weight:500}
 .user-session-badge{background:#f8f7ff}
@@ -314,14 +294,54 @@ const EndpointHelpers={getEdgeFunctionUrl:(fp)=>`${ENDPOINTS.SUPABASE_URL}${fp}`
 window.ENDPOINTS=ENDPOINTS;window.EndpointHelpers=EndpointHelpers;
 const{createClient}=supabase;
 const supabaseClient=createClient(ENDPOINTS.SUPABASE_URL,ENDPOINTS.SUPABASE_ANON_KEY);
+
 let state={view:'login',user:null,isGuest:false,vacancies:[],filteredVacancies:[],selectedCategory:null,dateFilter:null,editingVacancy:null,showPassword:false,showConfirmPassword:false,menuOpen:false,acceptedTerms:false,loading:false,isRendering:false,calendarOpen:false,calendarMonth:new Date().getMonth(),calendarYear:new Date().getFullYear(),formData:{email:'',password:'',confirmPassword:'',company:'',job_title:'',description:'',location:'',contact_phone:'',publication_date:'',schedule:'',work_days:'',category:'',imageBase64:'',requirements:'Disponibilidad y actitud de trabajar'},aiChatOpen:false,aiMessages:[],aiLoading:false,aiImage:null,aiImagePreview:null,aiExtractedData:null,chatMinimized:false,isLoggingOut:false};
+
 const cleanValue=v=>{if(v===null||v===undefined)return'';const s=String(v).trim();return(s==='NULL'||s==='null'||s==='undefined'||s==='NaN')?'':s;};
 const showLoading=()=>{if(document.getElementById('loader-overlay'))return;state.loading=true;const el=document.createElement('div');el.id='loader-overlay';el.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)';el.innerHTML='<div class="loader"></div>';document.body.appendChild(el);};
 const hideLoading=()=>{state.loading=false;document.querySelectorAll('#loader-overlay').forEach(el=>el.remove());};
 const escapeHtml=text=>{if(!text)return'';const map={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};return String(text).replace(/[&<>"']/g,m=>map[m]);};
+
+// =====================================================================
+// FIX #1: render() — debounce limpio, sin conflicto con isRendering
+// =====================================================================
 let _renderTimer=null;
-function render(immediate){if(immediate){_doRender();return;}clearTimeout(_renderTimer);_renderTimer=setTimeout(_doRender,16);}
-function _doRender(){if(state.isRendering)return;state.isRendering=true;try{const app=document.getElementById('app');if(!app)return;const views={login:renderLogin,signup:renderSignup,terms:renderTerms,categories:renderCategories,dashboard:renderDashboard,form:renderForm};app.innerHTML=(views[state.view]||renderLogin)()+renderCalendar();attachEvents();window.scrollTo({top:0,behavior:'smooth'});}catch(err){console.error('Error render:',err);}finally{state.isRendering=false;}}
+let _renderPending=false;
+
+function render(immediate){
+  if(immediate){
+    _renderPending=false;
+    clearTimeout(_renderTimer);
+    _renderTimer=null;
+    _doRender();
+    return;
+  }
+  if(_renderPending) return; // ya hay uno agendado, no apilar más
+  _renderPending=true;
+  clearTimeout(_renderTimer);
+  _renderTimer=setTimeout(()=>{
+    _renderPending=false;
+    _renderTimer=null;
+    _doRender();
+  },16);
+}
+
+function _doRender(){
+  if(state.isRendering) return;
+  state.isRendering=true;
+  try{
+    const app=document.getElementById('app');
+    if(!app){state.isRendering=false;return;}
+    const views={login:renderLogin,signup:renderSignup,terms:renderTerms,categories:renderCategories,dashboard:renderDashboard,form:renderForm};
+    app.innerHTML=(views[state.view]||renderLogin)()+renderCalendar();
+    attachEvents();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(err){
+    console.error('Error render:',err);
+  }finally{
+    state.isRendering=false;
+  }
+}
 
 const showModal=(type,title,message,onConfirm=null)=>{const modal=document.createElement('div');modal.className='modal-overlay';const icons={success:'fa-check-circle',error:'fa-exclamation-circle',warning:'fa-exclamation-triangle',info:'fa-info-circle',question:'fa-question-circle','question-danger':'fa-exclamation-triangle'};const colors={success:'#22c55e',error:'#ef4444',warning:'#f59e0b',info:'#3b82f6',question:'#22c55e','question-danger':'#ef4444'};const hc=type==='question-danger'?'modal-header-error':`modal-header-${type}`;const isQ=type==='question'||type==='question-danger';modal.innerHTML=`<div class="modal-window"><div class="modal-header ${hc}"><i class="fas ${icons[type]}" style="color:${colors[type]}"></i><div class="header-text"><h3>${escapeHtml(title)}</h3></div></div><div class="modal-body">${escapeHtml(message)}</div><div class="modal-footer">${isQ?'<button class="btn btn-cancel modal-cancel">Cancelar</button><button class="btn btn-primary modal-confirm">Aceptar</button>':'<button class="btn btn-primary modal-ok">Aceptar</button>'}</div></div>`;document.getElementById('modal-root').appendChild(modal);if(isQ){modal.querySelector('.modal-cancel').onclick=()=>modal.remove();modal.querySelector('.modal-confirm').onclick=()=>{modal.remove();if(onConfirm)onConfirm();};}else{modal.querySelector('.modal-ok').onclick=()=>modal.remove();setTimeout(()=>modal.remove(),8000);}modal.onclick=e=>{if(e.target===modal&&!isQ)modal.remove();};};
 
@@ -335,7 +355,7 @@ window.openCalendar=openCalendar;window.closeCalendar=closeCalendar;window.chang
 
 function renderCalendar(){if(!state.calendarOpen)return'';const mn=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];const fd=new Date(state.calendarYear,state.calendarMonth,1).getDay();const dim=new Date(state.calendarYear,state.calendarMonth+1,0).getDate();const today=new Date();const icm=today.getMonth()===state.calendarMonth&&today.getFullYear()===state.calendarYear;let h=`<div class="modal-overlay" onclick="if(event.target===this)closeCalendar()"><div class="calendar-modal"><div class="calendar-header"><h3><i class="fas fa-calendar-alt mr-2"></i>${mn[state.calendarMonth]} ${state.calendarYear}</h3><div class="calendar-nav"><button onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button><button onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button></div></div><div class="calendar-grid"><div class="calendar-day header">D</div><div class="calendar-day header">L</div><div class="calendar-day header">M</div><div class="calendar-day header">M</div><div class="calendar-day header">J</div><div class="calendar-day header">V</div><div class="calendar-day header">S</div>`;for(let i=0;i<fd;i++)h+='<div class="calendar-day"></div>';for(let day=1;day<=dim;day++){const it=icm&&day===today.getDate();const is=state.dateFilter&&state.dateFilter.getDate()===day&&state.dateFilter.getMonth()===state.calendarMonth&&state.dateFilter.getFullYear()===state.calendarYear;h+=`<div class="calendar-day ${it?'today':''} ${is?'selected':''}" onclick="selectDate(${state.calendarYear},${state.calendarMonth},${day})">${day}</div>`;}h+=`</div><div class="calendar-actions"><button class="btn btn-cancel" onclick="clearDateFilter()"><i class="fas fa-times"></i> Limpiar</button><button class="btn btn-primary" onclick="closeCalendar()"><i class="fas fa-check"></i> Cerrar</button></div></div></div>`;return h;}
 
-function resetCompleteState(){state.user=null;state.isGuest=false;state.view='login';state.vacancies=[];state.filteredVacancies=[];state.dateFilter=null;state.selectedCategory=null;state.editingVacancy=null;state.showPassword=false;state.showConfirmPassword=false;state.menuOpen=false;state.acceptedTerms=false;state.loading=false;state.isRendering=false;state.isLoggingOut=false;clearTimeout(_renderTimer);_renderTimer=null;resetAuthForm();resetJobForm();clearAIData();}
+function resetCompleteState(){state.user=null;state.isGuest=false;state.view='login';state.vacancies=[];state.filteredVacancies=[];state.dateFilter=null;state.selectedCategory=null;state.editingVacancy=null;state.showPassword=false;state.showConfirmPassword=false;state.menuOpen=false;state.acceptedTerms=false;state.loading=false;state.isRendering=false;state.isLoggingOut=false;_renderPending=false;clearTimeout(_renderTimer);_renderTimer=null;resetAuthForm();resetJobForm();clearAIData();}
 
 const COUNTER_TABLE='visit_counter',COUNTER_ROW_ID=1,COUNTER_BASE=2000,SESSION_KEY='emp_leon_visited';
 function injectCounterBar(){if(document.getElementById('visit-counter-bar'))return;const b=document.createElement('div');b.id='visit-counter-bar';b.className='visit-counter-bar';b.innerHTML='<span class="visit-counter-icon">👥</span><span class="visit-counter-text">Tu comunidad ha alcanzado</span><span class="visit-counter-dot"></span><span class="visit-counter-number" id="visit-count-display">...</span><span class="visit-counter-text">usuarios</span>';document.body.appendChild(b);document.body.style.paddingBottom='46px';}
@@ -416,7 +436,6 @@ const phone=cleanValue(vacancy.contact_phone);
 const date=cleanValue(vacancy.publication_date);
 const days=cleanValue(vacancy.work_days);
 const sched=cleanValue(vacancy.schedule);
-// FIX: separar calle y colonia al primer coma
 let locStreet='',locColonia='';
 if(loc){const parts=loc.split(',');if(parts.length>=2){locStreet=parts[0].trim();locColonia=parts.slice(1).join(',').trim();}else locStreet=loc;}
 const whatsappBtn=phone?(()=>{const raw=phone.replace(/[\s\-\(\)\.]/g,'');const num=raw.startsWith('+')?raw:`+52${raw}`;const msg=encodeURIComponent('Hola, que tal 👋 vi el anuncio de una vacante, de la cual estoy interesado(a) a través de la página *ECOSISTEMA LEÓN*, ¿podría brindarme más detalles por favor?');return `<a href="https://wa.me/${num}?text=${msg}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-card" data-html2canvas-ignore><i class="fab fa-whatsapp"></i> Contactar WhatsApp</a>`;})():'';
@@ -517,30 +536,78 @@ document.getElementById('ai-img')?.addEventListener('change',handleAIImageUpload
 document.getElementById('remove-ai-img')?.addEventListener('click',removeAIImage);
 }
 
+// =====================================================================
+// FIX #2: onAuthStateChange — guard contra re-renders duplicados
+// Supabase puede disparar SIGNED_IN múltiples veces en el mismo user.
+// Solo actualizamos estado y renderizamos si el usuario realmente cambió.
+// =====================================================================
+let _authHandling=false;
+
 supabaseClient.auth.onAuthStateChange(async(event,session)=>{
-if(state.isLoggingOut)return;
-if(event==='PASSWORD_RECOVERY'){showNewPasswordModal();return;}
-if(session?.user){
-    if(state.user?.id===session.user.id)return;
-    state.user=session.user;state.isGuest=false;
-    const ta=localStorage.getItem('terms_accepted_'+session.user.id);
-    if(!ta){state.view='terms';state.acceptedTerms=false;}
-    else{state.view='categories';}
-    showLoading();
-    await loadVacancies();
-    hideLoading();
-    render();
-}else{
-    if(!state.isGuest){state.user=null;state.view='login';state.vacancies=[];state.filteredVacancies=[];resetAuthForm();resetJobForm();clearAIData();state.menuOpen=false;state.editingVacancy=null;render();}
-}});
+  if(state.isLoggingOut) return;
+
+  if(event==='PASSWORD_RECOVERY'){
+    showNewPasswordModal();
+    return;
+  }
+
+  if(session?.user){
+    // FIX: Si ya tenemos al mismo usuario cargado, no re-renderizar
+    if(state.user?.id===session.user.id && state.view!=='login') return;
+
+    // FIX: evitar manejo concurrente del mismo evento de auth
+    if(_authHandling) return;
+    _authHandling=true;
+
+    try{
+      state.user=session.user;
+      state.isGuest=false;
+      const ta=localStorage.getItem('terms_accepted_'+session.user.id);
+      if(!ta){state.view='terms';state.acceptedTerms=false;}
+      else{state.view='categories';}
+      showLoading();
+      await loadVacancies();
+      hideLoading();
+      render(true);
+    }finally{
+      _authHandling=false;
+    }
+  }else{
+    if(!state.isGuest){
+      state.user=null;
+      state.view='login';
+      state.vacancies=[];
+      state.filteredVacancies=[];
+      resetAuthForm();
+      resetJobForm();
+      clearAIData();
+      state.menuOpen=false;
+      state.editingVacancy=null;
+      render(true);
+    }
+  }
+});
+
+// =====================================================================
+// FIX #3: Realtime channel — suscripción única con debounce en el handler
+// =====================================================================
+let _realtimeDebounce=null;
 
 supabaseClient.channel(ENDPOINTS.CHANNELS.VACANCIES)
-.on('postgres_changes',{event:'*',schema:'public',table:ENDPOINTS.TABLES.VACANCIES},async()=>{
-    if(state.isGuest||state.user){await loadVacancies();if(state.view==='dashboard'||state.view==='categories')render();}
-})
-.subscribe();
+  .on('postgres_changes',{event:'*',schema:'public',table:ENDPOINTS.TABLES.VACANCIES},()=>{
+    // FIX: debounce para no recargar si llegan múltiples cambios juntos
+    clearTimeout(_realtimeDebounce);
+    _realtimeDebounce=setTimeout(async()=>{
+      if(state.isGuest||state.user){
+        await loadVacancies();
+        if(state.view==='dashboard'||state.view==='categories') render();
+      }
+    },500);
+  })
+  .subscribe();
 
-render();
+// Render inicial
+render(true);
 </script>
 </body>
 </html>
