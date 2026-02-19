@@ -368,7 +368,31 @@ async function initVisitCounter(){injectCounterBar();const current=await getCoun
 function waitAndStart(){if(typeof supabaseClient!=='undefined'&&supabaseClient){initVisitCounter().catch(e=>console.warn(e));}else setTimeout(waitAndStart,200);}
 window.addEventListener('DOMContentLoaded',waitAndStart);
 
-async function handleLogin(e){e.preventDefault();if(state.loading)return;const email=state.formData.email?.trim(),password=state.formData.password;if(!email||!password){showModal('error','Error','Correo y contraseña son requeridos');return;}showLoading();try{const{data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;if(!data?.user)throw new Error('Sin datos de usuario');setTimeout(()=>hideLoading(),5000);}catch(err){showModal('error','Credenciales incorrectas','Correo o contraseña incorrectos.');hideLoading();}}
+async function handleLogin(e){
+  e.preventDefault();
+  if(state.loading)return;
+  const email=state.formData.email?.trim(),password=state.formData.password;
+  if(!email||!password){showModal('error','Error','Correo y contraseña son requeridos');return;}
+  showLoading();
+  // Timeout de seguridad: si en 12s no hubo respuesta, quitar el loading
+  const safetyTimer=setTimeout(()=>{
+    hideLoading();
+    if(state.view==='login') showModal('error','Sin respuesta','La conexión tardó demasiado. Intenta de nuevo.');
+  },12000);
+  try{
+    const{data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+    clearTimeout(safetyTimer);
+    if(error)throw error;
+    if(!data?.user)throw new Error('Sin datos de usuario');
+    // El loading lo quita onAuthStateChange al cargar vacantes y renderizar
+    // pero ponemos un fallback por si el evento llega muy rápido
+    setTimeout(()=>hideLoading(),8000);
+  }catch(err){
+    clearTimeout(safetyTimer);
+    hideLoading();
+    showModal('error','Credenciales incorrectas','Correo o contraseña incorrectos.');
+  }
+}
 async function handleSignup(e){e.preventDefault();if(state.loading)return;if(state.formData.password!==state.formData.confirmPassword){showModal('error','Error','Las contraseñas no coinciden');return;}if(state.formData.password.length<6){showModal('error','Error','La contraseña debe tener al menos 6 caracteres');return;}showLoading();try{const email=state.formData.email.trim().toLowerCase();const{data,error}=await supabaseClient.auth.signUp({email,password:state.formData.password,options:{emailRedirectTo:ENDPOINTS.SUPABASE_REDIRECT_URL}});if(error){if(error.message?.includes('already registered')||error.message?.includes('duplicate')||error.status===422){hideLoading();showModal('error','Correo ya registrado',`El correo ${email} ya tiene una cuenta.`);return;}throw error;}if(data?.user&&Array.isArray(data.user.identities)&&data.user.identities.length===0){hideLoading();showModal('error','Correo ya registrado',`El correo ${email} ya tiene una cuenta.`);return;}hideLoading();showModal('info','📧 Revisa tu correo',`Enlace enviado a:\n${email}`);state.view='login';resetAuthForm();render();}catch(err){showModal('error','Error de registro',err.message||'No se pudo crear la cuenta.');hideLoading();}}
 
 function handleForgotPassword(){const modal=document.createElement('div');modal.className='modal-overlay';modal.innerHTML=`<div class="modal-window"><div class="modal-header modal-header-info"><i class="fas fa-lock" style="color:#667eea;font-size:24px"></i><div class="header-text"><h3>Restablecer contraseña</h3></div></div><div class="modal-body"><p style="color:#4b5563;font-size:14px;margin-bottom:16px;line-height:1.6;">Ingresa el correo con el que te registraste.</p><div style="position:relative;"><input type="email" id="reset-email-input" placeholder="tu@email.com" style="width:100%;padding:12px 16px 12px 40px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e5e7eb'"><i class="fas fa-envelope" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:14px;pointer-events:none;"></i></div><p id="reset-error-msg" style="display:none;color:#ef4444;font-size:12px;margin-top:8px;"><i class="fas fa-exclamation-circle"></i> Por favor ingresa un correo válido.</p></div><div class="modal-footer"><button class="btn btn-cancel modal-cancel-reset">Cancelar</button><button class="btn btn-primary modal-send-reset" style="background:linear-gradient(135deg,#667eea,#764ba2);"><i class="fas fa-paper-plane"></i> Enviar enlace</button></div></div>`;document.getElementById('modal-root').appendChild(modal);setTimeout(()=>document.getElementById('reset-email-input')?.focus(),100);modal.querySelector('.modal-cancel-reset').onclick=()=>modal.remove();modal.onclick=e=>{if(e.target===modal)modal.remove();};const sendBtn=modal.querySelector('.modal-send-reset');sendBtn.onclick=async()=>{const ei=document.getElementById('reset-email-input');const em=document.getElementById('reset-error-msg');const email=ei?.value?.trim().toLowerCase();if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){if(em)em.style.display='block';if(ei)ei.style.borderColor='#ef4444';return;}modal.remove();showLoading();try{const{error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:ENDPOINTS.SUPABASE_REDIRECT_URL});if(error)throw error;hideLoading();showModal('success','¡Correo enviado! 📧',`Enlace enviado a:\n${email}\nRevisa Spam.`);}catch(err){hideLoading();showModal('error','Error','No se pudo enviar el correo.');}};document.getElementById('reset-email-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')sendBtn.click();});}
@@ -377,7 +401,7 @@ function showNewPasswordModal(){const modal=document.createElement('div');modal.
 
 async function handleLogout(){if(state.isLoggingOut)return;showModal('question-danger','Cerrar sesión','¿Seguro que deseas cerrar sesión?',async()=>{state.isLoggingOut=true;resetCompleteState();render(true);try{await supabaseClient.auth.signOut();}catch(err){console.error(err);}});}
 async function handleDeleteAccount(){showModal('question-danger','Eliminar cuenta','¿ELIMINAR tu cuenta y TODAS tus vacantes? Esta acción no se puede deshacer.',async()=>{const modal=document.createElement('div');modal.className='modal-overlay';modal.innerHTML=`<div class="modal-window"><div class="modal-header modal-header-error"><i class="fas fa-exclamation-triangle" style="color:#ef4444"></i><div class="header-text"><h3>Confirmación final</h3></div></div><div class="modal-body"><p style="margin-bottom:12px">Escribe <strong>ELIMINAR</strong> para confirmar:</p><input type="text" id="delete-confirm-input" style="width:100%;padding:10px;border:2px solid #e5e7eb;border-radius:6px;font-size:14px" placeholder="ELIMINAR"></div><div class="modal-footer"><button class="btn btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancelar</button><button class="btn btn-primary" style="background:#ef4444" id="confirm-delete-btn">Eliminar</button></div></div>`;document.getElementById('modal-root').appendChild(modal);document.getElementById('confirm-delete-btn').onclick=async()=>{if(document.getElementById('delete-confirm-input').value!=='ELIMINAR'){showModal('error','Error','Debes escribir ELIMINAR');return;}modal.remove();showLoading();try{const{data:uv}=await supabaseClient.from(ENDPOINTS.TABLES.VACANCIES).select('id').eq('user_id',state.user.id);if(uv?.length>0)for(const v of uv)await supabaseClient.from(ENDPOINTS.TABLES.VACANCIES).delete().eq('id',v.id);if(state.user?.id)localStorage.removeItem('terms_accepted_'+state.user.id);showModal('success','¡Eliminado!','Tus vacantes han sido eliminadas');setTimeout(()=>handleLogout(),2000);}catch(err){showModal('error','Error','No se pudo eliminar la cuenta');}finally{hideLoading();}};});}
-async function handleGuestAccess(){showLoading();try{state.isGuest=true;state.view='categories';await loadVacancies();hideLoading();render();showModal('info','¡Bienvenido!','Navegas como invitado. Puedes ver vacantes pero no publicar.');}catch(err){showModal('error','Error','No se pudo cargar las vacantes');state.isGuest=false;state.view='login';hideLoading();render();}}
+async function handleGuestAccess(){showLoading();try{state.isGuest=true;state.view='categories';await loadVacancies();render();showModal('info','¡Bienvenido!','Navegas como invitado. Puedes ver vacantes pero no publicar.');}catch(err){showModal('error','Error','No se pudo cargar las vacantes');state.isGuest=false;state.view='login';render();}finally{hideLoading();}}
 function handleAcceptTerms(){if(!state.acceptedTerms){showModal('warning','Términos requeridos','Debes aceptar los términos');return;}if(state.user)localStorage.setItem('terms_accepted_'+state.user.id,'true');state.view='categories';render();}
 
 async function loadVacancies(){try{const{data,error}=await supabaseClient.from(ENDPOINTS.TABLES.VACANCIES).select('*').order('created_at',{ascending:false});if(error)throw error;state.vacancies=data||[];state.filteredVacancies=[...state.vacancies];if(state.dateFilter)filterVacanciesByDate();}catch(err){state.vacancies=[];state.filteredVacancies=[];}}
@@ -566,8 +590,13 @@ supabaseClient.auth.onAuthStateChange(async(event,session)=>{
       if(!ta){state.view='terms';state.acceptedTerms=false;}
       else{state.view='categories';}
       showLoading();
-      await loadVacancies();
-      hideLoading();
+      try{
+        await loadVacancies();
+      }catch(loadErr){
+        console.warn('Error cargando vacantes:',loadErr);
+      }finally{
+        hideLoading();
+      }
       render(true);
     }finally{
       _authHandling=false;
