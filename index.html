@@ -713,6 +713,32 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .vacancy-card .card-content { padding: 24px; display: flex; flex-direction: column; flex: 1; }
 .vacancy-card .card-info-rows, .vacancy-card .btn-whatsapp-card, .vacancy-card .flex.gap-2 { margin-top: auto; }
 
+/* ── FIX: imagen de card con altura proporcional, sin corte ── */
+.card-img-wrap {
+    width: 100%;
+    /* aspect-ratio garantiza proporción 4:3 real, sin aplastar */
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--gray-200);
+    position: relative;
+}
+.card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+.card-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-400);
+    font-size: 2rem;
+}
+
 .card-description { font-size: 14px; font-weight: 700; color: var(--gray-700); line-height: 1.55; margin-bottom: 0; }
 .req-block-title { font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
 .card-info-rows { display: flex; flex-direction: column; gap: 6px; }
@@ -893,29 +919,56 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     height: 36px;
     border-radius: 50%;
     border: none;
-    background: rgba(255, 255, 255, 0.55);
+    /* Azul cielo semitransparente */
+    background: rgba(56, 189, 248, 0.55);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    color: #4b5563;
+    color: #ffffff;
     font-size: 15px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.35);
     transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
     will-change: transform;
 }
 .btn-download-card:hover {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(14, 165, 233, 0.80);
     transform: scale(1.1);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.22);
-    color: #6d28d9;
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.5);
+    color: #ffffff;
 }
 .btn-download-card:active { transform: scale(0.95); }
 .btn-download-card.downloading {
-    background: rgba(109,40,217,0.18);
-    color: #7c3aed;
+    background: rgba(14, 165, 233, 0.35);
+    color: #fff;
+    pointer-events: none;
+}
+
+/* ==================== BADGE DE CATEGORÍA SOBRE IMAGEN ==================== */
+.card-category-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(109, 40, 217, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(109, 40, 217, 0.4);
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    max-width: calc(100% - 64px); /* evita chocar con el botón de descarga */
+    overflow: hidden;
+    text-overflow: ellipsis;
     pointer-events: none;
 }
 
@@ -1009,8 +1062,7 @@ let state = {
     isLoggingOut: false
 };
 
-// ==================== FIX #1: cleanValue — elimina strings "NULL" / "null" / undefined ====================
-// Causa principal del bug visible en el screenshot: campos mostraban "NULL" literalmente
+// ==================== cleanValue — elimina strings "NULL" / "null" / undefined ====================
 const cleanValue = (val) => {
     if (val === null || val === undefined) return '';
     const s = String(val).trim();
@@ -1040,21 +1092,16 @@ const escapeHtml = (text) => {
     return String(text).replace(/[&<>"']/g, m => map[m]);
 };
 
-// ==================== FIX #2: render() con debounce — elimina cascada de re-renders ====================
-// El problema original: el retry con setTimeout generaba renders encadenados que bloqueaban el hilo
+// ==================== render() con debounce ====================
 let _renderTimer = null;
 
 function render(immediate) {
-    if (immediate) {
-        _doRender();
-        return;
-    }
+    if (immediate) { _doRender(); return; }
     clearTimeout(_renderTimer);
-    _renderTimer = setTimeout(_doRender, 16); // 1 frame de debounce
+    _renderTimer = setTimeout(_doRender, 16);
 }
 
 function _doRender() {
-    // Guardia simple sin setTimeout de retry (evita cascadas)
     if (state.isRendering) return;
     state.isRendering = true;
     try {
@@ -1194,10 +1241,10 @@ function renderCalendar() {
     return html;
 }
 
-window.openCalendar  = openCalendar;
-window.closeCalendar = closeCalendar;
-window.changeMonth   = changeMonth;
-window.selectDate    = selectDate;
+window.openCalendar    = openCalendar;
+window.closeCalendar   = closeCalendar;
+window.changeMonth     = changeMonth;
+window.selectDate      = selectDate;
 window.clearDateFilter = clearDateFilter;
 
 // ==================== RESET COMPLETO ====================
@@ -1310,8 +1357,6 @@ async function handleLogin(e) {
         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
         if (error) throw error;
         if (!data?.user) throw new Error('No se recibió información del usuario');
-        // FIX #3: hideLoading se llama en onAuthStateChange SIGNED_IN, pero agregamos
-        // un fallback de 5s para red lenta. Eliminamos el 3s original que era muy corto.
         setTimeout(() => hideLoading(), 5000);
     } catch (error) {
         console.error('❌ Error login:', error);
@@ -1645,7 +1690,6 @@ async function handleSaveVacancy(e) {
     state.loading = true;
     showLoading();
 
-    // FIX #4: Safety timer único y confiable
     const safetyTimer = setTimeout(() => {
         if (state.loading) {
             console.warn('⚠️ Timeout de seguridad activado');
@@ -1717,7 +1761,6 @@ async function handleDeleteVacancy(vacancyId) {
     });
 }
 
-// ==================== FIX #5: handleEditVacancy usa cleanValue para eliminar strings "NULL" ====================
 function handleEditVacancy(vacancyId) {
     const vacancy = state.vacancies.find(v => v.id === vacancyId);
     if (!vacancy) return;
@@ -1726,7 +1769,6 @@ function handleEditVacancy(vacancyId) {
         company:          cleanValue(vacancy.company),
         job_title:        cleanValue(vacancy.job_title),
         description:      cleanValue(vacancy.description),
-        // Si requirements está vacío, usar valor por defecto
         requirements:     cleanValue(vacancy.requirements) || 'Disponibilidad y actitud de trabajar',
         location:         cleanValue(vacancy.location),
         contact_phone:    cleanValue(vacancy.contact_phone),
@@ -1778,7 +1820,6 @@ function showAIAccessDeniedModal() {
     modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
 }
 
-// ==================== FIX #6: sendAIMessage — actualiza el chat con DOM directo, no full re-render ====================
 async function sendAIMessage() {
     if (!isAIAdmin()) { showAIAccessDeniedModal(); return; }
     const input = document.getElementById('ai-chat-input');
@@ -1787,7 +1828,6 @@ async function sendAIMessage() {
 
     if (message) state.aiMessages.push({ role: 'user', content: message });
 
-    // Actualización parcial del chat sin full re-render
     _updateAIChatMessages(true);
     state.aiLoading = true;
 
@@ -1819,7 +1859,6 @@ async function sendAIMessage() {
         if (input) input.value = '';
         state.aiImage = null;
         state.aiImagePreview = null;
-        // Solo re-renderizar si el chat sigue abierto (actualiza botón START y limpia preview)
         render();
         setTimeout(() => {
             const msgs = document.querySelector('.ai-chat-messages');
@@ -1828,7 +1867,6 @@ async function sendAIMessage() {
     }
 }
 
-// Actualiza solo los mensajes del chat sin re-render completo
 function _updateAIChatMessages(showSpinner) {
     const container = document.querySelector('.ai-chat-messages');
     if (!container) return;
@@ -1910,21 +1948,17 @@ function resetJobForm() {
 }
 
 // ==================== DESCARGA DE CARD COMO IMAGEN ====================
-// ── Agrega firma "Axellabstech" semitransparente sobre el canvas ──────────
+// FIX PRINCIPAL: Captura el card en su altura real sin aplastar la imagen
+// Usamos scrollHeight para forzar que html2canvas renderice el contenido completo
 function _addWatermark(canvas) {
     const ctx  = canvas.getContext('2d');
     const text = '⚡ Axellabstech';
     const pad  = 18;
-
-    // Fuente y tamaño proporcional al canvas
     const fontSize = Math.max(18, Math.round(canvas.width * 0.045));
     ctx.font      = `600 ${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
     ctx.textAlign = 'left';
-
     const textW = ctx.measureText(text).width;
     const textH = fontSize;
-
-    // Pastilla de fondo semitransparente
     const rx = pad - 6, ry = canvas.height - textH - pad - 4;
     const rw = textW + 24, rh = textH + 14;
     ctx.save();
@@ -1933,15 +1967,12 @@ function _addWatermark(canvas) {
     ctx.beginPath();
     ctx.roundRect(rx, ry, rw, rh, 8);
     ctx.fill();
-
-    // Texto
     ctx.globalAlpha = 0.70;
     ctx.fillStyle   = '#e9d5ff';
     ctx.fillText(text, pad, canvas.height - pad);
     ctx.restore();
 }
 
-// ── Descarga usando Blob URL (funciona en Android Chrome) ─────────────────
 function _triggerBlobDownload(canvas, filename) {
     return new Promise((resolve, reject) => {
         canvas.toBlob((blob) => {
@@ -1953,14 +1984,13 @@ function _triggerBlobDownload(canvas, filename) {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            // Liberar memoria
             setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
             resolve();
         }, 'image/png');
     });
 }
 
-// ── Modal de confirmación con preview de la imagen ────────────────────────
+// FIX: Modal de confirmación SIN el mensaje de Android
 function _showDownloadConfirm(canvas, filename, onConfirm) {
     const preview = canvas.toDataURL('image/png');
     const modal   = document.createElement('div');
@@ -1971,16 +2001,11 @@ function _showDownloadConfirm(canvas, filename, onConfirm) {
                 <i class="fas fa-image" style="color:#667eea;font-size:22px"></i>
                 <div class="header-text">
                     <h3>¿Guardar esta imagen?</h3>
-                    <p style="font-size:12px;margin-top:2px;">${filename}</p>
                 </div>
             </div>
             <div class="modal-body" style="padding:16px 20px;">
                 <img src="${preview}"
                      style="width:100%;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,0.15);display:block;">
-                <p style="margin-top:12px;font-size:13px;color:#6b7280;text-align:center;line-height:1.5;">
-                    📱 En Android: al dar <strong>Sí</strong> presiona<br>
-                    la imagen unos segundos → <em>Guardar imagen</em>
-                </p>
             </div>
             <div class="modal-footer" style="gap:10px;">
                 <button class="btn btn-cancel" id="dl-cancel" style="flex:1;">No</button>
@@ -1988,13 +2013,12 @@ function _showDownloadConfirm(canvas, filename, onConfirm) {
             </div>
         </div>`;
     document.getElementById('modal-root').appendChild(modal);
-
     modal.querySelector('#dl-cancel').onclick  = () => modal.remove();
     modal.querySelector('#dl-confirm').onclick = () => { modal.remove(); onConfirm(); };
     modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
 }
 
-// ── Función principal ─────────────────────────────────────────────────────
+// FIX PRINCIPAL DE IMAGEN: forzamos que html2canvas capture la altura real del card
 async function downloadCard(btn, vacancyId) {
     const card = btn.closest('.vacancy-card');
     if (!card) return;
@@ -2002,35 +2026,53 @@ async function downloadCard(btn, vacancyId) {
     btn.classList.add('downloading');
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
+    // Guardar estilos originales
+    const originalOverflow = card.style.overflow;
+    const originalHeight   = card.style.height;
+    const originalMaxH     = card.style.maxHeight;
+
+    // Forzar que la card muestre su contenido completo sin overflow oculto
+    card.style.overflow  = 'visible';
+    card.style.height    = 'auto';
+    card.style.maxHeight = 'none';
+
+    // Obtener la altura real del contenido
+    const realHeight = card.scrollHeight;
+
     let canvas;
     try {
         canvas = await html2canvas(card, {
             useCORS:        true,
             allowTaint:     true,
-            backgroundColor:'#ffffff',
-            scale:          2,
-            logging:        false,
+            backgroundColor: '#ffffff',
+            scale:           2,
+            logging:         false,
+            // FIX: forzar captura con la altura real del elemento
+            height:          realHeight,
+            windowHeight:    realHeight + 200,
+            scrollY:         -window.scrollY,
+            scrollX:         0,
             ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore')
         });
 
-        // Agregar firma Axellabstech
         _addWatermark(canvas);
-
-        const vacancy  = state.vacancies.find(v => v.id === vacancyId);
-        const empresa  = vacancy?.company
-            ? vacancy.company.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()
-            : 'vacante';
-        const filename = `vacante_${empresa}_empleos_leon.png`;
 
     } catch (err) {
         console.error('❌ Error generando imagen:', err);
         showModal('error', 'Error', 'No se pudo generar la imagen. Intenta de nuevo.');
         btn.classList.remove('downloading');
         btn.innerHTML = '<i class="fas fa-download"></i>';
+        // Restaurar estilos aunque haya error
+        card.style.overflow  = originalOverflow;
+        card.style.height    = originalHeight;
+        card.style.maxHeight = originalMaxH;
         return;
     }
 
-    // Restaurar botón antes de mostrar el modal
+    // Restaurar estilos originales antes de mostrar modal
+    card.style.overflow  = originalOverflow;
+    card.style.height    = originalHeight;
+    card.style.maxHeight = originalMaxH;
     btn.classList.remove('downloading');
     btn.innerHTML = '<i class="fas fa-download"></i>';
 
@@ -2040,13 +2082,10 @@ async function downloadCard(btn, vacancyId) {
         : 'vacante';
     const filename = `vacante_${empresa}_empleos_leon.png`;
 
-    // Mostrar modal de confirmación con preview
     _showDownloadConfirm(canvas, filename, async () => {
-        // El clic en "Sí" ES el gesto directo del usuario → el navegador lo acepta
         try {
             await _triggerBlobDownload(canvas, filename);
         } catch (err) {
-            // Fallback: si blob falla, abrir en pestaña nueva con instrucción clara
             console.warn('Blob download falló, abriendo en nueva pestaña:', err);
             const dataUrl = canvas.toDataURL('image/png');
             const newTab  = window.open();
@@ -2397,13 +2436,11 @@ function renderDashboard() {
     </div>`;
 }
 
-// ==================== FIX #7: renderVacancyCard filtra strings "NULL" en descripción y campos ====================
 function renderVacancyCard(vacancy, isOwner) {
     const reqLines = vacancy.requirements
         ? vacancy.requirements.split('\n').map(l => l.trim()).filter(l => l.length > 0 && l !== 'NULL' && l !== 'null')
         : [];
 
-    // FIX: Filtramos explícitamente "NULL" y "null" strings de la BD
     const desc = cleanValue(vacancy.description);
     const hasDesc = desc.length > 0;
     const hasReqs = reqLines.length > 0 && !(reqLines.length === 1 && reqLines[0] === 'Sin requisitos especificados');
@@ -2416,18 +2453,21 @@ function renderVacancyCard(vacancy, isOwner) {
 
     return `
     <div class="vacancy-card" style="position:relative;">
+        <!-- Botón descarga: esquina superior derecha sobre la imagen -->
         <button class="btn-download-card" onclick="downloadCard(this,'${vacancy.id}')" title="Descargar como imagen" data-html2canvas-ignore>
             <i class="fas fa-download"></i>
         </button>
-        <div class="h-48 bg-gray-200 overflow-hidden">
+        <!-- Badge categoría: esquina superior izquierda sobre la imagen -->
+        ${vacancy.category ? `<span class="card-category-badge"><i class="fas fa-tag"></i>${escapeHtml(vacancy.category)}</span>` : ''}
+        <!-- Imagen con proporción fija -->
+        <div class="card-img-wrap">
             ${vacancy.image_base64
-                ? `<img src="${vacancy.image_base64}" alt="${escapeHtml(vacancy.company)}" class="w-full h-full object-cover" loading="lazy">`
-                : '<div class="w-full h-full flex items-center justify-center text-gray-400"><i class="fas fa-image text-3xl"></i></div>'}
+                ? `<img src="${vacancy.image_base64}" alt="${escapeHtml(vacancy.company)}" loading="lazy">`
+                : '<div class="card-img-placeholder"><i class="fas fa-image"></i></div>'}
         </div>
         <div class="p-6 card-content">
             <h3 class="card-company">${escapeHtml(cleanValue(vacancy.company))}</h3>
             <p class="job-title text-purple-600 mb-3">${escapeHtml(cleanValue(vacancy.job_title))}</p>
-            ${vacancy.category ? `<span class="inline-block bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full mb-3">${escapeHtml(vacancy.category)}</span>` : ''}
             ${hasDesc ? `<p class="card-description mb-3">${escapeHtml(desc)}</p>` : ''}
             ${hasReqs ? `
                 <div class="requirements-block mb-4">
@@ -2783,7 +2823,6 @@ async function init() {
                 return;
             }
 
-            // FIX: Siempre ocultar spinner en eventos auth (excepto INITIAL_SESSION)
             if (event !== 'INITIAL_SESSION') {
                 hideLoading();
                 state.isRendering = false;
@@ -2807,7 +2846,7 @@ async function init() {
                 state.view = accepted ? 'categories' : 'terms';
                 await loadVacancies();
                 hideLoading();
-                render(true); // render inmediato post-auth
+                render(true);
                 if (event === 'EMAIL_CONFIRMED') {
                     showModal('success', '✅ Correo confirmado', '¡Tu cuenta fue verificada! Has iniciado sesión correctamente.');
                 } else if (event === 'SIGNED_IN') {
