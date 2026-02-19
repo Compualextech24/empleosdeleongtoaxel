@@ -1910,6 +1910,91 @@ function resetJobForm() {
 }
 
 // ==================== DESCARGA DE CARD COMO IMAGEN ====================
+// ── Agrega firma "Axellabstech" semitransparente sobre el canvas ──────────
+function _addWatermark(canvas) {
+    const ctx  = canvas.getContext('2d');
+    const text = '⚡ Axellabstech';
+    const pad  = 18;
+
+    // Fuente y tamaño proporcional al canvas
+    const fontSize = Math.max(18, Math.round(canvas.width * 0.045));
+    ctx.font      = `600 ${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
+    ctx.textAlign = 'left';
+
+    const textW = ctx.measureText(text).width;
+    const textH = fontSize;
+
+    // Pastilla de fondo semitransparente
+    const rx = pad - 6, ry = canvas.height - textH - pad - 4;
+    const rw = textW + 24, rh = textH + 14;
+    ctx.save();
+    ctx.globalAlpha = 0.38;
+    ctx.fillStyle   = '#1e1b4b';
+    ctx.beginPath();
+    ctx.roundRect(rx, ry, rw, rh, 8);
+    ctx.fill();
+
+    // Texto
+    ctx.globalAlpha = 0.70;
+    ctx.fillStyle   = '#e9d5ff';
+    ctx.fillText(text, pad, canvas.height - pad);
+    ctx.restore();
+}
+
+// ── Descarga usando Blob URL (funciona en Android Chrome) ─────────────────
+function _triggerBlobDownload(canvas, filename) {
+    return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+            if (!blob) { reject(new Error('No se pudo generar el blob')); return; }
+            const blobUrl = URL.createObjectURL(blob);
+            const link    = document.createElement('a');
+            link.href     = blobUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            // Liberar memoria
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+            resolve();
+        }, 'image/png');
+    });
+}
+
+// ── Modal de confirmación con preview de la imagen ────────────────────────
+function _showDownloadConfirm(canvas, filename, onConfirm) {
+    const preview = canvas.toDataURL('image/png');
+    const modal   = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-window" style="max-width:360px;">
+            <div class="modal-header modal-header-info">
+                <i class="fas fa-image" style="color:#667eea;font-size:22px"></i>
+                <div class="header-text">
+                    <h3>¿Guardar esta imagen?</h3>
+                    <p style="font-size:12px;margin-top:2px;">${filename}</p>
+                </div>
+            </div>
+            <div class="modal-body" style="padding:16px 20px;">
+                <img src="${preview}"
+                     style="width:100%;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,0.15);display:block;">
+                <p style="margin-top:12px;font-size:13px;color:#6b7280;text-align:center;line-height:1.5;">
+                    📱 En Android: al dar <strong>Sí</strong> presiona<br>
+                    la imagen unos segundos → <em>Guardar imagen</em>
+                </p>
+            </div>
+            <div class="modal-footer" style="gap:10px;">
+                <button class="btn btn-cancel" id="dl-cancel" style="flex:1;">No</button>
+                <button class="btn btn-save"   id="dl-confirm" style="flex:1;"><i class="fas fa-download"></i> Sí, guardar</button>
+            </div>
+        </div>`;
+    document.getElementById('modal-root').appendChild(modal);
+
+    modal.querySelector('#dl-cancel').onclick  = () => modal.remove();
+    modal.querySelector('#dl-confirm').onclick = () => { modal.remove(); onConfirm(); };
+    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+}
+
+// ── Función principal ─────────────────────────────────────────────────────
 async function downloadCard(btn, vacancyId) {
     const card = btn.closest('.vacancy-card');
     if (!card) return;
@@ -1917,75 +2002,67 @@ async function downloadCard(btn, vacancyId) {
     btn.classList.add('downloading');
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
+    let canvas;
     try {
-        const canvas = await html2canvas(card, {
-            useCORS: true,
-            allowTaint: true,
-            backgroundColor: '#ffffff',
-            scale: 2,
-            logging: false,
+        canvas = await html2canvas(card, {
+            useCORS:        true,
+            allowTaint:     true,
+            backgroundColor:'#ffffff',
+            scale:          2,
+            logging:        false,
             ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore')
         });
 
+        // Agregar firma Axellabstech
+        _addWatermark(canvas);
+
         const vacancy  = state.vacancies.find(v => v.id === vacancyId);
-        const empresa  = vacancy?.company ? vacancy.company.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase() : 'vacante';
+        const empresa  = vacancy?.company
+            ? vacancy.company.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()
+            : 'vacante';
         const filename = `vacante_${empresa}_empleos_leon.png`;
-        const dataUrl  = canvas.toDataURL('image/png');
-
-        // ── Detectar Android / móvil ──────────────────────────────────────
-        // En Android el atributo download de <a> es ignorado por muchos browsers.
-        // Solución: abrir la imagen en pestaña nueva → el usuario hace
-        // "mantener presionado → Guardar imagen" (gesto nativo de Android).
-        const isAndroid = /android/i.test(navigator.userAgent);
-        const isMobile  = /android|iphone|ipad|ipod|mobile/i.test(navigator.userAgent);
-
-        if (isAndroid || isMobile) {
-            // Abrir imagen en pestaña nueva
-            const newTab = window.open();
-            if (newTab) {
-                newTab.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta name="viewport" content="width=device-width,initial-scale=1">
-                        <title>${filename}</title>
-                        <style>
-                            * { margin:0; padding:0; box-sizing:border-box; }
-                            body { background:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; gap:16px; padding:16px; }
-                            img  { max-width:100%; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
-                            p    { color:rgba(255,255,255,0.75); font-family:sans-serif; font-size:14px; text-align:center; line-height:1.6; }
-                            strong { color:#a78bfa; }
-                        </style>
-                    </head>
-                    <body>
-                        <img src="${dataUrl}" alt="${filename}">
-                        <p>📱 <strong>Mantén presionada la imagen</strong><br>y elige "Guardar imagen" para descargarla</p>
-                    </body>
-                    </html>
-                `);
-                newTab.document.close();
-            } else {
-                // Si el navegador bloqueó el popup, fallback a descarga directa
-                const link    = document.createElement('a');
-                link.download = filename;
-                link.href     = dataUrl;
-                link.click();
-            }
-        } else {
-            // Escritorio: descarga directa normal
-            const link    = document.createElement('a');
-            link.download = filename;
-            link.href     = dataUrl;
-            link.click();
-        }
 
     } catch (err) {
-        console.error('❌ Error al descargar card:', err);
+        console.error('❌ Error generando imagen:', err);
         showModal('error', 'Error', 'No se pudo generar la imagen. Intenta de nuevo.');
-    } finally {
         btn.classList.remove('downloading');
         btn.innerHTML = '<i class="fas fa-download"></i>';
+        return;
     }
+
+    // Restaurar botón antes de mostrar el modal
+    btn.classList.remove('downloading');
+    btn.innerHTML = '<i class="fas fa-download"></i>';
+
+    const vacancy  = state.vacancies.find(v => v.id === vacancyId);
+    const empresa  = vacancy?.company
+        ? vacancy.company.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()
+        : 'vacante';
+    const filename = `vacante_${empresa}_empleos_leon.png`;
+
+    // Mostrar modal de confirmación con preview
+    _showDownloadConfirm(canvas, filename, async () => {
+        // El clic en "Sí" ES el gesto directo del usuario → el navegador lo acepta
+        try {
+            await _triggerBlobDownload(canvas, filename);
+        } catch (err) {
+            // Fallback: si blob falla, abrir en pestaña nueva con instrucción clara
+            console.warn('Blob download falló, abriendo en nueva pestaña:', err);
+            const dataUrl = canvas.toDataURL('image/png');
+            const newTab  = window.open();
+            if (newTab) {
+                newTab.document.write(`<!DOCTYPE html><html><head>
+                    <meta name="viewport" content="width=device-width,initial-scale=1">
+                    <title>${filename}</title>
+                    <style>*{margin:0;padding:0;box-sizing:border-box}body{background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;padding:20px}img{max-width:100%;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.5)}p{color:rgba(255,255,255,.8);font-family:sans-serif;font-size:15px;text-align:center;line-height:1.7}strong{color:#a78bfa}</style>
+                </head><body>
+                    <img src="${dataUrl}" alt="${filename}">
+                    <p>📱 <strong>Mantén presionada la imagen</strong><br>y elige "Guardar imagen"</p>
+                </body></html>`);
+                newTab.document.close();
+            }
+        }
+    });
 }
 
 // ==================== RENDER — VISTAS ====================
