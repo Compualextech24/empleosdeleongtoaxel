@@ -966,10 +966,60 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     box-shadow: 0 2px 8px rgba(109, 40, 217, 0.4);
     letter-spacing: 0.3px;
     white-space: nowrap;
-    max-width: calc(100% - 64px); /* evita chocar con el botón de descarga */
+    max-width: calc(100% - 64px);
     overflow: hidden;
     text-overflow: ellipsis;
     pointer-events: none;
+}
+
+/* ==================== FILA TÍTULO + META DATOS FIJOS ==================== */
+.card-title-meta-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.card-title-meta-row .job-title {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+}
+.job-title-prefix {
+    font-weight: 900;
+    color: var(--gray-800);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    display: block;
+    margin-bottom: 1px;
+}
+/* Los datos fijos (ubicación, teléfono, fecha) apilados a la derecha */
+.card-meta-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+    align-items: flex-end;
+    max-width: 48%;
+}
+.card-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: var(--gray-600);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+.card-meta-item i {
+    color: var(--indigo-1);
+    font-size: 10px;
+    flex-shrink: 0;
+    width: 12px;
+    text-align: center;
 }
 
 /* ==================== FOOTER MARQUEE ==================== */
@@ -2453,11 +2503,11 @@ function renderVacancyCard(vacancy, isOwner) {
 
     return `
     <div class="vacancy-card" style="position:relative;">
-        <!-- Botón descarga: esquina superior derecha sobre la imagen -->
+        <!-- Botón descarga: esquina superior derecha sobre la imagen (oculto en captura) -->
         <button class="btn-download-card" onclick="downloadCard(this,'${vacancy.id}')" title="Descargar como imagen" data-html2canvas-ignore>
             <i class="fas fa-download"></i>
         </button>
-        <!-- Badge categoría: esquina superior izquierda sobre la imagen -->
+        <!-- Badge categoría: esquina superior izquierda sobre la imagen (VISIBLE en captura) -->
         ${vacancy.category ? `<span class="card-category-badge"><i class="fas fa-tag"></i>${escapeHtml(vacancy.category)}</span>` : ''}
         <!-- Imagen con proporción fija -->
         <div class="card-img-wrap">
@@ -2466,8 +2516,17 @@ function renderVacancyCard(vacancy, isOwner) {
                 : '<div class="card-img-placeholder"><i class="fas fa-image"></i></div>'}
         </div>
         <div class="p-6 card-content">
+            <!-- Empresa -->
             <h3 class="card-company">${escapeHtml(cleanValue(vacancy.company))}</h3>
-            <p class="job-title text-purple-600 mb-3">${escapeHtml(cleanValue(vacancy.job_title))}</p>
+            <!-- Fila: vacante + datos fijos en la misma línea visual -->
+            <div class="card-title-meta-row">
+                <p class="job-title text-purple-600"><span class="job-title-prefix">Vacante(s):</span> ${escapeHtml(cleanValue(vacancy.job_title))}</p>
+                <div class="card-meta-inline">
+                    ${loc   ? `<span class="card-meta-item"><i class="fas fa-map-marker-alt"></i>${escapeHtml(loc)}</span>` : ''}
+                    ${phone ? `<span class="card-meta-item"><i class="fas fa-phone"></i>${escapeHtml(phone)}</span>` : ''}
+                    ${date  ? `<span class="card-meta-item"><i class="fas fa-calendar"></i>${escapeHtml(date)}</span>` : ''}
+                </div>
+            </div>
             ${hasDesc ? `<p class="card-description mb-3">${escapeHtml(desc)}</p>` : ''}
             ${hasReqs ? `
                 <div class="requirements-block mb-4">
@@ -2475,15 +2534,15 @@ function renderVacancyCard(vacancy, isOwner) {
                     <ul class="requirements-list">${reqLines.map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>
                 </div>
             ` : ''}
-            <div class="card-info-rows mb-4">
-                ${loc   ? `<div class="card-info-row"><i class="fas fa-map-marker-alt"></i><span>${escapeHtml(loc)}</span></div>` : ''}
-                ${phone ? `<div class="card-info-row"><i class="fas fa-phone"></i><span>${escapeHtml(phone)}</span></div>` : ''}
-                ${date  ? `<div class="card-info-row"><i class="fas fa-calendar"></i><span>${escapeHtml(date)}</span></div>` : ''}
-                ${days  ? `<div class="card-info-row"><i class="fas fa-clock"></i><span>${escapeHtml(days)}</span></div>` : ''}
-                ${sched ? `<div class="card-info-row"><i class="fas fa-business-time"></i><span>${escapeHtml(sched)}</span></div>` : ''}
-            </div>
+            <!-- Datos secundarios que sí pueden variar (días y horario) -->
+            ${(days || sched) ? `
+                <div class="card-info-rows mb-4">
+                    ${days  ? `<div class="card-info-row"><i class="fas fa-clock"></i><span>${escapeHtml(days)}</span></div>` : ''}
+                    ${sched ? `<div class="card-info-row"><i class="fas fa-business-time"></i><span>${escapeHtml(sched)}</span></div>` : ''}
+                </div>
+            ` : ''}
             ${isOwner ? `
-                <div class="flex gap-2" data-html2canvas-ignore>
+                <div class="flex gap-2 mt-auto" data-html2canvas-ignore>
                     <button data-edit="${vacancy.id}" class="btn btn-edit flex-1"><i class="fas fa-edit"></i> Editar</button>
                     <button data-delete="${vacancy.id}" class="btn btn-cancel flex-1"><i class="fas fa-trash"></i> Eliminar</button>
                 </div>
