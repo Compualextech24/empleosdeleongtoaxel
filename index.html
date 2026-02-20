@@ -1041,18 +1041,17 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     100% { left: 160%; opacity: 0; }
 }
 
-/* Sección contenedora del banner (fondo blanco, centrada) */
+/* Sección contenedora — solo necesita centrar el slider, sin gap extra */
 .banner-section {
     width: 100%;
     padding: 22px 16px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 18px;
     background: #fff;
 }
 
-/* Caja de las 2 imágenes superpuestas */
+/* Caja de las 2 imágenes — el botón va DENTRO de este div */
 .banner-slider-wrap {
     width: 100%;
     max-width: 680px;
@@ -1087,7 +1086,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     z-index: 1;
 }
 
-/* Botón Próximamente — metalico oscuro profesional */
+/* Botón Próximamente — encima de la imagen, anclado abajo-centro */
 .btn-proximamente {
     display: inline-flex;
     align-items: center;
@@ -1096,19 +1095,25 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     text-decoration: none;
     background: linear-gradient(160deg, #1c1c1e 0%, #2e2e32 35%, #3a3a40 55%, #28282d 80%, #1c1c1e 100%);
     color: #d4d4d8;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 800;
-    padding: 13px 36px;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.10);
+    padding: 11px 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.13);
     box-shadow:
-        0 4px 18px rgba(0,0,0,0.40),
+        0 4px 18px rgba(0,0,0,0.55),
         inset 0 1px 0 rgba(255,255,255,0.08),
         inset 0 -1px 0 rgba(0,0,0,0.35);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     transition: all 0.28s ease;
-    position: relative;
+    /* Posición absoluta dentro del banner */
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    white-space: nowrap;
     overflow: hidden;
     cursor: pointer;
 }
@@ -1130,18 +1135,18 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .btn-proximamente:hover {
     background: linear-gradient(160deg, #26262b 0%, #38383e 35%, #46464e 55%, #32323a 80%, #26262b 100%);
     color: #ffffff;
-    transform: translateY(-3px);
+    transform: translateX(-50%) translateY(-3px);
     box-shadow:
-        0 10px 28px rgba(0,0,0,0.5),
+        0 10px 28px rgba(0,0,0,0.6),
         inset 0 1px 0 rgba(255,255,255,0.12),
         inset 0 -1px 0 rgba(0,0,0,0.4);
-    border-color: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.18);
 }
 .btn-proximamente:active {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    transform: translateX(-50%) translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
-.btn-proximamente i { font-size: 15px; opacity: 0.85; }
+.btn-proximamente i { font-size: 14px; opacity: 0.85; }
 
 /* ====================================================================== */
 /* ==================== FIN BANNER SLIDESHOW ==================== */
@@ -2460,6 +2465,7 @@ function renderCategories() {
             <div class="banner-section fade-in">
 
                 <!-- Contenedor de imágenes superpuestas con animación fade -->
+                <!-- El botón va DENTRO para quedar encima de la imagen -->
                 <div class="banner-slider-wrap">
 
                 <!-- *** REEMPLAZA ESTA URL CON EL LINK DE TU PRIMERA IMAGEN *** -->
@@ -2468,16 +2474,16 @@ function renderCategories() {
                 <!-- *** REEMPLAZA ESTA URL CON EL LINK DE TU SEGUNDA IMAGEN *** -->
                 <img class="banner-img-2" src="Header2.jpg" alt="Banner 2">
 
-                </div>
+                    <!-- Botón Próximamente — encima de la imagen, anclado abajo-centro -->
+                    <a  href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-proximamente">
+                        <i class="fas fa-rocket"></i>
+                        Próximamente...
+                    </a>
 
-                <!-- Botón Próximamente — enlaza a tu próximo proyecto -->
-                <a  href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn-proximamente">
-                    <i class="fas fa-rocket"></i>
-                    Próximamente...
-                </a>
+                </div>
 
             </div>
             <!-- ============================================================ -->
@@ -3070,7 +3076,7 @@ async function init() {
         console.log('✅ App lista');
     } catch (error) {
         console.error('❌ Error init:', error);
-        render(true)
+        render(true);
     }
 }
 
@@ -3082,4 +3088,3 @@ if (document.readyState === 'loading') {
     </script>
 </body>
 </html>
-
