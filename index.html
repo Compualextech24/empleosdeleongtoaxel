@@ -710,13 +710,14 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     will-change: transform;
 }
 .vacancy-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(102,126,234,0.25); border-color: rgba(102,126,234,0.3); }
-.vacancy-card .card-content { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+
+/* FIX: reducir padding top del contenido para acercar empresa a imagen */
+.vacancy-card .card-content { padding: 14px 20px 20px; display: flex; flex-direction: column; flex: 1; }
 .vacancy-card .card-info-rows, .vacancy-card .btn-whatsapp-card, .vacancy-card .flex.gap-2 { margin-top: auto; }
 
-/* ── FIX: imagen de card con altura proporcional, sin corte ── */
+/* ── imagen de card con altura proporcional, sin corte ── */
 .card-img-wrap {
     width: 100%;
-    /* aspect-ratio garantiza proporción 4:3 real, sin aplastar */
     aspect-ratio: 4 / 3;
     overflow: hidden;
     background: var(--gray-200);
@@ -745,7 +746,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .card-info-row { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #4b5563; line-height: 1.5; }
 .card-info-row i { color: var(--indigo-1); font-size: 12px; margin-top: 2px; flex-shrink: 0; width: 14px; text-align: center; }
 .card-info-row span { flex: 1; word-break: break-word; overflow-wrap: break-word; white-space: normal; min-width: 0; }
-.card-company { font-size: 1.15rem; font-weight: 800; color: var(--gray-900); margin-bottom: 6px; line-height: 1.3; word-break: break-word; overflow-wrap: break-word; white-space: normal; }
+.card-company { font-size: 1.1rem; font-weight: 800; color: var(--gray-900); margin-bottom: 5px; line-height: 1.3; word-break: break-word; overflow-wrap: break-word; white-space: normal; }
 .job-title { word-break: break-word; overflow-wrap: break-word; white-space: normal; line-height: 1.4; }
 
 /* ==================== LISTA DE REQUISITOS EN CARDS ==================== */
@@ -912,14 +913,11 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 /* ==================== BOTÓN DESCARGAR CARD ==================== */
 .btn-download-card {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 12px; right: 12px;
     z-index: 10;
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 50%;
     border: none;
-    /* Azul cielo semitransparente */
     background: rgba(56, 189, 248, 0.55);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
@@ -933,24 +931,14 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
     will-change: transform;
 }
-.btn-download-card:hover {
-    background: rgba(14, 165, 233, 0.80);
-    transform: scale(1.1);
-    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.5);
-    color: #ffffff;
-}
+.btn-download-card:hover { background: rgba(14, 165, 233, 0.80); transform: scale(1.1); box-shadow: 0 4px 16px rgba(14, 165, 233, 0.5); color: #ffffff; }
 .btn-download-card:active { transform: scale(0.95); }
-.btn-download-card.downloading {
-    background: rgba(14, 165, 233, 0.35);
-    color: #fff;
-    pointer-events: none;
-}
+.btn-download-card.downloading { background: rgba(14, 165, 233, 0.35); color: #fff; pointer-events: none; }
 
 /* ==================== BADGE DE CATEGORÍA SOBRE IMAGEN ==================== */
 .card-category-badge {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 12px; left: 12px;
     z-index: 10;
     display: inline-flex;
     align-items: center;
@@ -980,11 +968,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     gap: 10px;
     margin-bottom: 10px;
 }
-.card-title-meta-row .job-title {
-    flex: 1;
-    min-width: 0;
-    margin-bottom: 0;
-}
+.card-title-meta-row .job-title { flex: 1; min-width: 0; margin-bottom: 0; }
 .job-title-prefix {
     font-weight: 900;
     color: var(--gray-800);
@@ -994,7 +978,8 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     display: block;
     margin-bottom: 1px;
 }
-/* Los datos fijos (ubicación, teléfono, fecha) apilados a la derecha */
+
+/* FIX UBICACIÓN: dos líneas — calle arriba, colonia abajo */
 .card-meta-inline {
     display: flex;
     flex-direction: column;
@@ -1005,14 +990,15 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 }
 .card-meta-item {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 5px;
     font-size: 11.5px;
     color: var(--gray-600);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* SIN white-space:nowrap para permitir wrap en ubicación */
+    word-break: break-word;
+    overflow-wrap: break-word;
     max-width: 100%;
+    text-align: right;
 }
 .card-meta-item i {
     color: var(--indigo-1);
@@ -1020,24 +1006,15 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     flex-shrink: 0;
     width: 12px;
     text-align: center;
+    margin-top: 2px;
 }
+/* Línea de colonia/segunda parte de dirección */
+.card-meta-loc-street  { font-weight: 600; display: block; }
+.card-meta-loc-colony  { display: block; font-size: 10.5px; color: var(--gray-500); line-height: 1.3; }
 
 /* ==================== FOOTER MARQUEE ==================== */
-.app-footer {
-    overflow: hidden;
-    white-space: nowrap;
-    margin-top: 32px;
-    padding: 10px 0;
-    border-top: 1px solid rgba(109,40,217,0.12);
-}
-.app-footer-inner {
-    display: inline-block;
-    animation: marqueeScroll 18s linear infinite;
-    color: var(--gray-400);
-    font-size: 13px;
-    font-weight: 500;
-    will-change: transform;
-}
+.app-footer { overflow: hidden; white-space: nowrap; margin-top: 32px; padding: 10px 0; border-top: 1px solid rgba(109,40,217,0.12); }
+.app-footer-inner { display: inline-block; animation: marqueeScroll 18s linear infinite; color: var(--gray-400); font-size: 13px; font-weight: 500; will-change: transform; }
 
 /* ==================== USER SESSION BADGE ==================== */
 .user-session-badge { background: #f8f7ff; }
@@ -1112,7 +1089,7 @@ let state = {
     isLoggingOut: false
 };
 
-// ==================== cleanValue — elimina strings "NULL" / "null" / undefined ====================
+// ==================== cleanValue ====================
 const cleanValue = (val) => {
     if (val === null || val === undefined) return '';
     const s = String(val).trim();
@@ -1998,8 +1975,6 @@ function resetJobForm() {
 }
 
 // ==================== DESCARGA DE CARD COMO IMAGEN ====================
-// FIX PRINCIPAL: Captura el card en su altura real sin aplastar la imagen
-// Usamos scrollHeight para forzar que html2canvas renderice el contenido completo
 function _addWatermark(canvas) {
     const ctx  = canvas.getContext('2d');
     const text = '⚡ Axellabstech';
@@ -2040,7 +2015,6 @@ function _triggerBlobDownload(canvas, filename) {
     });
 }
 
-// FIX: Modal de confirmación SIN el mensaje de Android
 function _showDownloadConfirm(canvas, filename, onConfirm) {
     const preview = canvas.toDataURL('image/png');
     const modal   = document.createElement('div');
@@ -2068,7 +2042,6 @@ function _showDownloadConfirm(canvas, filename, onConfirm) {
     modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
 }
 
-// FIX PRINCIPAL DE IMAGEN: forzamos que html2canvas capture la altura real del card
 async function downloadCard(btn, vacancyId) {
     const card = btn.closest('.vacancy-card');
     if (!card) return;
@@ -2076,17 +2049,14 @@ async function downloadCard(btn, vacancyId) {
     btn.classList.add('downloading');
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-    // Guardar estilos originales
     const originalOverflow = card.style.overflow;
     const originalHeight   = card.style.height;
     const originalMaxH     = card.style.maxHeight;
 
-    // Forzar que la card muestre su contenido completo sin overflow oculto
     card.style.overflow  = 'visible';
     card.style.height    = 'auto';
     card.style.maxHeight = 'none';
 
-    // Obtener la altura real del contenido
     const realHeight = card.scrollHeight;
 
     let canvas;
@@ -2097,29 +2067,24 @@ async function downloadCard(btn, vacancyId) {
             backgroundColor: '#ffffff',
             scale:           2,
             logging:         false,
-            // FIX: forzar captura con la altura real del elemento
             height:          realHeight,
             windowHeight:    realHeight + 200,
             scrollY:         -window.scrollY,
             scrollX:         0,
             ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore')
         });
-
         _addWatermark(canvas);
-
     } catch (err) {
         console.error('❌ Error generando imagen:', err);
         showModal('error', 'Error', 'No se pudo generar la imagen. Intenta de nuevo.');
         btn.classList.remove('downloading');
         btn.innerHTML = '<i class="fas fa-download"></i>';
-        // Restaurar estilos aunque haya error
         card.style.overflow  = originalOverflow;
         card.style.height    = originalHeight;
         card.style.maxHeight = originalMaxH;
         return;
     }
 
-    // Restaurar estilos originales antes de mostrar modal
     card.style.overflow  = originalOverflow;
     card.style.height    = originalHeight;
     card.style.maxHeight = originalMaxH;
@@ -2486,6 +2451,18 @@ function renderDashboard() {
     </div>`;
 }
 
+// ==================== FIX UBICACIÓN: parte dirección en calle + colonia ====================
+function splitLocation(loc) {
+    if (!loc) return { street: '', colony: '' };
+    // Separa por coma: "Calle Xyz 123, Col. Centro, León" → street = "Calle Xyz 123", colony = "Col. Centro, León"
+    const commaIdx = loc.indexOf(',');
+    if (commaIdx === -1) return { street: loc, colony: '' };
+    return {
+        street: loc.slice(0, commaIdx).trim(),
+        colony: loc.slice(commaIdx + 1).trim()
+    };
+}
+
 function renderVacancyCard(vacancy, isOwner) {
     const reqLines = vacancy.requirements
         ? vacancy.requirements.split('\n').map(l => l.trim()).filter(l => l.length > 0 && l !== 'NULL' && l !== 'null')
@@ -2501,30 +2478,38 @@ function renderVacancyCard(vacancy, isOwner) {
     const days  = cleanValue(vacancy.work_days);
     const sched = cleanValue(vacancy.schedule);
 
+    // FIX: dividir ubicación en calle/número y colonia
+    const { street, colony } = splitLocation(loc);
+
+    // Construye el bloque de ubicación con 2 líneas si hay colonia
+    const locHtml = loc ? `
+        <span class="card-meta-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>
+                ${street ? `<span class="card-meta-loc-street">${escapeHtml(street)}</span>` : ''}
+                ${colony ? `<span class="card-meta-loc-colony">${escapeHtml(colony)}</span>` : ''}
+            </span>
+        </span>` : '';
+
     return `
     <div class="vacancy-card" style="position:relative;">
-        <!-- Botón descarga: esquina superior derecha sobre la imagen (oculto en captura) -->
         <button class="btn-download-card" onclick="downloadCard(this,'${vacancy.id}')" title="Descargar como imagen" data-html2canvas-ignore>
             <i class="fas fa-download"></i>
         </button>
-        <!-- Badge categoría: esquina superior izquierda sobre la imagen (VISIBLE en captura) -->
         ${vacancy.category ? `<span class="card-category-badge"><i class="fas fa-tag"></i>${escapeHtml(vacancy.category)}</span>` : ''}
-        <!-- Imagen con proporción fija -->
         <div class="card-img-wrap">
             ${vacancy.image_base64
                 ? `<img src="${vacancy.image_base64}" alt="${escapeHtml(vacancy.company)}" loading="lazy">`
                 : '<div class="card-img-placeholder"><i class="fas fa-image"></i></div>'}
         </div>
-        <div class="p-6 card-content">
-            <!-- Empresa -->
+        <div class="card-content">
             <h3 class="card-company">${escapeHtml(cleanValue(vacancy.company))}</h3>
-            <!-- Fila: vacante + datos fijos en la misma línea visual -->
             <div class="card-title-meta-row">
                 <p class="job-title text-purple-600"><span class="job-title-prefix">Vacante(s):</span> ${escapeHtml(cleanValue(vacancy.job_title))}</p>
                 <div class="card-meta-inline">
-                    ${loc   ? `<span class="card-meta-item"><i class="fas fa-map-marker-alt"></i>${escapeHtml(loc)}</span>` : ''}
-                    ${phone ? `<span class="card-meta-item"><i class="fas fa-phone"></i>${escapeHtml(phone)}</span>` : ''}
-                    ${date  ? `<span class="card-meta-item"><i class="fas fa-calendar"></i>${escapeHtml(date)}</span>` : ''}
+                    ${locHtml}
+                    ${phone ? `<span class="card-meta-item"><i class="fas fa-phone"></i><span>${escapeHtml(phone)}</span></span>` : ''}
+                    ${date  ? `<span class="card-meta-item"><i class="fas fa-calendar"></i><span>${escapeHtml(date)}</span></span>` : ''}
                 </div>
             </div>
             ${hasDesc ? `<p class="card-description mb-3">${escapeHtml(desc)}</p>` : ''}
@@ -2534,7 +2519,6 @@ function renderVacancyCard(vacancy, isOwner) {
                     <ul class="requirements-list">${reqLines.map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>
                 </div>
             ` : ''}
-            <!-- Datos secundarios que sí pueden variar (días y horario) -->
             ${(days || sched) ? `
                 <div class="card-info-rows mb-4">
                     ${days  ? `<div class="card-info-row"><i class="fas fa-clock"></i><span>${escapeHtml(days)}</span></div>` : ''}
@@ -2609,7 +2593,7 @@ function renderForm() {
                     </div>
                     <div class="input-group">
                         <label>Ubicación</label>
-                        <input type="text" id="location" placeholder="León, GTO" value="${escapeHtml(state.formData.location || 'León, gto')}">
+                        <input type="text" id="location" placeholder="Calle Principal 123, Col. Centro, León GTO" value="${escapeHtml(state.formData.location || 'León, gto')}">
                     </div>
                     <div class="input-group">
                         <label>Categoría <span style="color:#ef4444">*</span></label>
@@ -2918,7 +2902,6 @@ async function init() {
             }
         });
 
-        // Realtime: solo recarga datos sin re-render agresivo
         supabaseClient
             .channel(ENDPOINTS.CHANNELS.VACANCIES)
             .on('postgres_changes', { event: '*', schema: 'public', table: ENDPOINTS.TABLES.VACANCIES }, async () => {
