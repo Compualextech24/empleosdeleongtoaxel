@@ -1006,9 +1006,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     flex-shrink: 0;
     width: 12px;
     text-align: center;
-    /* sin margin-top — alineado al centro del texto */
 }
-/* Línea de colonia/segunda parte de dirección */
 .card-meta-loc-street  { font-weight: 600; display: block; }
 .card-meta-loc-colony  { display: block; font-size: 10.5px; color: var(--gray-500); line-height: 1.3; }
 
@@ -1020,6 +1018,134 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .user-session-badge { background: #f8f7ff; }
 .session-label { font-size: 11px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .session-email { font-size: 13px; color: var(--purple-1); font-weight: 600; }
+
+/* ====================================================================== */
+/* ==================== BANNER SLIDESHOW — 2 IMÁGENES CON TRANSICIÓN ==================== */
+/* ====================================================================== */
+
+/* Animación crossfade: imagen 1 aparece → se mantiene → desvanece → imagen 2 visible → vuelve */
+@keyframes bannerFade {
+    0%   { opacity: 1; }
+    38%  { opacity: 1; }
+    50%  { opacity: 0; }
+    88%  { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Efecto shimmer para el botón Próximamente */
+@keyframes shimmerBtn {
+    0%   { left: -100%; opacity: 0; }
+    10%  { opacity: 1; }
+    60%  { left: 160%; opacity: 1; }
+    65%  { opacity: 0; }
+    100% { left: 160%; opacity: 0; }
+}
+
+/* Sección contenedora del banner (fondo blanco, centrada) */
+.banner-section {
+    width: 100%;
+    padding: 22px 16px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    background: #fff;
+}
+
+/* Caja de las 2 imágenes superpuestas */
+.banner-slider-wrap {
+    width: 100%;
+    max-width: 680px;
+    aspect-ratio: 16 / 7;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    background: #1e1b4b;
+    box-shadow: 0 8px 32px rgba(109,40,217,0.22), 0 2px 8px rgba(0,0,0,0.12);
+    border: 2px solid rgba(124,58,237,0.18);
+}
+
+/* Imagen 1 — encima, con animación fade */
+.banner-img-1 {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 2;
+    animation: bannerFade 9s ease-in-out infinite;
+    will-change: opacity;
+}
+
+/* Imagen 2 — debajo, siempre visible (se muestra cuando img-1 es transparent) */
+.banner-img-2 {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 1;
+}
+
+/* Botón Próximamente — metalico oscuro profesional */
+.btn-proximamente {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    background: linear-gradient(160deg, #1c1c1e 0%, #2e2e32 35%, #3a3a40 55%, #28282d 80%, #1c1c1e 100%);
+    color: #d4d4d8;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 13px 36px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow:
+        0 4px 18px rgba(0,0,0,0.40),
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 -1px 0 rgba(0,0,0,0.35);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.28s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+/* Shimmer interior del botón */
+.btn-proximamente::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 55%; height: 100%;
+    background: linear-gradient(105deg,
+        transparent 0%,
+        rgba(255,255,255,0.07) 45%,
+        rgba(255,255,255,0.13) 50%,
+        rgba(255,255,255,0.07) 55%,
+        transparent 100%);
+    animation: shimmerBtn 3.8s ease-in-out infinite;
+    pointer-events: none;
+}
+.btn-proximamente:hover {
+    background: linear-gradient(160deg, #26262b 0%, #38383e 35%, #46464e 55%, #32323a 80%, #26262b 100%);
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow:
+        0 10px 28px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.4);
+    border-color: rgba(255,255,255,0.15);
+}
+.btn-proximamente:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+}
+.btn-proximamente i { font-size: 15px; opacity: 0.85; }
+
+/* ====================================================================== */
+/* ==================== FIN BANNER SLIDESHOW ==================== */
+/* ====================================================================== */
     </style>
 </head>
 <body>
@@ -1976,8 +2102,6 @@ function resetJobForm() {
 
 // ==================== DESCARGA DE CARD COMO IMAGEN ====================
 function _addWatermark(canvas) {
-    // SOLUCIÓN DEFINITIVA: canvas NUEVO = card original + franja de firma debajo
-    // Así la firma siempre aparece, 100% garantizado
     const firmaH   = Math.max(44, Math.round(canvas.width * 0.07));
     const fontSize = Math.max(15, Math.round(firmaH * 0.40));
 
@@ -1987,14 +2111,11 @@ function _addWatermark(canvas) {
 
     const ctx = out.getContext('2d');
 
-    // 1. Card original arriba
     ctx.drawImage(canvas, 0, 0);
 
-    // 2. Franja de firma — color sólido para máxima legibilidad
     ctx.fillStyle = '#1e1b4b';
     ctx.fillRect(0, canvas.height, canvas.width, firmaH);
 
-    // 3. Texto centrado en la franja
     ctx.fillStyle = '#c4b5fd';
     ctx.font = `600 ${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
     ctx.textAlign    = 'center';
@@ -2331,6 +2452,38 @@ function renderCategories() {
             <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue quick-btn-wide"><i class="fas fa-plus"></i> Publicar Vacante</button>
         </div>
         <main class="max-w-5xl mx-auto px-4 pt-6 pb-10" style="background:#fff;">
+
+            <!-- ============================================================ -->
+            <!-- BANNER: 2 imágenes con crossfade + botón Próximamente        -->
+            <!-- Ubicación: debajo del header púrpura, arriba del título      -->
+            <!-- ============================================================ -->
+            <div class="banner-section fade-in">
+
+                <!-- Contenedor de imágenes superpuestas con animación fade -->
+                <div class="banner-slider-wrap">
+
+                <!-- *** REEMPLAZA ESTA URL CON EL LINK DE TU PRIMERA IMAGEN *** -->
+                <img class="banner-img-1" src="Header1.jpg" alt="Banner 1">
+
+                <!-- *** REEMPLAZA ESTA URL CON EL LINK DE TU SEGUNDA IMAGEN *** -->
+                <img class="banner-img-2" src="Header2.jpg" alt="Banner 2">
+
+                </div>
+
+                <!-- Botón Próximamente — enlaza a tu próximo proyecto -->
+                <a  href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-proximamente">
+                    <i class="fas fa-rocket"></i>
+                    Próximamente...
+                </a>
+
+            </div>
+            <!-- ============================================================ -->
+            <!-- FIN BANNER                                                    -->
+            <!-- ============================================================ -->
+
             <div class="text-center mb-5 fade-in">
                 <h2 class="cat-screen-title">Selecciona una opción</h2>
             </div>
@@ -2460,7 +2613,6 @@ function renderDashboard() {
 // ==================== FIX UBICACIÓN: parte dirección en calle + colonia ====================
 function splitLocation(loc) {
     if (!loc) return { street: '', colony: '' };
-    // Separa por coma: "Calle Xyz 123, Col. Centro, León" → street = "Calle Xyz 123", colony = "Col. Centro, León"
     const commaIdx = loc.indexOf(',');
     if (commaIdx === -1) return { street: loc, colony: '' };
     return {
@@ -2484,10 +2636,8 @@ function renderVacancyCard(vacancy, isOwner) {
     const days  = cleanValue(vacancy.work_days);
     const sched = cleanValue(vacancy.schedule);
 
-    // FIX: dividir ubicación en calle/número y colonia
     const { street, colony } = splitLocation(loc);
 
-    // Construye el bloque de ubicación con 2 líneas si hay colonia
     const locHtml = loc ? `
         <span class="card-meta-item">
             <i class="fas fa-map-marker-alt"></i>
@@ -2920,7 +3070,7 @@ async function init() {
         console.log('✅ App lista');
     } catch (error) {
         console.error('❌ Error init:', error);
-        render(true);
+        render(truea
     }
 }
 
