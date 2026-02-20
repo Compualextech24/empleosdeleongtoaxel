@@ -712,7 +712,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .vacancy-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(102,126,234,0.25); border-color: rgba(102,126,234,0.3); }
 
 /* FIX: reducir padding top del contenido para acercar empresa a imagen */
-.vacancy-card .card-content { padding: 14px 20px 20px; display: flex; flex-direction: column; flex: 1; }
+.vacancy-card .card-content { padding: 8px 18px 18px; display: flex; flex-direction: column; flex: 1; }
 .vacancy-card .card-info-rows, .vacancy-card .btn-whatsapp-card, .vacancy-card .flex.gap-2 { margin-top: auto; }
 
 /* ── imagen de card con altura proporcional, sin corte ── */
@@ -810,10 +810,11 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 
 .cat-v2-icon-wrap { width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; flex-shrink: 0; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3); }
 .cat-v2-icon-wrap i { font-size: 18px; color: #ffffff; }
-.cat-v2-info { flex: 1; min-width: 0; text-align: center; }
-.cat-v2-name { display: block; font-weight: 700; font-size: 17px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.cat-v2-info { flex: 1; min-width: 0; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.cat-v2-name { display: block; font-weight: 700; font-size: 17px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 4px rgba(0,0,0,0.2); max-width: 100%; }
 .cat-v2-count { display: block; font-size: 13px; color: rgba(255,255,255,0.82); margin-top: 2px; font-weight: 500; }
-.cat-v2-arrow { color: rgba(255,255,255,0.7); font-size: 13px; flex-shrink: 0; transition: transform 0.2s ease; }
+.cat-v2-arrow { color: rgba(255,255,255,0.7); font-size: 13px; flex-shrink: 0; transition: transform 0.2s ease; position: absolute; right: 16px; }
+.category-card-v2 { position: relative; }
 .category-card-v2:hover .cat-v2-arrow { transform: translateX(4px); color: white; }
 
 /* ==================== LOADER ==================== */
@@ -1975,30 +1976,32 @@ function resetJobForm() {
 
 // ==================== DESCARGA DE CARD COMO IMAGEN ====================
 function _addWatermark(canvas) {
-    const ctx = canvas.getContext('2d');
+    // SOLUCIÓN DEFINITIVA: canvas NUEVO = card original + franja de firma debajo
+    // Así la firma siempre aparece, 100% garantizado
+    const firmaH   = Math.max(44, Math.round(canvas.width * 0.07));
+    const fontSize = Math.max(15, Math.round(firmaH * 0.40));
 
-    // Firma centrada en la parte inferior de la imagen
-    // Usamos texto limpio sin emoji para garantizar render correcto en canvas
-    const text = 'Axellabstech | Empleos Leon GTO';
-    const barH = Math.max(28, Math.round(canvas.height * 0.045));
-    const fontSize = Math.max(12, Math.round(barH * 0.52));
+    const out = document.createElement('canvas');
+    out.width  = canvas.width;
+    out.height = canvas.height + firmaH;
 
-    ctx.save();
+    const ctx = out.getContext('2d');
 
-    // Barra de fondo semitransparente en la parte inferior
-    ctx.globalAlpha = 0.72;
+    // 1. Card original arriba
+    ctx.drawImage(canvas, 0, 0);
+
+    // 2. Franja de firma — color sólido para máxima legibilidad
     ctx.fillStyle = '#1e1b4b';
-    ctx.fillRect(0, canvas.height - barH, canvas.width, barH);
+    ctx.fillRect(0, canvas.height, canvas.width, firmaH);
 
-    // Texto centrado dentro de la barra
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = '#e9d5ff';
+    // 3. Texto centrado en la franja
+    ctx.fillStyle = '#c4b5fd';
     ctx.font = `600 ${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
-    ctx.textAlign = 'center';
+    ctx.textAlign    = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(text, canvas.width / 2, canvas.height - barH / 2);
+    ctx.fillText('Axellabstech  |  Empleos Leon GTO', out.width / 2, canvas.height + firmaH / 2);
 
-    ctx.restore();
+    return out;
 }
 
 function _triggerBlobDownload(canvas, filename) {
@@ -2076,7 +2079,7 @@ async function downloadCard(btn, vacancyId) {
             scrollX:         0,
             ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore')
         });
-        _addWatermark(canvas);
+        canvas = _addWatermark(canvas);
     } catch (err) {
         console.error('❌ Error generando imagen:', err);
         showModal('error', 'Error', 'No se pudo generar la imagen. Intenta de nuevo.');
