@@ -1022,6 +1022,102 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .user-session-badge { background: #f8f7ff; }
 .session-label { font-size: 11px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .session-email { font-size: 13px; color: var(--purple-1); font-weight: 600; }
+
+/* ====================================================================== */
+/* ==================== BANNER SLIDESHOW ==================== */
+/* ====================================================================== */
+@keyframes bannerFade {
+    0%   { opacity: 1; }
+    38%  { opacity: 1; }
+    50%  { opacity: 0; }
+    88%  { opacity: 0; }
+    100% { opacity: 1; }
+}
+@keyframes shimmerBtn {
+    0%   { left: -100%; opacity: 0; }
+    10%  { opacity: 1; }
+    60%  { left: 160%; opacity: 1; }
+    65%  { opacity: 0; }
+    100% { left: 160%; opacity: 0; }
+}
+.banner-section {
+    width: 100%;
+    padding: 22px 16px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+}
+.banner-slider-wrap {
+    width: 100%;
+    max-width: 680px;
+    aspect-ratio: 16 / 7;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    background: #1e1b4b;
+    box-shadow: 0 8px 32px rgba(109,40,217,0.22), 0 2px 8px rgba(0,0,0,0.12);
+    border: 2px solid rgba(124,58,237,0.18);
+}
+@media (max-width: 600px) {
+    .banner-slider-wrap { aspect-ratio: 16 / 9; }
+}
+.banner-img-1 {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    z-index: 2;
+    animation: bannerFade 9s ease-in-out infinite;
+    will-change: opacity;
+}
+.banner-img-2 {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    z-index: 1;
+}
+.btn-proximamente {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    background: linear-gradient(160deg, #1c1c1e 0%, #2e2e32 35%, #3a3a40 55%, #28282d 80%, #1c1c1e 100%);
+    color: #d4d4d8;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 11px 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.13);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.35);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.28s ease;
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+}
+.btn-proximamente::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 55%; height: 100%;
+    background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.07) 45%, rgba(255,255,255,0.13) 50%, rgba(255,255,255,0.07) 55%, transparent 100%);
+    animation: shimmerBtn 3.8s ease-in-out infinite;
+    pointer-events: none;
+}
+.btn-proximamente:hover {
+    color: #ffffff;
+    transform: translateX(-50%) translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.6);
+}
+.btn-proximamente i { font-size: 14px; opacity: 0.85; }
+
     </style>
 </head>
 <body>
@@ -2363,6 +2459,20 @@ function renderCategories() {
             <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue quick-btn-wide"><i class="fas fa-plus"></i> Publicar Vacante</button>
         </div>
         <main class="max-w-5xl mx-auto px-4 pt-6 pb-10" style="background:#fff;">
+
+            <div class="banner-section fade-in">
+                <div class="banner-slider-wrap">
+                    <img class="banner-img-1" src="Header1.jpg" alt="Banner 1" onerror="this.style.opacity='0'">
+                    <img class="banner-img-2" src="Header2.jpg" alt="Banner 2" onerror="this.style.opacity='0'">
+                    <a href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
+                       target="_blank" rel="noopener noreferrer"
+                       class="btn-proximamente">
+                        <i class="fas fa-rocket"></i>
+                        Próximamente...
+                    </a>
+                </div>
+            </div>
+
             <div class="text-center mb-5 fade-in">
                 <h2 class="cat-screen-title">Selecciona una opción</h2>
             </div>
