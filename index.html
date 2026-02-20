@@ -808,7 +808,24 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .category-card-v2:hover { transform: translateY(-3px) scale(1.012); box-shadow: 0 10px 28px rgba(0,0,0,0.32), 0 2px 6px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.42), inset 0 -1px 0 rgba(0,0,0,0.12); }
 .category-card-v2:active { transform: translateY(0) scale(0.98); box-shadow: 0 2px 8px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.28); }
 
-.cat-v2-icon-wrap { width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; flex-shrink: 0; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3); }
+/* =========================================================== */
+/* CAMBIO 2: Icono de categoría en la card de vacante           */
+/* Antes: rgba(109, 40, 217, 0.72) — intenso                   */
+/* Ahora: rgba(233, 221, 255, 0.88) con texto púrpura oscuro    */
+/* =========================================================== */
+.cat-v2-icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    /* Púrpura muy pálido, casi blanco con tinte lila */
+    background: rgba(233, 221, 255, 0.30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.5);
+}
 .cat-v2-icon-wrap i { font-size: 18px; color: #ffffff; }
 .cat-v2-info { flex: 1; min-width: 0; text-align: center; display: flex; flex-direction: column; align-items: center; }
 .cat-v2-name { display: block; font-weight: 700; font-size: 17px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 4px rgba(0,0,0,0.2); max-width: 100%; }
@@ -1023,7 +1040,6 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 /* ==================== BANNER SLIDESHOW — 2 IMÁGENES CON TRANSICIÓN ==================== */
 /* ====================================================================== */
 
-/* Animación crossfade: imagen 1 aparece → se mantiene → desvanece → imagen 2 visible → vuelve */
 @keyframes bannerFade {
     0%   { opacity: 1; }
     38%  { opacity: 1; }
@@ -1032,7 +1048,6 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     100% { opacity: 1; }
 }
 
-/* Efecto shimmer para el botón Próximamente */
 @keyframes shimmerBtn {
     0%   { left: -100%; opacity: 0; }
     10%  { opacity: 1; }
@@ -1041,7 +1056,6 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     100% { left: 160%; opacity: 0; }
 }
 
-/* Sección contenedora — solo necesita centrar el slider, sin gap extra */
 .banner-section {
     width: 100%;
     padding: 22px 16px 20px;
@@ -1051,10 +1065,14 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     background: #fff;
 }
 
-/* Caja de las 2 imágenes — el botón va DENTRO de este div */
+/* =========================================================== */
+/* CAMBIO 1: Alto del banner en Android (móvil)                */
+/* Se aumenta el aspect-ratio para que sea más alto en móvil   */
+/* =========================================================== */
 .banner-slider-wrap {
     width: 100%;
     max-width: 680px;
+    /* En desktop se mantiene 16/7, en móvil se usa 16/9 (más alto) */
     aspect-ratio: 16 / 7;
     border-radius: 18px;
     overflow: hidden;
@@ -1064,7 +1082,13 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     border: 2px solid rgba(124,58,237,0.18);
 }
 
-/* Imagen 1 — encima, con animación fade */
+/* En pantallas pequeñas (móvil/Android) el banner es más alto */
+@media (max-width: 600px) {
+    .banner-slider-wrap {
+        aspect-ratio: 16 / 9;
+    }
+}
+
 .banner-img-1 {
     position: absolute;
     top: 0; left: 0;
@@ -1076,7 +1100,6 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     will-change: opacity;
 }
 
-/* Imagen 2 — debajo, siempre visible (se muestra cuando img-1 es transparent) */
 .banner-img-2 {
     position: absolute;
     top: 0; left: 0;
@@ -1086,7 +1109,6 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     z-index: 1;
 }
 
-/* Botón Próximamente — encima de la imagen, anclado abajo-centro */
 .btn-proximamente {
     display: inline-flex;
     align-items: center;
@@ -1107,7 +1129,6 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     letter-spacing: 0.12em;
     text-transform: uppercase;
     transition: all 0.28s ease;
-    /* Posición absoluta dentro del banner */
     position: absolute;
     bottom: 14px;
     left: 50%;
@@ -1117,7 +1138,6 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     overflow: hidden;
     cursor: pointer;
 }
-/* Shimmer interior del botón */
 .btn-proximamente::before {
     content: '';
     position: absolute;
@@ -1151,6 +1171,23 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 /* ====================================================================== */
 /* ==================== FIN BANNER SLIDESHOW ==================== */
 /* ====================================================================== */
+
+/* =========================================================== */
+/* CAMBIO 3: Botón cerrar sesión / menú de usuario en header   */
+/* Se asegura que el btn-secondary del header sea púrpura       */
+/* =========================================================== */
+header.top-header .btn-secondary {
+    background: var(--grad-purple) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(109, 40, 217, 0.45) !important;
+    border: 1.5px solid rgba(167, 139, 250, 0.4) !important;
+}
+header.top-header .btn-secondary:hover {
+    background: var(--grad-purple-header) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(109, 40, 217, 0.55) !important;
+}
+
     </style>
 </head>
 <body>
@@ -2458,23 +2495,10 @@ function renderCategories() {
         </div>
         <main class="max-w-5xl mx-auto px-4 pt-6 pb-10" style="background:#fff;">
 
-            <!-- ============================================================ -->
-            <!-- BANNER: 2 imágenes con crossfade + botón Próximamente        -->
-            <!-- Ubicación: debajo del header púrpura, arriba del título      -->
-            <!-- ============================================================ -->
             <div class="banner-section fade-in">
-
-                <!-- Contenedor de imágenes superpuestas con animación fade -->
-                <!-- El botón va DENTRO para quedar encima de la imagen -->
                 <div class="banner-slider-wrap">
-
-                <!-- *** REEMPLAZA ESTA URL CON EL LINK DE TU PRIMERA IMAGEN *** -->
-                <img class="banner-img-1" src="Header1.jpg" alt="Banner 1">
-
-                <!-- *** REEMPLAZA ESTA URL CON EL LINK DE TU SEGUNDA IMAGEN *** -->
-                <img class="banner-img-2" src="Header2.jpg" alt="Banner 2">
-
-                    <!-- Botón Próximamente — encima de la imagen, anclado abajo-centro -->
+                    <img class="banner-img-1" src="Header1.jpg" alt="Banner 1">
+                    <img class="banner-img-2" src="Header2.jpg" alt="Banner 2">
                     <a  href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -2482,13 +2506,8 @@ function renderCategories() {
                         <i class="fas fa-rocket"></i>
                         Próximamente...
                     </a>
-
                 </div>
-
             </div>
-            <!-- ============================================================ -->
-            <!-- FIN BANNER                                                    -->
-            <!-- ============================================================ -->
 
             <div class="text-center mb-5 fade-in">
                 <h2 class="cat-screen-title">Selecciona una opción</h2>
