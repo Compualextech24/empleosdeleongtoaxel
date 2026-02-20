@@ -712,7 +712,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .vacancy-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(102,126,234,0.25); border-color: rgba(102,126,234,0.3); }
 
 /* FIX: reducir padding top del contenido para acercar empresa a imagen */
-.vacancy-card .card-content { padding: 8px 18px 18px; display: flex; flex-direction: column; flex: 1; }
+.vacancy-card .card-content { padding: 8px 18px 14px; display: flex; flex-direction: column; flex: 1; }
 .vacancy-card .card-info-rows, .vacancy-card .btn-whatsapp-card, .vacancy-card .flex.gap-2 { margin-top: auto; }
 
 /* ── imagen de card con altura proporcional, sin corte ── */
@@ -746,7 +746,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .card-info-row { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #4b5563; line-height: 1.5; }
 .card-info-row i { color: var(--indigo-1); font-size: 12px; margin-top: 2px; flex-shrink: 0; width: 14px; text-align: center; }
 .card-info-row span { flex: 1; word-break: break-word; overflow-wrap: break-word; white-space: normal; min-width: 0; }
-.card-company { font-size: 1.1rem; font-weight: 800; color: var(--gray-900); margin-bottom: 5px; line-height: 1.3; word-break: break-word; overflow-wrap: break-word; white-space: normal; }
+.card-company { font-size: 1.05rem; font-weight: 800; color: var(--gray-900); margin-bottom: 2px; line-height: 1.25; word-break: break-word; overflow-wrap: break-word; white-space: normal; }
 .job-title { word-break: break-word; overflow-wrap: break-word; white-space: normal; line-height: 1.4; }
 
 /* ==================== LISTA DE REQUISITOS EN CARDS ==================== */
@@ -808,24 +808,7 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .category-card-v2:hover { transform: translateY(-3px) scale(1.012); box-shadow: 0 10px 28px rgba(0,0,0,0.32), 0 2px 6px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.42), inset 0 -1px 0 rgba(0,0,0,0.12); }
 .category-card-v2:active { transform: translateY(0) scale(0.98); box-shadow: 0 2px 8px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.28); }
 
-/* =========================================================== */
-/* CAMBIO 2: Icono de categoría en la card de vacante           */
-/* Antes: rgba(109, 40, 217, 0.72) — intenso                   */
-/* Ahora: rgba(233, 221, 255, 0.88) con texto púrpura oscuro    */
-/* =========================================================== */
-.cat-v2-icon-wrap {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.22);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-.cat-v2-icon-wrap i { font-size: 18px; color: #ffffff; }
+.cat-v2-icon-wrap { width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.22); display: flex; align-items: center; justify-content: center; flex-shrink: 0; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.3); }
 .cat-v2-icon-wrap i { font-size: 18px; color: #ffffff; }
 .cat-v2-info { flex: 1; min-width: 0; text-align: center; display: flex; flex-direction: column; align-items: center; }
 .cat-v2-name { display: block; font-weight: 700; font-size: 17px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 4px rgba(0,0,0,0.2); max-width: 100%; }
@@ -983,9 +966,11 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 6px;
 }
+/* La columna izquierda agrupa empresa + vacante sin separación extra */
+.card-title-left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
 .card-title-meta-row .job-title { flex: 1; min-width: 0; margin-bottom: 0; }
 .job-title-prefix {
     font-weight: 900;
@@ -1023,7 +1008,9 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     flex-shrink: 0;
     width: 12px;
     text-align: center;
+    /* sin margin-top — alineado al centro del texto */
 }
+/* Línea de colonia/segunda parte de dirección */
 .card-meta-loc-street  { font-weight: 600; display: block; }
 .card-meta-loc-colony  { display: block; font-size: 10.5px; color: var(--gray-500); line-height: 1.3; }
 
@@ -1032,178 +1019,9 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
 .app-footer-inner { display: inline-block; animation: marqueeScroll 18s linear infinite; color: var(--gray-400); font-size: 13px; font-weight: 500; will-change: transform; }
 
 /* ==================== USER SESSION BADGE ==================== */
-/* =========================================================== */
-/* CAMBIO: Sección "Sesión activa" en menú hamburguesa         */
-/* Fondo púrpura INTENSO (antes era pálido #f8f7ff)            */
-/* =========================================================== */
-.user-session-badge {
-    background: linear-gradient(135deg, var(--purple-1) 0%, var(--purple-2) 100%);
-}
-.session-label {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.75);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.session-email {
-    font-size: 13px;
-    color: #ffffff;
-    font-weight: 700;
-}
-
-/* ====================================================================== */
-/* ==================== BANNER SLIDESHOW — 2 IMÁGENES CON TRANSICIÓN ==================== */
-/* ====================================================================== */
-
-@keyframes bannerFade {
-    0%   { opacity: 1; }
-    38%  { opacity: 1; }
-    50%  { opacity: 0; }
-    88%  { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-@keyframes shimmerBtn {
-    0%   { left: -100%; opacity: 0; }
-    10%  { opacity: 1; }
-    60%  { left: 160%; opacity: 1; }
-    65%  { opacity: 0; }
-    100% { left: 160%; opacity: 0; }
-}
-
-.banner-section {
-    width: 100%;
-    padding: 22px 16px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #fff;
-}
-
-/* =========================================================== */
-/* CAMBIO 1: Alto del banner en Android (móvil)                */
-/* Se aumenta el aspect-ratio para que sea más alto en móvil   */
-/* =========================================================== */
-.banner-slider-wrap {
-    width: 100%;
-    max-width: 680px;
-    /* En desktop se mantiene 16/7, en móvil se usa 16/9 (más alto) */
-    aspect-ratio: 16 / 7;
-    border-radius: 18px;
-    overflow: hidden;
-    position: relative;
-    background: #1e1b4b;
-    box-shadow: 0 8px 32px rgba(109,40,217,0.22), 0 2px 8px rgba(0,0,0,0.12);
-    border: 2px solid rgba(124,58,237,0.18);
-}
-
-/* En pantallas pequeñas (móvil/Android) el banner es más alto */
-@media (max-width: 600px) {
-    .banner-slider-wrap {
-        aspect-ratio: 16 / 9;
-    }
-}
-
-.banner-img-1 {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: center;
-    z-index: 2;
-    animation: bannerFade 9s ease-in-out infinite;
-    will-change: opacity;
-}
-
-.banner-img-2 {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: center;
-    z-index: 1;
-}
-
-.btn-proximamente {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    text-decoration: none;
-    background: linear-gradient(160deg, #1c1c1e 0%, #2e2e32 35%, #3a3a40 55%, #28282d 80%, #1c1c1e 100%);
-    color: #d4d4d8;
-    font-size: 13px;
-    font-weight: 800;
-    padding: 11px 30px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.13);
-    box-shadow:
-        0 4px 18px rgba(0,0,0,0.55),
-        inset 0 1px 0 rgba(255,255,255,0.08),
-        inset 0 -1px 0 rgba(0,0,0,0.35);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    transition: all 0.28s ease;
-    position: absolute;
-    bottom: 14px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    white-space: nowrap;
-    overflow: hidden;
-    cursor: pointer;
-}
-.btn-proximamente::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 55%; height: 100%;
-    background: linear-gradient(105deg,
-        transparent 0%,
-        rgba(255,255,255,0.07) 45%,
-        rgba(255,255,255,0.13) 50%,
-        rgba(255,255,255,0.07) 55%,
-        transparent 100%);
-    animation: shimmerBtn 3.8s ease-in-out infinite;
-    pointer-events: none;
-}
-.btn-proximamente:hover {
-    background: linear-gradient(160deg, #26262b 0%, #38383e 35%, #46464e 55%, #32323a 80%, #26262b 100%);
-    color: #ffffff;
-    transform: translateX(-50%) translateY(-3px);
-    box-shadow:
-        0 10px 28px rgba(0,0,0,0.6),
-        inset 0 1px 0 rgba(255,255,255,0.12),
-        inset 0 -1px 0 rgba(0,0,0,0.4);
-    border-color: rgba(255,255,255,0.18);
-}
-.btn-proximamente:active {
-    transform: translateX(-50%) translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-.btn-proximamente i { font-size: 14px; opacity: 0.85; }
-
-/* ====================================================================== */
-/* ==================== FIN BANNER SLIDESHOW ==================== */
-/* ====================================================================== */
-
-/* =========================================================== */
-/* CAMBIO 3: Botón cerrar sesión / menú de usuario en header   */
-/* Se asegura que el btn-secondary del header sea púrpura       */
-/* =========================================================== */
-header.top-header .btn-secondary {
-    background: var(--grad-purple) !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 14px rgba(109, 40, 217, 0.45) !important;
-    border: 1.5px solid rgba(167, 139, 250, 0.4) !important;
-}
-header.top-header .btn-secondary:hover {
-    background: var(--grad-purple-header) !important;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(109, 40, 217, 0.55) !important;
-}
-
+.user-session-badge { background: #f8f7ff; }
+.session-label { font-size: 11px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.session-email { font-size: 13px; color: var(--purple-1); font-weight: 600; }
     </style>
 </head>
 <body>
@@ -2159,7 +1977,35 @@ function resetJobForm() {
 }
 
 // ==================== DESCARGA DE CARD COMO IMAGEN ====================
+// FIX 2b: Recorta el espacio blanco inferior del canvas capturado
+function _cropWhitespace(canvas) {
+    const ctx = canvas.getContext('2d');
+    const { width, height } = canvas;
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const data = imageData.data;
+    let lastContentRow = 0;
+    for (let y = height - 1; y >= 0; y--) {
+        let rowHasContent = false;
+        for (let x = 0; x < width; x++) {
+            const idx = (y * width + x) * 4;
+            const r = data[idx], g = data[idx + 1], b = data[idx + 2], a = data[idx + 3];
+            if (a > 30 && (r < 248 || g < 248 || b < 248)) { rowHasContent = true; break; }
+        }
+        if (rowHasContent) { lastContentRow = y; break; }
+    }
+    const bottomPad = Math.round(canvas.width * 0.025);
+    const croppedH  = Math.min(lastContentRow + bottomPad, height);
+    if (croppedH >= height - 2) return canvas;
+    const cropped = document.createElement('canvas');
+    cropped.width  = width;
+    cropped.height = croppedH;
+    cropped.getContext('2d').drawImage(canvas, 0, 0, width, croppedH, 0, 0, width, croppedH);
+    return cropped;
+}
+
 function _addWatermark(canvas) {
+    // SOLUCIÓN DEFINITIVA: canvas NUEVO = card original + franja de firma debajo
+    // Así la firma siempre aparece, 100% garantizado
     const firmaH   = Math.max(44, Math.round(canvas.width * 0.07));
     const fontSize = Math.max(15, Math.round(firmaH * 0.40));
 
@@ -2169,11 +2015,14 @@ function _addWatermark(canvas) {
 
     const ctx = out.getContext('2d');
 
+    // 1. Card original arriba
     ctx.drawImage(canvas, 0, 0);
 
+    // 2. Franja de firma — color sólido para máxima legibilidad
     ctx.fillStyle = '#1e1b4b';
     ctx.fillRect(0, canvas.height, canvas.width, firmaH);
 
+    // 3. Texto centrado en la franja
     ctx.fillStyle = '#c4b5fd';
     ctx.font = `600 ${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
     ctx.textAlign    = 'center';
@@ -2242,7 +2091,9 @@ async function downloadCard(btn, vacancyId) {
     card.style.height    = 'auto';
     card.style.maxHeight = 'none';
 
-    const realHeight = card.scrollHeight;
+    // FIX 2: usar altura real visible del card (sin padding sobrante)
+    const rect = card.getBoundingClientRect();
+    const realHeight = Math.ceil(rect.height);
 
     let canvas;
     try {
@@ -2258,6 +2109,8 @@ async function downloadCard(btn, vacancyId) {
             scrollX:         0,
             ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore')
         });
+        // Recortar espacio blanco antes de agregar firma
+        canvas = _cropWhitespace(canvas);
         canvas = _addWatermark(canvas);
     } catch (err) {
         console.error('❌ Error generando imagen:', err);
@@ -2510,21 +2363,6 @@ function renderCategories() {
             <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue quick-btn-wide"><i class="fas fa-plus"></i> Publicar Vacante</button>
         </div>
         <main class="max-w-5xl mx-auto px-4 pt-6 pb-10" style="background:#fff;">
-
-            <div class="banner-section fade-in">
-                <div class="banner-slider-wrap">
-                    <img class="banner-img-1" src="Header1.jpg" alt="Banner 1">
-                    <img class="banner-img-2" src="Header2.jpg" alt="Banner 2">
-                    <a  href="https://axeltechnology24-cloud.github.io/ecosistematodoleongto/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="btn-proximamente">
-                        <i class="fas fa-rocket"></i>
-                        Próximamente...
-                    </a>
-                </div>
-            </div>
-
             <div class="text-center mb-5 fade-in">
                 <h2 class="cat-screen-title">Selecciona una opción</h2>
             </div>
@@ -2654,6 +2492,7 @@ function renderDashboard() {
 // ==================== FIX UBICACIÓN: parte dirección en calle + colonia ====================
 function splitLocation(loc) {
     if (!loc) return { street: '', colony: '' };
+    // Separa por coma: "Calle Xyz 123, Col. Centro, León" → street = "Calle Xyz 123", colony = "Col. Centro, León"
     const commaIdx = loc.indexOf(',');
     if (commaIdx === -1) return { street: loc, colony: '' };
     return {
@@ -2677,8 +2516,10 @@ function renderVacancyCard(vacancy, isOwner) {
     const days  = cleanValue(vacancy.work_days);
     const sched = cleanValue(vacancy.schedule);
 
+    // FIX: dividir ubicación en calle/número y colonia
     const { street, colony } = splitLocation(loc);
 
+    // Construye el bloque de ubicación con 2 líneas si hay colonia
     const locHtml = loc ? `
         <span class="card-meta-item">
             <i class="fas fa-map-marker-alt"></i>
@@ -2700,9 +2541,12 @@ function renderVacancyCard(vacancy, isOwner) {
                 : '<div class="card-img-placeholder"><i class="fas fa-image"></i></div>'}
         </div>
         <div class="card-content">
-            <h3 class="card-company">${escapeHtml(cleanValue(vacancy.company))}</h3>
+            <!-- FIX 1: empresa + vacante en columna izquierda al mismo nivel que meta -->
             <div class="card-title-meta-row">
-                <p class="job-title text-purple-600"><span class="job-title-prefix">Vacante(s):</span> ${escapeHtml(cleanValue(vacancy.job_title))}</p>
+                <div class="card-title-left">
+                    <h3 class="card-company">${escapeHtml(cleanValue(vacancy.company))}</h3>
+                    <p class="job-title text-purple-600" style="font-size:13px;"><span class="job-title-prefix">Vacante(s):</span> ${escapeHtml(cleanValue(vacancy.job_title))}</p>
+                </div>
                 <div class="card-meta-inline">
                     ${locHtml}
                     ${phone ? `<span class="card-meta-item"><i class="fas fa-phone"></i><span>${escapeHtml(phone)}</span></span>` : ''}
@@ -2944,26 +2788,7 @@ function attachEvents() {
     // Dashboard / categories comunes
     document.getElementById('new-vacancy')?.addEventListener('click', () => { state.view = 'form'; resetJobForm(); clearAIData(); render(); });
     document.getElementById('calendar-btn')?.addEventListener('click', openCalendar);
-    document.getElementById('user-menu')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        state.menuOpen = !state.menuOpen;
-        render();
-    });
-
-    // Cierre automático del menú al hacer click fuera de él
-    if (state.menuOpen) {
-        setTimeout(() => {
-            document.addEventListener('click', function closeMenuOnClickOutside(e) {
-                const menuBtn = document.getElementById('user-menu');
-                const menuDropdown = document.querySelector('[style*="top:70px"]');
-                if (!menuBtn?.contains(e.target) && !menuDropdown?.contains(e.target)) {
-                    state.menuOpen = false;
-                    render();
-                    document.removeEventListener('click', closeMenuOnClickOutside);
-                }
-            });
-        }, 0);
-    }
+    document.getElementById('user-menu')?.addEventListener('click', () => { state.menuOpen = !state.menuOpen; render(); });
     document.getElementById('logout')?.addEventListener('click', handleLogout);
     document.getElementById('delete-account')?.addEventListener('click', handleDeleteAccount);
     document.getElementById('go-login')?.addEventListener('click', () => { state.view = 'login'; render(); });
