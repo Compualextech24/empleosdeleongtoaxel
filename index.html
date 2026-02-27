@@ -546,8 +546,14 @@ header.top-header .header-title-block h1 { font-size: 1.375rem !important; }
 .quick-btn-red, .quick-btn-blue, .quick-btn-purple { color: #fff; }
 .quick-btn-red:hover, .quick-btn-blue:hover, .quick-btn-purple:hover { transform: translateY(-2px); }
 
-.quick-btn-red { background: #c01e1e; border: 1.5px solid rgba(255,100,100,0.4); box-shadow: 0 3px 10px rgba(180,20,20,0.35); }
-.quick-btn-red:hover { background: #a81818; box-shadow: 0 6px 18px rgba(180,20,20,0.45); }
+/* ============================================================
+   CAMBIO 3: color rojo más oscuro para el botón de Términos
+   Original: #c01e1e / #a81818
+   Nuevo:    #7a0000 / #5c0000
+   ============================================================ */
+.quick-btn-red { background: #7a0000; border: 1.5px solid rgba(255,100,100,0.4); box-shadow: 0 3px 10px rgba(100,0,0,0.45); }
+.quick-btn-red:hover { background: #5c0000; box-shadow: 0 6px 18px rgba(100,0,0,0.55); }
+
 .quick-btn-blue { background: #1a52d4; border: 1.5px solid rgba(100,150,255,0.4); box-shadow: 0 3px 10px rgba(25,75,210,0.35); }
 .quick-btn-blue:hover { background: #1542b8; box-shadow: 0 6px 18px rgba(25,75,210,0.45); }
 .quick-btn-purple { background: var(--purple-2); border: 1.5px solid rgba(167,139,250,0.4); box-shadow: 0 3px 10px rgba(109,40,217,0.35); }
@@ -1008,7 +1014,6 @@ textarea { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     flex-shrink: 0;
     width: 12px;
     text-align: center;
-    /* sin margin-top — alineado al centro del texto */
 }
 /* Línea de colonia/segunda parte de dirección */
 .card-meta-loc-street  { font-weight: 600; display: block; }
@@ -2073,7 +2078,6 @@ function resetJobForm() {
 }
 
 // ==================== DESCARGA DE CARD COMO IMAGEN ====================
-// FIX 2b: Recorta el espacio blanco inferior del canvas capturado
 function _cropWhitespace(canvas) {
     const ctx = canvas.getContext('2d');
     const { width, height } = canvas;
@@ -2100,8 +2104,6 @@ function _cropWhitespace(canvas) {
 }
 
 function _addWatermark(canvas) {
-    // SOLUCIÓN DEFINITIVA: canvas NUEVO = card original + franja de firma debajo
-    // Así la firma siempre aparece, 100% garantizado
     const firmaH   = Math.max(44, Math.round(canvas.width * 0.07));
     const fontSize = Math.max(15, Math.round(firmaH * 0.40));
 
@@ -2111,14 +2113,11 @@ function _addWatermark(canvas) {
 
     const ctx = out.getContext('2d');
 
-    // 1. Card original arriba
     ctx.drawImage(canvas, 0, 0);
 
-    // 2. Franja de firma — color sólido para máxima legibilidad
     ctx.fillStyle = '#1e1b4b';
     ctx.fillRect(0, canvas.height, canvas.width, firmaH);
 
-    // 3. Texto centrado en la franja
     ctx.fillStyle = '#c4b5fd';
     ctx.font = `600 ${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
     ctx.textAlign    = 'center';
@@ -2187,7 +2186,6 @@ async function downloadCard(btn, vacancyId) {
     card.style.height    = 'auto';
     card.style.maxHeight = 'none';
 
-    // FIX 2: usar altura real visible del card (sin padding sobrante)
     const rect = card.getBoundingClientRect();
     const realHeight = Math.ceil(rect.height);
 
@@ -2205,7 +2203,6 @@ async function downloadCard(btn, vacancyId) {
             scrollX:         0,
             ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore')
         });
-        // Recortar espacio blanco antes de agregar firma
         canvas = _cropWhitespace(canvas);
         canvas = _addWatermark(canvas);
     } catch (err) {
@@ -2453,11 +2450,17 @@ function renderCategories() {
                 </div>
             </div>
         </header>
+
+        <!-- ============================================================
+             CAMBIOS 1 y 2:
+             - Eliminado el botón "Publicar Vacante" (quick-vacancy-btn)
+             - Texto cambiado a "Términos y condiciones"
+             ============================================================ -->
         <div class="quick-action-bar">
             <span class="quick-action-hand">👉</span>
-            <button id="quick-terms-btn" class="quick-btn quick-btn-red quick-btn-wide"><i class="fas fa-file-alt"></i> Términos</button>
-            <button id="quick-vacancy-btn" class="quick-btn quick-btn-blue quick-btn-wide"><i class="fas fa-plus"></i> Publicar Vacante</button>
+            <button id="quick-terms-btn" class="quick-btn quick-btn-red quick-btn-wide"><i class="fas fa-file-alt"></i> Términos y condiciones</button>
         </div>
+
         <main class="max-w-5xl mx-auto px-4 pt-6 pb-10" style="background:#fff;">
 
             <div class="banner-section fade-in">
@@ -2602,7 +2605,6 @@ function renderDashboard() {
 // ==================== FIX UBICACIÓN: parte dirección en calle + colonia ====================
 function splitLocation(loc) {
     if (!loc) return { street: '', colony: '' };
-    // Separa por coma: "Calle Xyz 123, Col. Centro, León" → street = "Calle Xyz 123", colony = "Col. Centro, León"
     const commaIdx = loc.indexOf(',');
     if (commaIdx === -1) return { street: loc, colony: '' };
     return {
@@ -2626,10 +2628,8 @@ function renderVacancyCard(vacancy, isOwner) {
     const days  = cleanValue(vacancy.work_days);
     const sched = cleanValue(vacancy.schedule);
 
-    // FIX: dividir ubicación en calle/número y colonia
     const { street, colony } = splitLocation(loc);
 
-    // Construye el bloque de ubicación con 2 líneas si hay colonia
     const locHtml = loc ? `
         <span class="card-meta-item">
             <i class="fas fa-map-marker-alt"></i>
@@ -2651,7 +2651,6 @@ function renderVacancyCard(vacancy, isOwner) {
                 : '<div class="card-img-placeholder"><i class="fas fa-image"></i></div>'}
         </div>
         <div class="card-content">
-            <!-- FIX 1: empresa + vacante en columna izquierda al mismo nivel que meta -->
             <div class="card-title-meta-row">
                 <div class="card-title-left">
                     <h3 class="card-company">${escapeHtml(cleanValue(vacancy.company))}</h3>
@@ -2917,10 +2916,6 @@ function attachEvents() {
     });
 
     document.getElementById('quick-terms-btn')?.addEventListener('click', () => { state.view = 'terms'; render(); });
-    document.getElementById('quick-vacancy-btn')?.addEventListener('click', () => {
-        if (state.user) { state.view = 'form'; resetJobForm(); clearAIData(); render(); }
-        else { showModal('question', 'Necesitas una cuenta', 'Para publicar vacantes debes iniciar sesión o crear una cuenta gratuita. ¿Deseas registrarte ahora?', () => { state.view = 'signup'; render(); }); }
-    });
 
     // Cards
     document.querySelectorAll('[data-edit]').forEach(btn   => btn.addEventListener('click', () => handleEditVacancy(btn.dataset.edit)));
